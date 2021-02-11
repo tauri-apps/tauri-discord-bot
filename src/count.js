@@ -3,7 +3,6 @@ module.exports = {
   increment () {
     ++count
   },
-
   getCount () {
     return count
   }
