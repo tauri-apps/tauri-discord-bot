@@ -46,7 +46,7 @@ const getUserFromMention = (client, mention) => {
 }
 
 const getDonationText = () => {
-  return '\n_Support Tauri development by [Donating](https://donate.tauri.studio/)_\n'
+  return '\n_Support Tauri development by [Donating](https://opencollective.com/tauri/)_\n'
 }
 
 module.exports = {
