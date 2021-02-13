@@ -49,9 +49,20 @@ const getDonationText = () => {
   return '\n_Support Tauri development by [Donating](https://opencollective.com/tauri/)_\n'
 }
 
+const buildResultItem = (element) => {
+  let resultItemParts = []
+  for (let i = 0; i < 4; i++) {
+    if (element['hierarchy_lvl' + i]) {
+      resultItemParts.push(element['hierarchy_lvl' + i] + (element['hierarchy_lvl' + i].length > 60 ? element['hierarchy_lvl' + i].substring(0, 60) + '...' : ''));
+    }
+  }
+  return `\n[${resultItemParts.join(' > ')}](https://tauri.studio/en/docs/${element.url + (element.anchor ? '#' + element.anchor : '')})${element.content ? '\n> ' + element.content : ''}\n`
+}
+
 module.exports = {
   getEmbeddedMessage,
   getDistinctUsername,
   getUserFromMention,
+  buildResultItem,
   getDonationText
 }

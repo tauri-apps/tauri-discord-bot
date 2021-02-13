@@ -10,6 +10,8 @@ const prefix = process.env.PREFIX
 const site = process.env.SITE
 const icon = process.env.ICON
 const limit = process.env.LIMIT
+const searchIndex = process.env.SEARCH_INDEX
+const apiKey = process.env.MEILISEARCH_PUBLIC_KEY
 
 if (!local) {
   const createServer = require('./keep_alive.js')
@@ -19,4 +21,4 @@ if (!local) {
 
 const createClient = require('./client')
 
-createClient({ token, prefix, site, icon, limit })
+createClient({ apiKey, token, prefix, searchIndex, site, icon, limit })

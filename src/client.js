@@ -8,7 +8,7 @@ const count = require('./count')
 
 const { getUserFromMention } = require('./utils')
 
-module.exports = async ({ token, prefix, site, icon, limit }) => {
+module.exports = async ({ apiKey, token, prefix, searchIndex, site, icon, limit }) => {
   const client = new Discord.Client()
 
   const versions = {
@@ -49,8 +49,10 @@ module.exports = async ({ token, prefix, site, icon, limit }) => {
     }
 
     const context = {
+      apiKey,
       prefix,
       commands,
+      searchIndex,
       site,
       icon,
       limit,
