@@ -1,10 +1,6 @@
-/*
-  This file will search Google at site for information
-  and return it to user.
-*/
-const googleIt = require('google-it')
+const { MeiliSearch } = require('meilisearch')
 
-const { getEmbeddedMessage, getDistinctUsername, getDonationText } = require('../utils')
+const { getEmbeddedMessage, getDistinctUsername, getDonationText, buildResultItem } = require('../utils')
 
 module.exports = {
   name: 'search',
@@ -51,18 +47,25 @@ module.exports = {
     const query = context.site + ' ' + args
 
     try {
-      const results = await googleIt({ query: query, limit: context.limit })
+      const client = new MeiliSearch({
+        host: 'https://search.tauri.studio',
+        apiKey: context.apiKey,
+      })
+
+      const index = client.index(context.searchIndex)
+
+      const {nbHits, hits} = await index.search(args, {limit: parseInt(context.limit)})
+
       let output = ''
 
-      if (results.length === 0) {
+      const donationText = getDonationText()
+      if (nbHits === 0) {
         output = '\n**No results found!** Try again...'
       } else {
-        results.forEach(element => {
-          output += `\n[${element.title}](${element.link})\n${element.snippet}\n`
-        })
+        output = hits.map(buildResultItem).join('').substring(0, 2048 - donationText.length)
       }
 
-      output += getDonationText()
+      output += donationText
 
       let title = `Results for "${args}"`
 

@@ -15,7 +15,6 @@
   "dependencies": {
     "discord.js": "12.5.1",
     "dotenv": "^8.2.0",
-    "google-it": "^1.6.1",
     "meilisearch": "^0.18.1",
     "moment": "^2.29.1"
   },

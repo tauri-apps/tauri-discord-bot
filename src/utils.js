@@ -5,7 +5,7 @@ const getEmbeddedMessage = (message, context, title = '') => {
     .setColor('#ffffff')
     .setAuthor(title, `${context.icon}`)
     .setTimestamp()
-    .setFooter('API Latency is ' + `${Date.now() - message.createdTimestamp}` + ' ms • Created/Maintained by Jeff Galbraith', message.author.displayAvatarURL)
+    .setFooter('API Latency is ' + `${Date.now() - message.createdTimestamp}` + ' ms • Created/Maintained by Tauri Team', message.author.displayAvatarURL)
 
   return embed
 }
