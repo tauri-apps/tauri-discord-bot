@@ -13,7 +13,7 @@ jobs:
 
       - 
         uses: appleboy/scp-action@master
-        name: Prepare system
+        name: Send to server
         with:
           host: ${{ secrets.PROD_HOST }}
           username: ${{ secrets.SSH_USER }}
