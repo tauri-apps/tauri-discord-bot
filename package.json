@@ -4,14 +4,25 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "serve": "node ./src/index",
+    "lint": "eslint --ext .js src",
+    "lint-fix": "eslint --ext .js src --fix",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
   "author": "",
-  "license": "ISC",
+  "license": "MIT",
   "dependencies": {
-    "discord.js": "^11.5.1",
-    "google-it": "^1.6.1",
+    "discord.js": "12.5.1",
+    "dotenv": "^8.2.0",
+    "meilisearch": "^0.18.1",
     "moment": "^2.29.1"
+  },
+  "devDependencies": {
+    "eslint": "^7.19.0",
+    "eslint-config-standard": "^16.0.2",
+    "eslint-plugin-import": "^2.22.1",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-promise": "^4.2.1"
   }
 }
