@@ -1,23 +1,23 @@
-name: Publish to bot's droplet
+# name: Publish to bot's droplet
 
-on:
-  push:
-    branches: [ main ]
+# on:
+#   push:
+#     branches: [ main ]
 
-jobs:
+# jobs:
 
-  deploy:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
+#   deploy:
+#     runs-on: ubuntu-latest
+#     steps:
+#       - uses: actions/checkout@v2
 
-      - 
-        uses: appleboy/scp-action@master
-        name: Send to server
-        with:
-          host: ${{ secrets.PROD_HOST }}
-          username: ${{ secrets.SSH_USER }}
-          key: ${{ secrets.SSH_KEY }}
-          source: "."
-          target: "~"
+#       - 
+#         uses: appleboy/scp-action@master
+#         name: Send to server
+#         with:
+#           host: ${{ secrets.PROD_HOST }}
+#           username: ${{ secrets.SSH_USER }}
+#           key: ${{ secrets.SSH_KEY }}
+#           source: "."
+#           target: "~"
 
