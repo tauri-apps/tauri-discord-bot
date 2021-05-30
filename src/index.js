@@ -10,7 +10,7 @@ const prefix = process.env.PREFIX
 const site = process.env.SITE
 const icon = process.env.ICON
 const limit = process.env.LIMIT
-const searchIndex = process.env.SEARCH_INDEX
+const searchIndex = process.env.SEARCH_INDEX.trim().replace(/\W/g, '_')
 const apiKey = process.env.MEILISEARCH_PUBLIC_KEY
 
 if (!local) {
