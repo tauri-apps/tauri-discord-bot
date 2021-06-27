@@ -46,18 +46,7 @@ module.exports = {
       project
     )}&title=${title}`;
 
-    sendReply("Create an issue", link, message, context);
-    // const embed = getEmbeddedMessage(
-    //   message,
-    //   context,
-    //   "Create an issue"
-    // ).setDescription(link);
-
-    // if (context.isMentioned) {
-    //   await message.channel.send({ embed });
-    // } else {
-    //   await message.author.send({ embed });
-    // }
+    await sendReply("Create an issue", link, message, context);
 
     await message.react("📨");
   },

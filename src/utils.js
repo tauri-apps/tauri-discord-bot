@@ -85,20 +85,19 @@ const getFlagValueInParts = (arg, parts) => {
 };
 
 const parseString = (input) => {
-  const delimiter = `["']`;
-  return input.match(new RegExp(`${delimiter}(.*)${delimiter}`))[1];
+  const delimiter = `["]`;
+  const match = input.match(new RegExp(`${delimiter}(.*)${delimiter}`));
+  return match ? match[1] : null;
 };
 
 const sendReply = (title, content, message, context) => {
-  const embed = getEmbeddedMessage(
-    message,
-    context,
-    title
-  ).setDescription(content);
+  const embed = getEmbeddedMessage(message, context, title).setDescription(
+    content
+  );
 
-  return context.isMentioned
-    ? message.channel.send({ embed })
-    : message.author.send({ embed });
+  return message.channel instanceof Discord.DMChannel
+    ? message.author.send({ embed })
+    : message.channel.send({ embed });
 };
 
 module.exports = {
