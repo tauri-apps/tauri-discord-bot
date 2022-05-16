@@ -19,7 +19,7 @@
     "moment": "^2.29.1"
   },
   "devDependencies": {
-    "eslint": "^7.19.0",
+    "eslint": "8.15.0",
     "eslint-config-standard": "16.0.3",
     "eslint-plugin-import": "^2.22.1",
     "eslint-plugin-node": "^11.1.0",
