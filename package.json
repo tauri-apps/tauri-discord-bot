@@ -13,7 +13,7 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
-    "discord.js": "12.5.1",
+    "discord.js": "13.7.0",
     "dotenv": "^8.2.0",
     "meilisearch": "^0.18.1",
     "moment": "^2.29.1"
