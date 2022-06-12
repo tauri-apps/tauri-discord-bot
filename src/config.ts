@@ -1,6 +1,6 @@
 export const DEV_MODE = process.env.NODE_ENV !== 'production';
 
-export const TEST_GUILD_ID = process.env.TEST_GUILD_ID ?? '918887934822858802';
+export const TEST_GUILD_ID = process.env.TEST_GUILD_ID ?? '985638857200517142';
 
 export const DISCORD_TOKEN = process.env.DISCORD_TOKEN;
 
@@ -10,21 +10,12 @@ export const GITHUB_TOKEN = process.env.GITHUB_TOKEN;
 
 // #region people
 const ADMIN_ROLES = [
-	// Moderators role in main server
-	// '919214972557484073',
-
-	// // Maintainers role
-	// '571775211431526410',
-
-	// // Admins role
-	// '476141440091815947',
-
 	// Threadlords
-	'949258457352114176',
+	'402698003569180674',
 ];
 
 // For use in dev server
-const TEST_ADMIN_ROLES = ['918888136581476402'];
+const TEST_ADMIN_ROLES = ['402698003569180674'];
 
 /**
  * List of roles/user IDs allowed to delete tags even if they're not the author.
@@ -42,8 +33,8 @@ export const BOT_DEVS = [
 	// cirilla
 	'339731096793251854',
 
-	// GHOST
-	'282839711834177537',
+	// LorenzoLewis
+	'402698003569180674',
 ];
 /**
  * List of roles/user IDs other than the creator allowed to modify threads.
@@ -57,43 +48,30 @@ export const THREAD_ADMIN_IDS = [
 
 // #region channels
 export const HELP_CHANNELS = DEV_MODE
-	? ['935524190008770610']
+	? ['985638857712218114']
 	: [
 			// svelte-help
-			'939867760492703744',
-
-			// kit-help
-			'939868205869072444',
+			'985638857712218114',
 	  ];
 
-const COMMUNITY_CHANNELS = [
-	// Showcase
-	'479653552869081089',
+export const LINK_ONLY_CHANNELS = [
+	// #test-link-validation
+	'918915215368810566',
 
-	// Resources
-	'837012201444999248',
+	// #both-both-is-good
+	'919196322303725568',
 ];
-
-export const LINK_ONLY_CHANNELS = DEV_MODE
-	? [
-			// #test-link-validation
-			'918915215368810566',
-
-			// #both-both-is-good
-			'919196322303725568',
-	  ]
-	: COMMUNITY_CHANNELS;
 
 export const AUTO_THREAD_CHANNELS = DEV_MODE
 	? [
 			// #test-auto-thread
-			'918932662226386994',
+			'985638857712218114',
 
 			// #both-both-is-good
-			'919196322303725568',
+			'985638857712218114',
 
 			// emulated help channel
-			'935524190008770610',
+			'985638857712218114',
 	  ]
-	: [...COMMUNITY_CHANNELS, ...HELP_CHANNELS];
+	: [...HELP_CHANNELS];
 // #endregion
