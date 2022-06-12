@@ -10,7 +10,7 @@ export const GITHUB_TOKEN = process.env.GITHUB_TOKEN;
 
 // #region people
 const ADMIN_ROLES = [
-	// All users
+	// # Core role
 	'402698003569180674',
 ];
 
@@ -45,16 +45,16 @@ export const THREAD_ADMIN_IDS = [
 
 // #region channels
 export const HELP_CHANNELS = DEV_MODE
-	? ['985638857712218114']
+	? ['985680061703290932']
 	: [
-			// svelte-help
-			'985638857712218114',
+			// #not-valid-yet
+			'985680061703290932',
 	  ];
 
 export const AUTO_THREAD_CHANNELS = DEV_MODE
 	? [
-			// #test-auto-thread
-			'985638857712218114',
+			// #not-valid-yet
+			'985680061703290932',
 	  ]
 	: [...HELP_CHANNELS];
 // #endregion
