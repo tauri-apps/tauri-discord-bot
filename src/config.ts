@@ -54,14 +54,6 @@ export const HELP_CHANNELS = DEV_MODE
 			'985638857712218114',
 	  ];
 
-export const LINK_ONLY_CHANNELS = [
-	// #test-link-validation
-	'918915215368810566',
-
-	// #both-both-is-good
-	'919196322303725568',
-];
-
 export const AUTO_THREAD_CHANNELS = DEV_MODE
 	? [
 			// #test-auto-thread
