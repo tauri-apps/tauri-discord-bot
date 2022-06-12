@@ -5,10 +5,10 @@ import {
 	MessageEmbedOptions,
 	MessageOptions,
 } from 'discord.js';
-import { SVELTE_ORANGE } from '../config.js';
+import { TAURI_BLUE } from '../config.js';
 
 export const build_embed = (options: MessageEmbedOptions) =>
-	new MessageEmbed({ color: SVELTE_ORANGE, ...options });
+	new MessageEmbed({ color: TAURI_BLUE, ...options });
 
 export function wrap_in_embed(content: string, ephemeral?: boolean) {
 	const embed = build_embed({ description: content });

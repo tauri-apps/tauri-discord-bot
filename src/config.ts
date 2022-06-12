@@ -4,13 +4,13 @@ export const TEST_GUILD_ID = process.env.TEST_GUILD_ID ?? '985638857200517142';
 
 export const DISCORD_TOKEN = process.env.DISCORD_TOKEN;
 
-export const SVELTE_ORANGE = 0xff3e00;
+export const TAURI_BLUE = 0x67d6ed;
 
 export const GITHUB_TOKEN = process.env.GITHUB_TOKEN;
 
 // #region people
 const ADMIN_ROLES = [
-	// Threadlords
+	// All users
 	'402698003569180674',
 ];
 
@@ -30,9 +30,6 @@ export const TAG_CREATE_PERMITTED_IDS = DEV_MODE
 	: ADMIN_ROLES;
 
 export const BOT_DEVS = [
-	// cirilla
-	'339731096793251854',
-
 	// LorenzoLewis
 	'402698003569180674',
 ];
@@ -57,12 +54,6 @@ export const HELP_CHANNELS = DEV_MODE
 export const AUTO_THREAD_CHANNELS = DEV_MODE
 	? [
 			// #test-auto-thread
-			'985638857712218114',
-
-			// #both-both-is-good
-			'985638857712218114',
-
-			// emulated help channel
 			'985638857712218114',
 	  ]
 	: [...HELP_CHANNELS];
