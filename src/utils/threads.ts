@@ -76,11 +76,7 @@ export async function get_ending_message(
 	);
 
 	const embed = build_embed({
-		description: `Thread marked as solved. ${
-			clickable_participants.size
-				? 'Click the people who helped you solve it.'
-				: ''
-		}`,
+		description: `Thread marked as solved.`,
 	});
 
 	const row = new MessageActionRow().setComponents(

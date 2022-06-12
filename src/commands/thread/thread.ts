@@ -133,10 +133,9 @@ export default command({
 
 					await Promise.allSettled([
 						thread.send(
-							wrap_in_embed('Thread solved. Thank you everyone.'),
-						),
-						get_ending_message(thread, interaction.user.id).then(
-							(m) => interaction.followUp(m),
+							wrap_in_embed(
+								'Thread solved. Thank you everyone! 🥳',
+							),
 						),
 					]);
 				} catch (e) {
