@@ -7,7 +7,6 @@ import {
 	ThreadChannel,
 } from 'discord.js';
 import { DEV_MODE, THREAD_ADMIN_IDS } from '../config.js';
-import { supabase } from '../db/index.js';
 import { build_embed } from './embed_helpers.js';
 import { no_op, undefined_on_error } from './promise.js';
 import { has_any_role_or_id } from './snowflake.js';
@@ -33,14 +32,6 @@ export async function solve_thread(thread: ThreadChannel) {
 		// Archiving immediately won't let users click the buttons.
 		autoArchiveDuration: 60,
 	});
-}
-
-export async function increment_solve_count(id: Snowflake) {
-	const { error } = await supabase.rpc('increment_solve_count', {
-		solver_id: id,
-	});
-
-	if (error) throw new Error(error.message);
 }
 
 export async function check_autothread_permissions(

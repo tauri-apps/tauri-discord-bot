@@ -21,7 +21,6 @@
 		"url-regex": "^5.0.0"
 	},
 	"devDependencies": {
-		"@supabase/supabase-js": "^1.35.3",
 		"@types/flexsearch": "^0.7.3",
 		"@types/node": "^16.11.39",
 		"nodemon": "^2.0.16",
