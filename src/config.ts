@@ -6,55 +6,34 @@ export const DISCORD_TOKEN = process.env.DISCORD_TOKEN;
 
 export const TAURI_BLUE = 0x67d6ed;
 
-export const GITHUB_TOKEN = process.env.GITHUB_TOKEN;
-
-// #region people
-const ADMIN_ROLES = [
-	// # Core role
-	'402698003569180674',
-];
-
-// For use in dev server
-const TEST_ADMIN_ROLES = ['402698003569180674'];
-
-/**
- * List of roles/user IDs allowed to delete tags even if they're not the author.
- */
-export const TAG_DEL_PERMITTED_IDS = DEV_MODE ? TEST_ADMIN_ROLES : ADMIN_ROLES;
-
-/**
- * List of roles/user IDs allowed to create tags.
- */
-export const TAG_CREATE_PERMITTED_IDS = DEV_MODE
-	? TEST_ADMIN_ROLES
-	: ADMIN_ROLES;
+// people
+const ADMIN_ROLES = DEV_MODE
+	? ['402698003569180674']
+	: [
+			// admin
+			'985400380663935088',
+			// core
+			'616187491715907585',
+			// working-group
+			'761977421305610241',
+	  ];
 
 export const BOT_DEVS = [
 	// LorenzoLewis
 	'402698003569180674',
 ];
+
 /**
  * List of roles/user IDs other than the creator allowed to modify threads.
  */
-export const THREAD_ADMIN_IDS = [
-	...BOT_DEVS,
-	...(DEV_MODE ? TEST_ADMIN_ROLES : ADMIN_ROLES),
-];
+export const THREAD_ADMIN_IDS = [...BOT_DEVS, ...ADMIN_ROLES];
 
-// #endregion
-
-// #region channels
+// channels
 export const HELP_CHANNELS = DEV_MODE
 	? ['985680061703290932']
 	: [
-			// #not-valid-yet
-			'985680061703290932',
+			// #troubleshooting
+			'985862540905033748',
 	  ];
 
-export const AUTO_THREAD_CHANNELS = DEV_MODE
-	? [
-			// #not-valid-yet
-			'985680061703290932',
-	  ]
-	: [...HELP_CHANNELS];
-// #endregion
+export const AUTO_THREAD_CHANNELS = [...HELP_CHANNELS];
