@@ -7,7 +7,7 @@
 	"scripts": {
 		"dev": "nodemon --loader tsm .",
 		"format": "prettier --write --plugin-search-dir=. .",
-		"test": "echo 'This obviously isn't implemented yet (sad emoji)'",
+		"test": "echo 'This obviously isn't implemented yet, sad emoji'",
 		"start": "tsm ."
 	},
 	"license": "MIT",
