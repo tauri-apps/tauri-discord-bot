@@ -36,5 +36,7 @@ jobs:
           passphrase: ${{ secrets.SSH_PASSPHRASE }}
           script: |
             echo "Attempting to clone repo..."
-            git clone https://github.com/tauri-apps/tauri-discord-bot.git
+            git clone https://github.com/tauri-apps/tauri-discord-bot.git && cd tauri-discord-bot
             echo "Clone successful!"
+            echo "Attempting to start bot..."
+            yarn && yarn start
