@@ -10,6 +10,9 @@ jobs:
   test:
     runs-on: ubuntu-latest
     environment: test
+    env:
+      NODE_ENV: "development"
     steps:
       - uses: actions/checkout@v2
+      - run: echo "$NODE_ENV"
       - run: yarn && yarn start
