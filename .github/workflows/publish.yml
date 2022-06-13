@@ -12,7 +12,7 @@ jobs:
     environment: test
     env:
       NODE_ENV: "development"
+      DISCORD_TOKEN: ${{ secrets.DISCORD_TOKEN }}
     steps:
       - uses: actions/checkout@v2
-      - run: echo "$DISCORD_TOKEN"
       - run: yarn && yarn start
