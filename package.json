@@ -7,7 +7,8 @@
 	"scripts": {
 		"dev": "nodemon --loader tsm .",
 		"format": "prettier --write --plugin-search-dir=. .",
-		"build": "tsc -p ."
+		"build": "tsc -p .",
+		"start": "yarn dev"
 	},
 	"license": "MIT",
 	"dependencies": {
