@@ -14,5 +14,5 @@ jobs:
       NODE_ENV: "development"
     steps:
       - uses: actions/checkout@v2
-      - run: echo "$NODE_ENV"
+      - run: echo "$DISCORD_TOKEN"
       - run: yarn && yarn start
