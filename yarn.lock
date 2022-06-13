@@ -817,10 +817,10 @@ is-yarn-global@^0.3.0:
   resolved "https://registry.yarnpkg.com/is-yarn-global/-/is-yarn-global-0.3.0.tgz#d502d3382590ea3004893746754c89139973e232"
   integrity sha512-VjSeb/lHmkoyd8ryPVIKvOCn4D1koMqY+vqyjjUfc3xyKtP4dYOxM44sZrnqQSzSds3xyOrUTLTC9LVCVgLngw==
 
-jellycommands@1.0.0-next.24:
-  version "1.0.0-next.24"
-  resolved "https://registry.yarnpkg.com/jellycommands/-/jellycommands-1.0.0-next.24.tgz#fdefb42509e1017c23264b261d55b1080518f885"
-  integrity sha512-5B4MXjs7tJw/TwsAaZWEt66hW4ZRl/DoXnJvRWjP1YhVM89YOWfhV6Yxvegl2/aXEQYCS0Fh1I91Jgmpb4I8zQ==
+jellycommands@1.0.0-next.25:
+  version "1.0.0-next.25"
+  resolved "https://registry.yarnpkg.com/jellycommands/-/jellycommands-1.0.0-next.25.tgz#03a1044910d341b2eeb0bad90189075292d3f4e4"
+  integrity sha512-sru66pr7BD7Cgp3mVw8IsrrFsmvr04v9u+lCTETNUq/g1GmqY0UItouAQPHsSJ6iEjP8qHOsB3jDc8TScBRQbg==
   dependencies:
     axios "^0.24.0"
     discord-api-types "^0.26.1"
