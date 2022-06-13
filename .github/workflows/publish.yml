@@ -11,6 +11,17 @@ jobs:
     runs-on: ubuntu-latest
     environment: test
     env:
+      NODE_ENV: "test"
+      DISCORD_TOKEN: ${{ secrets.DISCORD_TOKEN }}
+    steps:
+      - uses: actions/checkout@v2
+      - run: yarn && yarn test
+      
+  deploy:
+    needs: test
+    runs-on: ubuntu-latest
+    environment: production
+    env:
       NODE_ENV: "development"
       DISCORD_TOKEN: ${{ secrets.DISCORD_TOKEN }}
     steps:
