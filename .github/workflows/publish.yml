@@ -35,4 +35,6 @@ jobs:
           key: ${{ secrets.SSH_KEY }}
           passphrase: ${{ secrets.SSH_PASSPHRASE }}
           script: |
-            echo whoami      
+            echo "Attempting to clone repo..."
+            git clone https://github.com/tauri-apps/tauri-discord-bot.git
+            echo "Clone successful!"
