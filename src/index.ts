@@ -2,6 +2,7 @@ import 'dotenv/config';
 import { DEV_MODE, TEST_GUILD_ID } from './config';
 import { JellyCommands } from 'jellycommands';
 import { Intents } from 'discord.js';
+import healthcheck from './healthcheck';
 
 const client = new JellyCommands({
 	commands: 'src/commands',
@@ -27,3 +28,5 @@ const client = new JellyCommands({
 
 // Auto reads the DISCORD_TOKEN environment variable
 client.login();
+
+healthcheck
