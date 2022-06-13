@@ -4,7 +4,6 @@
 		"module": "ES2020",
 		"outDir": "./dist",
 		"moduleResolution": "Node",
-
 		"strict": true,
 		"declaration": false,
 		"strictNullChecks": true,

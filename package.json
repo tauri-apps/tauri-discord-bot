@@ -2,13 +2,11 @@
 	"name": "tauri-discord-bot",
 	"private": true,
 	"version": "0.0.0",
-	"main": "src/index.ts",
 	"type": "module",
 	"scripts": {
 		"dev": "nodemon --loader tsm .",
 		"format": "prettier --write --plugin-search-dir=. .",
-		"build": "echo 'built!'",
-		"run": "tsm ."
+		"build": "tsc -p ."
 	},
 	"license": "MIT",
 	"dependencies": {
