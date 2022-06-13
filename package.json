@@ -3,6 +3,7 @@
 	"private": true,
 	"version": "0.0.0",
 	"type": "module",
+	"main": "dist/index.js",
 	"scripts": {
 		"dev": "nodemon --loader tsm .",
 		"format": "prettier --write --plugin-search-dir=. .",
