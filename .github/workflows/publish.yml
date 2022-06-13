@@ -2,6 +2,7 @@ name: publish
 
 on:
   push:
+  pull_request:
     branches:
       - main
   workflow_dispatch:
@@ -19,6 +20,8 @@ jobs:
       
   deploy:
     needs: test
+    # Only runs on if it's a push event on main
+    if: github.event_name == 'push' && github.refs == 'refs/heads/main'
     runs-on: ubuntu-latest
     steps:
       - run: echo "Hi"
