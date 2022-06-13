@@ -7,6 +7,7 @@
 	"scripts": {
 		"dev": "nodemon --loader tsm .",
 		"format": "prettier --write --plugin-search-dir=. .",
+		"test": "echo 'tested!'",
 		"start": "tsm ."
 	},
 	"license": "MIT",
