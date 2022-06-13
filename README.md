@@ -29,13 +29,13 @@ All contributions are welcome, please try and make an issue first since most new
 
 ### Running for development
 
-1. Once you have the bot cloned and have run `pnpm install` then you need to make a .env file and fill out the fields:
+1. Once you have the bot cloned then you need to make a .env file and fill out the fields:
 
     ```sh
     cp .env.example .env
     ```
 
-2. Run the bot with `pnpm dev`
+2. Run the bot with `yarn dev`
 
 ### Code Conventions
 
@@ -46,6 +46,5 @@ Since there is no user facing code, prefer `snake_case` for variables and functi
 The bot uses the [tsm](https://github.com/lukeed/tsm) module loader to transpile its Typescript code on the fly so there's no build step involved.
 
 ```sh
-pnpm install
-pnpm start
+yarn start
 ```
