@@ -1,1 +1,1 @@
-# tauri-search-bot
+# tauri-discord-bot
