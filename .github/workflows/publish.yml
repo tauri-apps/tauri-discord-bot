@@ -9,7 +9,5 @@ jobs:
   publish:
     runs-on: ubuntu-latest
     steps:
-      - name: checkout
-        uses: actions/checkout@v2
-      - name: install dependencies
-        run: yarn dev
+      - uses: actions/checkout@v2
+      - run: yarn
