@@ -1,6 +1,6 @@
 export const DEV_MODE = process.env.NODE_ENV !== 'production';
 
-export const TEST_GUILD_ID = process.env.TEST_GUILD_ID ?? '985638857200517142';
+export const TEST_GUILD_ID = DEV_MODE ? '985638857200517142' : '616186924390023171';
 
 export const DISCORD_TOKEN = process.env.DISCORD_TOKEN;
 
