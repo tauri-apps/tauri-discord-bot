@@ -1,5 +1,5 @@
 {
-	"name": "svelte-bot",
+	"name": "tauri-discord-bot",
 	"private": true,
 	"version": "0.0.0",
 	"main": "src/index.ts",
