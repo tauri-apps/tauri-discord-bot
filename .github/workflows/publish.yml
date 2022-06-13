@@ -14,14 +14,24 @@ jobs:
     env:
       NODE_ENV: "test"
       DISCORD_TOKEN: ${{ secrets.DISCORD_TOKEN }}
+      
     steps:
       - uses: actions/checkout@v2
+      
       - run: yarn && yarn test
       
   deploy:
     needs: test
     # Only runs on if it's a push event on main
     if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
+    environment: deploy
     runs-on: ubuntu-latest
+    
     steps:
-      - run: echo "Hi"
+      - uses: actions/checkout@v2
+      
+      - uses: digitalocean/action-doctl@v2
+        with:
+          token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
+
+      
