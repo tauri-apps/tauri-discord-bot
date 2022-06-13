@@ -1,5 +1,5 @@
 import 'dotenv/config';
-import { DEV_MODE, TEST_GUILD_ID } from './config.js';
+import { DEV_MODE, TEST_GUILD_ID } from './config';
 import { JellyCommands } from 'jellycommands';
 import { Intents } from 'discord.js';
 

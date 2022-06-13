@@ -6,10 +6,10 @@ import {
 	Snowflake,
 	ThreadChannel,
 } from 'discord.js';
-import { DEV_MODE, THREAD_ADMIN_IDS } from '../config.js';
-import { build_embed } from './embed_helpers.js';
-import { no_op, undefined_on_error } from './promise.js';
-import { has_any_role_or_id } from './snowflake.js';
+import { DEV_MODE, THREAD_ADMIN_IDS } from '../config';
+import { build_embed } from './embed_helpers';
+import { no_op, undefined_on_error } from './promise';
+import { has_any_role_or_id } from './snowflake';
 
 export const add_thread_prefix = (name: string, solved: boolean) => {
 	const prefix = `${solved ? '✅' : '❔'} - `;

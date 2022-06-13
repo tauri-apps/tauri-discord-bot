@@ -1,11 +1,5 @@
-import {
-	GuildMember,
-	InteractionReplyOptions,
-	MessageEmbed,
-	MessageEmbedOptions,
-	MessageOptions,
-} from 'discord.js';
-import { TAURI_BLUE } from '../config.js';
+import { GuildMember, MessageEmbed, MessageEmbedOptions } from 'discord.js';
+import { TAURI_BLUE } from '../config';
 
 export const build_embed = (options: MessageEmbedOptions) =>
 	new MessageEmbed({ color: TAURI_BLUE, ...options });

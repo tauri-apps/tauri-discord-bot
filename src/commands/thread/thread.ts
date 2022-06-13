@@ -1,8 +1,8 @@
 import { command } from 'jellycommands';
-import { HELP_CHANNELS } from '../../config.js';
-import { wrap_in_embed } from '../../utils/embed_helpers.js';
-import { RateLimitStore } from '../../utils/ratelimit.js';
-import { get_member } from '../../utils/snowflake.js';
+import { HELP_CHANNELS } from '../../config';
+import { wrap_in_embed } from '../../utils/embed_helpers';
+import { RateLimitStore } from '../../utils/ratelimit';
+import { get_member } from '../../utils/snowflake';
 import {
 	add_thread_prefix,
 	check_autothread_permissions,
@@ -66,7 +66,6 @@ export default command({
 		ephemeral: true,
 	},
 
-	// @ts-expect-error
 	run: async ({ interaction }) => {
 		const subcommand = interaction.options.getSubcommand(true);
 		const thread = await interaction.channel?.fetch();
