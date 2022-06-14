@@ -12,10 +12,10 @@ import { no_op, undefined_on_error } from './promise';
 import { has_any_role_or_id } from './snowflake';
 
 export const add_thread_prefix = (name: string, solved: boolean) => {
-	const prefix = `${solved ? '☑️' : '❔'} `;
+	const prefix = `${solved ? '✅' : '❔'} `;
 
-	return `${prefix}${name.replace(/^[☑️❔] /, '')}`;
-	
+	return `${prefix}${name.replace(/^[✅❔] /, '')}`;
+
 };
 
 export async function rename_thread(
@@ -23,7 +23,7 @@ export async function rename_thread(
 	new_name: string,
 	use_prefix: boolean = true,
 ) {
-	const prefixed = add_thread_prefix(new_name, thread.name.startsWith('☑️'));
+	const prefixed = add_thread_prefix(new_name, thread.name.startsWith('✅'));
 	await thread.setName((use_prefix ? prefixed : new_name).slice(0, 100));
 }
 
