@@ -4,26 +4,29 @@ This bot is based off of the amazing [Svelte Bot](https://github.com/pngwn/svelt
 
 ## Configuration
 
- - Environment:
-    - `NODE_ENV`: Any value other than `production` will set the bot use the dev IDs defined below
-    - `DISCORD_TOKEN`: The bot's private token from Discord
-    - `DEV_GUILD_ID`: Guide/server to test the bot in
-    - `DEV_ADMIN_ROLE`: A role or user ID that the bot will consider an administrator
-    - `DEV_HELP_CHANNEL`: Channel(s) to automatically thread any messages in (see the Threads functionality below)
- - `src/config.ts`:
-    - `ADMIN_ROLES`: Role or user IDs that the bot will consider administrators
-    - `BOT_DEVS`: Currently the same functionality as `ADMIN_ROLES`
-    - `HELP_CHANNELS`: Channel(s) to automatically thread any messages in (see the Threads functionality below)
-    - `AUTO_THREAD_CHANNELS`: Currently the same values as `HELP_CHANNELS`
+-   Environment: All secrets should be in a `.env` file. The template/example can be found at [env.example](./.env.example)
+    -   `NODE_ENV`: Any value other than `production` will set the bot use the dev IDs defined below
+    -   `DISCORD_TOKEN`: The bot's private token from Discord
+    -   `DEV_GUILD_ID`: Guide/server to test the bot in
+    -   `DEV_ADMIN_ROLE`: A role or user ID that the bot will consider an administrator
+    -   `DEV_HELP_CHANNEL`: Channel(s) to automatically thread any messages in (see the Threads functionality below)
+-   `src/config.ts`: The bots main config is located at [src/config.ts](src/config.ts)
+    -   `ADMIN_ROLES`: Role or user IDs that the bot will consider administrators
+    -   `BOT_DEVS`: Currently the same functionality as `ADMIN_ROLES`
+    -   `HELP_CHANNELS`: Channel(s) to automatically thread any messages in (see the "Threads" functionality below)
+    -   `AUTO_THREAD_CHANNELS`: Currently the same values as `HELP_CHANNELS`
+
+## Events
+
+-   `on_message_auto_thread`: Monitors the channels set in `AUTO_THREAD_CHANNELS` and automatically turns any messages posted there into their own threads
 
 ## Commands
 
--   Threads: These are commands to manage the autothreads created by the bot. They can be used by the person who initiated the thread or by people/roles defined in the  role.
-
-    -   `/thread rename`
-    -   `/thread solve` Renames the thread to have a green checkmark at the start and sets the archive duration to 1hr.
-    -   `/thread archive` Archive an active thread without marking it as solved.
-    -   `/thread reopen` Reopen a thread that's been accidentally marked as solved.
+-   `thread`: These are commands to manage the autothreads created by the bot. They can be used by the person who initiated the thread or by people/roles defined in the role.
+    -   `/thread rename`: Renames the current thread
+    -   `/thread solve`: Removes ? and adds ✅ at the beginning of the thread name and sets the archive duration to 1hr
+    -   `/thread archive`: Archive an active thread without marking it as solved
+    -   `/thread reopen`: Reopen a thread that's been accidentally marked as solved
 
 ## Stack
 
@@ -31,13 +34,6 @@ Click on the links below to view the documentation on the different parts of the
 
 -   [TypeScript](https://www.typescriptlang.org/docs/)
 -   [JellyCommands](https://github.com/ghostdevv/jellycommands)
--   [SupaBase](https://supabase.com/docs)
-
-## Config
-
--   The bots main config is located at [src/config.ts](src/config.ts).
-
--   All secrets should be in a `.env` file, the template/example can be found [here](./.env.example).
 
 ## Contributing
 
