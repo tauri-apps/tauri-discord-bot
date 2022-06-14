@@ -1,8 +1,24 @@
 # tauri-discord-bot
 
+This bot is based off of the amazing [Svelte Bot](https://github.com/pngwn/svelte-bot/). It's hosted on a DigitalOcean App instance that will automatically detect any updates to the `main` branch and deploy those changes.
+
+## Configuration
+
+ - Environment:
+    - `NODE_ENV`: Any value other than `production` will set the bot use the dev IDs defined below
+    - `DISCORD_TOKEN`: The bot's private token from Discord
+    - `DEV_GUILD_ID`: Guide/server to test the bot in
+    - `DEV_ADMIN_ROLE`: A role or user ID that the bot will consider an administrator
+    - `DEV_HELP_CHANNEL`: Channel(s) to automatically thread any messages in (see the Threads functionality below)
+ - `src/config.ts`:
+    - `ADMIN_ROLES`: Role or user IDs that the bot will consider administrators
+    - `BOT_DEVS`: Currently the same functionality as `ADMIN_ROLES`
+    - `HELP_CHANNELS`: Channel(s) to automatically thread any messages in (see the Threads functionality below)
+    - `AUTO_THREAD_CHANNELS`: Currently the same values as `HELP_CHANNELS`
+
 ## Commands
 
--   Threads: These are commands to manage the autothreads created by the bot. They can be used by the person who initiated the thread or by people with the threadlord role.
+-   Threads: These are commands to manage the autothreads created by the bot. They can be used by the person who initiated the thread or by people/roles defined in the  role.
 
     -   `/thread rename`
     -   `/thread solve` Renames the thread to have a green checkmark at the start and sets the archive duration to 1hr.
