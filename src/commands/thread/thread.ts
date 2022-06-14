@@ -119,7 +119,7 @@ export default command({
 
 			case 'solve': {
 				try {
-					if (thread.name.startsWith('✅'))
+					if (thread.name.startsWith('☑️'))
 						throw new Error('Thread already marked as solved');
 
 					if (!HELP_CHANNELS.includes(thread.parentId || ''))
@@ -144,7 +144,7 @@ export default command({
 
 			case 'reopen':
 				try {
-					if (!thread.name.startsWith('✅'))
+					if (!thread.name.startsWith('☑️'))
 						throw new Error("Thread's not marked as solved");
 
 					if (!HELP_CHANNELS.includes(thread.parentId || ''))
