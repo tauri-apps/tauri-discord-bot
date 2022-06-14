@@ -6,7 +6,6 @@ import { get_member } from '../../utils/snowflake';
 import {
 	add_thread_prefix,
 	check_autothread_permissions,
-	get_ending_message,
 	rename_thread,
 	solve_thread,
 } from '../../utils/threads.js';
