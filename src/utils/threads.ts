@@ -12,9 +12,9 @@ import { no_op, undefined_on_error } from './promise';
 import { has_any_role_or_id } from './snowflake';
 
 export const add_thread_prefix = (name: string, solved: boolean) => {
-	const prefix = `${solved ? '✅' : '❔'} - `;
+	const prefix = `${solved ? '✅' : '❔'} `;
 
-	return `${prefix}${name.replace(/^[✅❔] - /, '')}`;
+	return `${prefix}${name.replace(/^[✅❔] /, '')}`;
 };
 
 export async function rename_thread(
