@@ -33,8 +33,8 @@ export const THREAD_ADMIN_IDS = [...ADMIN_ROLES, ...BOT_DEVS];
 export const HELP_CHANNELS = DEV_MODE
 	? [process.env.DEV_HELP_CHANNEL]
 	: [
-		// #troubleshooting
-		'985862540905033748',
+		// #help-triage
+		'625037620996734986',
 	  ];
 
 // channels that will be automatically threaded when a message is created
