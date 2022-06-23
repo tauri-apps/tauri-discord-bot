@@ -28,7 +28,7 @@
 		"@types/node": "16.11.40",
 		"nodemon": "2.0.16",
 		"prettier": "2.7.0",
-		"typescript": "4.7.3"
+		"typescript": "4.7.4"
 	},
 	"nodemonConfig": {
 		"watch": [
