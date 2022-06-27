@@ -1,32 +1,25 @@
-import 'dotenv/config';
-import { DEV_MODE, TEST_GUILD_ID } from './config';
-import { JellyCommands } from 'jellycommands';
-import { Intents } from 'discord.js';
-import healthcheck from './healthcheck';
+import { DISCORD_TOKEN } from './config';
+import { Client, Intents } from 'discord.js';
+import './health-check';
+import Commands from './setup-commands';
+import Events from './setup-events';
 
-const client = new JellyCommands({
-	commands: 'src/commands',
-	events: 'src/events',
-
-	clientOptions: {
-		intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES],
-	},
-
-	dev: {
-		global: DEV_MODE,
-
-		// If we set dev to true in a command it disabled global and adds it to the guilds bellow
-		guilds: [TEST_GUILD_ID],
-	},
-
-	// we can disable this but I like to see the debug messages xD - GHOST
-	debug: true,
-
-	// This should hopefully fix the issues in production
-	cache: DEV_MODE,
+const client = new Client({
+	intents: [
+		Intents.FLAGS.GUILDS,
+		Intents.FLAGS.GUILD_MESSAGES,
+		Intents.FLAGS.GUILD_MESSAGE_REACTIONS,
+	],
 });
 
-// Auto reads the DISCORD_TOKEN environment variable
-client.login();
+const commands = new Commands();
+const events = new Events();
 
-healthcheck
+await commands.build(client);
+await events.build(client);
+
+client.once('ready', () => {
+	console.log('Bot ready!');
+});
+
+client.login(DISCORD_TOKEN);

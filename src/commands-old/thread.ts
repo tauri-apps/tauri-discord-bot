@@ -1,15 +1,15 @@
 import { command } from 'jellycommands';
-import { HELP_CHANNELS } from '../../config';
-import { wrap_in_embed } from '../../utils/embed_helpers';
-import { RateLimitStore } from '../../utils/ratelimit';
-import { get_member } from '../../utils/snowflake';
+import { HELP_CHANNELS } from '../config';
+import { wrap_in_embed } from '../utils/embed_helpers';
+import { RateLimitStore } from '../utils/ratelimit';
+import { get_member } from '../utils/snowflake';
 import {
 	add_thread_prefix,
 	check_autothread_permissions,
 	rename_thread,
 	solve_thread,
-} from '../../utils/threads.js';
-import { no_op } from '../../utils/promise.js';
+} from '../utils/threads.js';
+import { no_op } from '../utils/promise.js';
 
 /**
  * Discord allows 2 renames every 10 minutes. We need one always available
