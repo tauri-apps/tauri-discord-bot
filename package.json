@@ -15,7 +15,7 @@
 		"dotenv": "16.0.1",
 		"express": "4.18.1",
 		"flexsearch": "0.7.21",
-		"jellycommands": "1.0.0-next.25",
+		"jellycommands": "1.0.0-next.27",
 		"node-fetch": "3.2.6",
 		"ts-node": "10.8.1",
 		"tsm": "2.2.1",
