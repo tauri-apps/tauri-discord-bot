@@ -1,6 +1,6 @@
 import { Message, MessageOptions, ThreadChannel } from 'discord.js';
 import { event } from 'jellycommands';
-import url_regex from 'url-regex';
+import url_regex from 'url-regex-safe';
 import { AUTO_THREAD_CHANNELS, HELP_CHANNELS } from '../config';
 import { wrap_in_embed } from '../utils/embed_helpers';
 import { add_thread_prefix } from '../utils/threads';
