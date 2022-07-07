@@ -1,5 +1,5 @@
 import { command } from 'jellycommands';
-import { HELP_CHANNELS } from '../../config';
+import { AUTO_THREAD_CHANNELS } from '../../config';
 import { wrap_in_embed } from '../../utils/embed_helpers';
 import { RateLimitStore } from '../../utils/ratelimit';
 import { get_member } from '../../utils/snowflake';
@@ -107,7 +107,7 @@ export default command({
 					await rename_thread(
 						thread,
 						new_name,
-						HELP_CHANNELS.includes(parent_id),
+						AUTO_THREAD_CHANNELS.includes(parent_id),
 					);
 
 					await interaction.followUp('Thread renamed');
@@ -122,7 +122,7 @@ export default command({
 					if (thread.name.startsWith('✅'))
 						throw new Error('Thread already marked as solved');
 
-					if (!HELP_CHANNELS.includes(thread.parentId || ''))
+					if (!AUTO_THREAD_CHANNELS.includes(thread.parentId || ''))
 						throw new Error(
 							'This command only works in a auto thread',
 						);
@@ -147,7 +147,7 @@ export default command({
 					if (!thread.name.startsWith('✅'))
 						throw new Error("Thread's not marked as solved");
 
-					if (!HELP_CHANNELS.includes(thread.parentId || ''))
+					if (!AUTO_THREAD_CHANNELS.includes(thread.parentId || ''))
 						throw new Error(
 							'This command only works in a auto thread',
 						);
