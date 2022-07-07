@@ -178,9 +178,9 @@
     "@types/mime" "^1"
     "@types/node" "*"
 
-"@types/url-regex-safe@^1.0.0":
+"@types/url-regex-safe@1.0.0":
   version "1.0.0"
-  resolved "https://registry.npmjs.org/@types/url-regex-safe/-/url-regex-safe-1.0.0.tgz"
+  resolved "https://registry.yarnpkg.com/@types/url-regex-safe/-/url-regex-safe-1.0.0.tgz#78d0742fbc0438ab5805ae12ddb7ed0cf5daf493"
   integrity sha512-4ktZEdl4U+ETSm8asxGDLsveKH2vl+9+d8NWYuvmI2YfCtpkNG+XffjoD9vtduPdHWJEr+VFet6r3F57Y9oTww==
 
 "@types/ws@^8.5.3":
