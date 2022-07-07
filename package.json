@@ -13,7 +13,7 @@
 		"discord.js": "13.8.1",
 		"dotenv": "16.0.1",
 		"express": "4.18.1",
-		"jellycommands": "1.0.0-next.27",
+		"jellycommands": "1.0.0-next.28",
 		"ts-node": "10.8.2",
 		"tsm": "2.2.1",
 		"unfurl.js": "5.7.0",
