@@ -37,7 +37,10 @@ export const AUTO_THREAD_CHANNELS = DEV_MODE
 	  ];
 
 export const REACTION_ROLE: { [key: string]: string } = DEV_MODE
-	? { '✅': process.env.DEV_REACTION_ROLE } // ✅
+	? {
+			'✅': process.env.DEV_REACTION_ROLE,
+			'🍕': process.env.DEV_REACTION_ROLE,
+	  }
 	: { '994706644850184322': '986176820187631616' };
 
 export const REACTION_ROLE_CHANNEL = DEV_MODE
