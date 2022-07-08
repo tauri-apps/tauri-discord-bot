@@ -77,6 +77,17 @@ export async function sendReactionRoleMessage(client: Client) {
 			message = await channel.send(messageBody);
 		}
 
+		// Get the reaction
+		const reaction = message.reactions.resolve('✅')
+		// Get all users that reacted minus the bot
+		const reactedUsers = (await reaction.users.fetch()).filter(user => user.id !== message.author.id)
+
+		// Loop all users and add the role
+		reactedUsers.forEach(async (user) => {
+			const result = await hasPermission(reaction, user);
+			result.member.roles.add(result.roleId);
+		})
+
 		var roleDescription = '';
 
 		REACTION_ROLE.forEach((reaction) => {
