@@ -78,7 +78,7 @@ export async function sendReactionRoleMessage(client: Client) {
 		}
 
 		// Get the reaction
-		const reaction = message.reactions.resolve('✅')
+		const reaction = message.reactions.resolve(REACTION_ROLE[0].reactionId)
 		// Get all users that reacted minus the bot
 		const reactedUsers = (await reaction.users.fetch()).filter(user => user.id !== message.author.id)
 
@@ -86,6 +86,16 @@ export async function sendReactionRoleMessage(client: Client) {
 		reactedUsers.forEach(async (user) => {
 			const result = await hasPermission(reaction, user);
 			result.member.roles.add(result.roleId);
+		})
+
+		// Loop all users in the guild to find people who didn't react to the message
+		const guild = await message.client.guilds.fetch(reaction.message.guildId)
+
+		// Get a list of all members, minus the ones that we just added the role to
+		const allMembersWithoutReaction = (await guild.members.fetch()).filter(gm => reactedUsers.map(x=>x).indexOf(gm.user) === -1 && gm.user.id !== message.author.id)
+		allMembersWithoutReaction.forEach(member => {
+			// Remove the role
+			member.roles.remove(REACTION_ROLE[0].roleId)
 		})
 
 		var roleDescription = '';
