@@ -45,12 +45,7 @@ export const REACTION_ROLE: {
 			{
 				reactionId: '✅',
 				roleId: process.env.DEV_REACTION_ROLE,
-				description: 'You did a good job',
-			},
-			{
-				reactionId: '🍕',
-				roleId: process.env.DEV_REACTION_ROLE,
-				description: 'Get a free pizza',
+				description: 'You did a good job, take a free role!',
 			},
 	  ]
 	: [
