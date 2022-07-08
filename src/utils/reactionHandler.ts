@@ -17,7 +17,7 @@ export async function hasPermission(
 	try {
 		// Check if bot
 		if (user.bot) {
-			return Promise.reject('Was a bot');
+			return Promise.reject('Bot performed the action');
 		}
 
 		// Check if in a guild

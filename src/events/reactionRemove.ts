@@ -11,22 +11,7 @@ export default event({
 
 			result.member.roles.remove(result.roleId);
 		} catch (error) {
-			console.error(`Issue in reaction: ${error}`);
+			console.error(`Issue in reactionRemove: ${error}`);
 		}
 	},
 });
-
-export async function sendMessage(client: Client) {
-	try {
-		const channel = client.channels.cache.get(
-			REACTION_ROLE_CHANNEL,
-		) as GuildTextBasedChannel;
-
-		const message = await channel.send('Choose your reaction to continue');
-		for (const [key, value] of Object.entries(REACTION_ROLE)) {
-			message.react(key);
-		}
-	} catch (error) {
-		console.error(`Issue starting up reaction: ${error}`);
-	}
-}
