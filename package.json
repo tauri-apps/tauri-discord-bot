@@ -5,7 +5,7 @@
 	"main": "src/index.ts",
 	"type": "module",
 	"scripts": {
-		"dev": "nodemon --loader tsm .",
+		"dev": "nodemon --ext ts,js,mjs,json --legacy-watch --loader tsm .",
 		"start": "tsm ."
 	},
 	"license": "MIT",
