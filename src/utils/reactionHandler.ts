@@ -8,6 +8,7 @@ import {
 	User,
 } from 'discord.js';
 import { REACTION_ROLE, REACTION_ROLE_CHANNEL } from '../config';
+import { wrap_in_embed } from './embed_helpers';
 
 export async function hasPermission(
 	reaction: MessageReaction | PartialMessageReaction,
@@ -63,21 +64,26 @@ export async function sendStartupMessage(client: Client) {
 
 		var message = await (await channel.messages.fetch({ limit: 1 })).last();
 
-		var messageBody = 'Welcome to the server!\n';
+		var messageBody =
+			'Welcome to the server!\nReact below to claim the role you want\n';
 
-		if (message.author.id != message.client.user.id) {
+		if (message && message.author.id == message.client.user.id) {
 			// Make a new message
+			await message.edit(messageBody);
+		} else {
 			message = await channel.send(messageBody);
 		}
 
+		var roleDescription = '';
+
 		REACTION_ROLE.forEach((reaction) => {
 			message.react(reaction.reactionId);
-			messageBody = messageBody.concat(
+			roleDescription = roleDescription.concat(
 				`\n${reaction.reactionId} ${reaction.description}`,
 			);
 		});
 
-		message.edit(messageBody);
+		message.edit(wrap_in_embed(roleDescription));
 	} catch (error) {
 		console.error(`Issue starting up reaction: ${error}`);
 	}
