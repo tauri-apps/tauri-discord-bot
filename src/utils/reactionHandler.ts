@@ -56,19 +56,22 @@ export async function hasPermission(
 	}
 }
 
-export async function sendStartupMessage(client: Client) {
+export async function sendReactionRoleMessage(client: Client) {
 	try {
 		const channel = client.channels.cache.get(
 			REACTION_ROLE_CHANNEL,
 		) as GuildTextBasedChannel;
 
-		var message = await (await channel.messages.fetch({ limit: 1 })).last();
-
 		var messageBody =
-			'Welcome to the server!\nReact below to claim the role you want\n';
+			'Welcome to the server!\nReact below to claim the role you want';
+
+		const messages = await channel.messages.fetch({ limit: 10 });
+
+		var message = messages
+			.filter((item) => item.content === messageBody)
+			.last();
 
 		if (message && message.author.id == message.client.user.id) {
-			// Make a new message
 			await message.edit(messageBody);
 		} else {
 			message = await channel.send(messageBody);
