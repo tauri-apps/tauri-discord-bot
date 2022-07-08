@@ -1,10 +1,10 @@
 import { event } from 'jellycommands';
-import { sendMessage } from './reaction';
+import { sendStartupMessage } from '../utils/reactionHandler';
 
 export default event({
 	name: 'ready',
 	run: (_, client) => {
-		sendMessage(client);
+		sendStartupMessage(client);
 
 		console.log(client.user.tag, 'is online!');
 	},

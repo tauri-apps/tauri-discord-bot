@@ -36,12 +36,31 @@ export const AUTO_THREAD_CHANNELS = DEV_MODE
 			'625037620996734986',
 	  ];
 
-export const REACTION_ROLE: { [key: string]: string } = DEV_MODE
-	? {
-			'✅': process.env.DEV_REACTION_ROLE,
-			'🍕': process.env.DEV_REACTION_ROLE,
-	  }
-	: { '994706644850184322': '986176820187631616' };
+export const REACTION_ROLE: {
+	reactionId: string;
+	roleId: string;
+	description: string;
+}[] = DEV_MODE
+	? [
+			{
+				reactionId: '✅',
+				roleId: process.env.DEV_REACTION_ROLE,
+				description: 'You did a good job',
+			},
+			{
+				reactionId: '🍕',
+				roleId: process.env.DEV_REACTION_ROLE,
+				description: 'Get a free pizza',
+			},
+	  ]
+	: [
+			{
+				reactionId: '994706644850184322',
+				roleId: '986176820187631616',
+				description:
+					'Participate in the channels for Tauri contributors',
+			},
+	  ];
 
 export const REACTION_ROLE_CHANNEL = DEV_MODE
 	? process.env.DEV_REACTION_ROLE_CHANNEL
