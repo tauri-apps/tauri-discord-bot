@@ -62,12 +62,12 @@ export async function sendReactionRoleMessage(client: Client) {
 			REACTION_ROLE_CHANNEL,
 		) as GuildTextBasedChannel;
 
-		var messageBody =
+		const messageBody =
 			'Welcome to the server!\nReact below to claim the role you want';
 
 		const messages = await channel.messages.fetch({ limit: 10 });
 
-		var message = messages
+		let message = messages
 			.filter((item) => item.content === messageBody)
 			.last();
 
@@ -105,7 +105,7 @@ export async function sendReactionRoleMessage(client: Client) {
 			})
 		})
 
-		var roleDescription = '';
+		let roleDescription = '';
 
 		REACTION_ROLE.forEach((reaction) => {
 			message.react(reaction.reactionId);
