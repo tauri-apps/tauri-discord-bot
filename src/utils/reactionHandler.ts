@@ -86,8 +86,12 @@ export async function sendReactionRoleMessage(client: Client) {
 
 			// Loop all users and add the role
 			reactedUsers.forEach(async (user) => {
-				const result = await hasPermission(reaction, user);
-				result.member.roles.add(result.roleId);
+				try {
+					const result = await hasPermission(reaction, user);
+					result.member.roles.add(result.roleId);
+				} catch(error) {
+					console.error(`Issue adding role: ${error}`)
+				}
 			})
 
 			// Loop all users in the guild to find people who didn't react to the message
