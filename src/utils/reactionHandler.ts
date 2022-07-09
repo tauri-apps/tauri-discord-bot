@@ -77,25 +77,28 @@ export async function sendReactionRoleMessage(client: Client) {
 			message = await channel.send(messageBody);
 		}
 
-		// Get the reaction
-		const reaction = message.reactions.resolve(REACTION_ROLE[0].reactionId)
-		// Get all users that reacted minus the bot
-		const reactedUsers = (await reaction.users.fetch()).filter(user => user.id !== message.author.id)
+		// Loop all available reaction roles
+		REACTION_ROLE.forEach(async role => {
+			// Get the reaction
+			const reaction = message.reactions.resolve(role.reactionId)
+			// Get all users that reacted minus the bot
+			const reactedUsers = (await reaction.users.fetch()).filter(user => user.id !== message.author.id)
 
-		// Loop all users and add the role
-		reactedUsers.forEach(async (user) => {
-			const result = await hasPermission(reaction, user);
-			result.member.roles.add(result.roleId);
-		})
+			// Loop all users and add the role
+			reactedUsers.forEach(async (user) => {
+				const result = await hasPermission(reaction, user);
+				result.member.roles.add(result.roleId);
+			})
 
-		// Loop all users in the guild to find people who didn't react to the message
-		const guild = await message.client.guilds.fetch(reaction.message.guildId)
+			// Loop all users in the guild to find people who didn't react to the message
+			const guild = await message.client.guilds.fetch(reaction.message.guildId)
 
-		// Get a list of all members, minus the ones that we just added the role to
-		const allMembersWithoutReaction = (await guild.members.fetch()).filter(gm => reactedUsers.map(x=>x).indexOf(gm.user) === -1 && gm.user.id !== message.author.id)
-		allMembersWithoutReaction.forEach(member => {
-			// Remove the role
-			member.roles.remove(REACTION_ROLE[0].roleId)
+			// Get a list of all members, minus the ones that we just added the role to
+			const allMembersWithoutReaction = (await guild.members.fetch()).filter(gm => reactedUsers.map(x => x).indexOf(gm.user) === -1 && gm.user.id !== message.author.id)
+			allMembersWithoutReaction.forEach(member => {
+				// Remove the role
+				member.roles.remove(role.roleId)
+			})
 		})
 
 		var roleDescription = '';
