@@ -37,26 +37,30 @@ export const AUTO_THREAD_CHANNELS = DEV_MODE
 	  ];
 
 export const REACTION_ROLE: {
-	reactionId: string;
+	emojiName: string;
+	emojiId: string;
 	roleId: string;
 	description: string;
 }[] = DEV_MODE
 	? [
 			{
-				reactionId: '✅',
+				emojiName: 'sausageroll',
+				emojiId: '995712110925451324',
 				roleId: process.env.DEV_REACTION_ROLE,
-				description: 'You did a good job, take a free role!',
+				description:
+					'Join the conversation in the contributors channels (you can still view without this role)',
 			},
 	  ]
 	: [
 			{
-				reactionId: '994706644850184322',
+				emojiName: 'tauri',
+				emojiId: '876938722266972210',
 				roleId: '986176820187631616',
 				description:
-					'Participate in the channels for Tauri contributors',
+					'Join the conversation in the contributors channels (you can still view without this role)',
 			},
 	  ];
 
 export const REACTION_ROLE_CHANNEL = DEV_MODE
 	? process.env.DEV_REACTION_ROLE_CHANNEL
-	: '';
+	: '616210923354456064';

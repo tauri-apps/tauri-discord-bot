@@ -33,8 +33,8 @@ export async function hasPermission(
 		// Check if a monitored reaction
 		const role = REACTION_ROLE.filter(
 			(value) =>
-				value.reactionId == reaction.emoji.id ||
-				value.reactionId == reaction.emoji.name,
+				value.emojiId == reaction.emoji.id ||
+				value.emojiId == reaction.emoji.name,
 		)[0];
 
 		if (!role) {
@@ -62,8 +62,30 @@ export async function sendReactionRoleMessage(client: Client) {
 			REACTION_ROLE_CHANNEL,
 		) as GuildTextBasedChannel;
 
-		const messageBody =
-			'Welcome to the server!\nReact below to claim the role you want';
+		var messageArray = ['Welcome to the Tauri community!'];
+		messageArray.push(
+			'\nTauri is a toolkit to build an optimized, secure, and frontend-independent application for multi-platform deployment.',
+		);
+		messageArray.push(
+			'\nFamiliarize yourself with our Code of Conduct: https://github.com/tauri-apps/tauri/blob/dev/.github/CODE_OF_CONDUCT.md',
+		);
+
+		messageArray.push('\n<#616186924390023173>');
+		messageArray.push(
+			"Talk with other Tauri developers in <#731495028677148753>, ask for help in <#625037620996734986>, or show off what you've created with Tauri in <#616234029842300930>.",
+		);
+		messageArray.push('\n<#879007560429088800>');
+		messageArray.push(
+			"If you'd like to get involved with Tauri development you can react to the Tauri Contributor role below to be able to chat in the various channels.",
+		);
+		messageArray.push('\n<#683637724116418561>');
+		messageArray.push(
+			"See what the community is working on outside of Tauri. Reach out if you have a passion project you'd like to talk about.",
+		);
+		messageArray.push('\nServer Roles');
+		messageArray.push('React below to receive the relative role');
+
+		let messageBody = messageArray.join('\n');
 
 		const messages = await channel.messages.fetch({ limit: 10 });
 
@@ -78,43 +100,59 @@ export async function sendReactionRoleMessage(client: Client) {
 		}
 
 		// Loop all available reaction roles
-		REACTION_ROLE.forEach(async role => {
+		REACTION_ROLE.forEach(async (role) => {
 			// Get the reaction
-			const reaction = message.reactions.resolve(role.reactionId)
+			const reaction = await message.reactions.resolve(role.emojiId);
+
+			// No reactions yet
+			if (!reaction) {
+				return;
+			}
+
 			// Get all users that reacted minus the bot
-			const reactedUsers = (await reaction.users.fetch()).filter(user => user.id !== message.author.id)
+			const reactedUsers = (await reaction.users.fetch()).filter(
+				(user) => user.id !== message.author.id,
+			);
 
 			// Loop all users and add the role
 			reactedUsers.forEach(async (user) => {
 				try {
 					const result = await hasPermission(reaction, user);
 					result.member.roles.add(result.roleId);
-				} catch(error) {
-					console.error(`Issue adding role: ${error}`)
+				} catch (error) {
+					console.error(`Issue adding role: ${error}`);
 				}
-			})
+			});
 
 			// Loop all users in the guild to find people who didn't react to the message
-			const guild = await message.client.guilds.fetch(reaction.message.guildId)
+			const guild = await message.client.guilds.fetch(
+				reaction.message.guildId,
+			);
 
 			// Get a list of all members, minus the ones that we just added the role to
-			const allMembersWithoutReaction = (await guild.members.fetch()).filter(gm => reactedUsers.map(x => x).indexOf(gm.user) === -1 && gm.user.id !== message.author.id)
-			allMembersWithoutReaction.forEach(member => {
+			const allMembersWithoutReaction = (
+				await guild.members.fetch()
+			).filter(
+				(gm) =>
+					reactedUsers.map((x) => x).indexOf(gm.user) === -1 &&
+					gm.user.id !== message.author.id,
+			);
+			allMembersWithoutReaction.forEach((member) => {
 				// Remove the role
-				member.roles.remove(role.roleId)
-			})
-		})
+				member.roles.remove(role.roleId);
+			});
+		});
 
-		let roleDescription = '';
+		var roleDescription: string[] = [];
 
-		REACTION_ROLE.forEach((reaction) => {
-			message.react(reaction.reactionId);
-			roleDescription = roleDescription.concat(
-				`\n${reaction.reactionId} ${reaction.description}`,
+		REACTION_ROLE.forEach(async (reaction) => {
+			message.react(reaction.emojiId);
+			roleDescription.push(
+				`<:${reaction.emojiName}:${reaction.emojiId}> ${reaction.description}`,
 			);
 		});
 
-		message.edit(wrap_in_embed(roleDescription));
+		message.edit(wrap_in_embed(roleDescription.join('\n')));
 	} catch (error) {
 		console.error(`Issue starting up reaction: ${error}`);
 	}
