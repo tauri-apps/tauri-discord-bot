@@ -87,22 +87,32 @@ export async function sendReactionRoleMessage(client: Client) {
 
 		let messageBody = messageArray.join('\n');
 
+		console.debug('Getting messages...');
+
 		const messages = await channel.messages.fetch({ limit: 10 });
+
+		console.debug('Got messages');
 
 		let message = messages
 			.filter((item) => item.content === messageBody)
 			.last();
 
 		if (message && message.author.id == message.client.user.id) {
+			console.debug('Attempting to edit message...');
 			await message.edit(messageBody);
+			console.debug('Message edited');
 		} else {
+			console.debug('Attempting to send message...');
 			message = await channel.send(messageBody);
+			console.debug('Message sent');
 		}
 
 		// Loop all available reaction roles
 		REACTION_ROLE.forEach(async (role) => {
 			// Get the reaction
+			console.debug('Attempting to get reactions...');
 			const reaction = await message.reactions.resolve(role.emojiId);
+			console.debug('Got reactions');
 
 			// No reactions yet
 			if (!reaction) {
@@ -110,15 +120,19 @@ export async function sendReactionRoleMessage(client: Client) {
 			}
 
 			// Get all users that reacted minus the bot
+			console.debug('Getting users who reacted...');
 			const reactedUsers = (await reaction.users.fetch()).filter(
 				(user) => user.id !== message.author.id,
 			);
+			console.debug('Finished fetching users');
 
 			// Loop all users and add the role
 			reactedUsers.forEach(async (user) => {
 				try {
 					const result = await hasPermission(reaction, user);
-					result.member.roles.add(result.roleId);
+					console.debug('Attempting to add role...');
+					await result.member.roles.add(result.roleId);
+					console.debug('Role added');
 				} catch (error) {
 					console.error(`Issue adding role: ${error}`);
 				}
