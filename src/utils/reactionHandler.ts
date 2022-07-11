@@ -62,27 +62,27 @@ export async function sendReactionRoleMessage(client: Client) {
 			REACTION_ROLE_CHANNEL,
 		) as GuildTextBasedChannel;
 
-		var messageArray = ['Welcome to the Tauri community!'];
+		var messageArray = ['**Welcome to the Tauri community!**'];
 		messageArray.push(
 			'\nTauri is a toolkit to build an optimized, secure, and frontend-independent application for multi-platform deployment.',
 		);
 		messageArray.push(
-			'\nFamiliarize yourself with our Code of Conduct: https://github.com/tauri-apps/tauri/blob/dev/.github/CODE_OF_CONDUCT.md',
+			'\nFamiliarize yourself with our Code of Conduct: <https://github.com/tauri-apps/tauri/blob/dev/.github/CODE_OF_CONDUCT.md>',
 		);
 
-		messageArray.push('\n<#616186924390023173>');
+		messageArray.push('\n**<#616186924390023173>**');
 		messageArray.push(
 			"Talk with other Tauri developers in <#731495028677148753>, ask for help in <#625037620996734986>, or show off what you've created with Tauri in <#616234029842300930>.",
 		);
-		messageArray.push('\n<#879007560429088800>');
+		messageArray.push('\n**<#879007560429088800>**');
 		messageArray.push(
 			"If you'd like to get involved with Tauri development you can react to the Tauri Contributor role below to be able to chat in the various channels.",
 		);
-		messageArray.push('\n<#683637724116418561>');
+		messageArray.push('\n**<#683637724116418561>**');
 		messageArray.push(
 			"See what the community is working on outside of Tauri. Reach out if you have a passion project you'd like to talk about.",
 		);
-		messageArray.push('\nServer Roles');
+		messageArray.push('\n**Server Roles**');
 		messageArray.push('React below to receive the relative role');
 
 		let messageBody = messageArray.join('\n');
@@ -152,7 +152,7 @@ export async function sendReactionRoleMessage(client: Client) {
 			);
 		});
 
-		message.edit(wrap_in_embed(roleDescription.join('\n')));
+		await message.edit(wrap_in_embed(roleDescription.join('\n')));
 	} catch (error) {
 		console.error(`Issue starting up reaction: ${error}`);
 	}
