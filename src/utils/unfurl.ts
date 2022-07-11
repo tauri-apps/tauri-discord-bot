@@ -1,7 +1,13 @@
 import { unfurl } from 'unfurl.js';
 import { URL } from 'url';
 
-const get_url_host = (url: string): string => new URL(url).host;
+function get_url_host(url: string): string {
+	try {
+		return new URL(url).host;
+	} catch {
+		return url;
+	}
+}
 
 export async function get_title_from_url(url: string): Promise<string> {
 	try {
