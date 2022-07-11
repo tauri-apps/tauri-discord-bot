@@ -123,24 +123,6 @@ export async function sendReactionRoleMessage(client: Client) {
 					console.error(`Issue adding role: ${error}`);
 				}
 			});
-
-			// Loop all users in the guild to find people who didn't react to the message
-			const guild = await message.client.guilds.fetch(
-				reaction.message.guildId,
-			);
-
-			// Get a list of all members, minus the ones that we just added the role to
-			const allMembersWithoutReaction = (
-				await guild.members.fetch()
-			).filter(
-				(gm) =>
-					reactedUsers.map((x) => x).indexOf(gm.user) === -1 &&
-					gm.user.id !== message.author.id,
-			);
-			allMembersWithoutReaction.forEach((member) => {
-				// Remove the role
-				member.roles.remove(role.roleId);
-			});
 		});
 
 		var roleDescription: string[] = [];
