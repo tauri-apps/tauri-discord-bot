@@ -1,7 +1,7 @@
 import { Message, MessageOptions, ThreadChannel } from 'discord.js';
 import { event } from 'jellycommands';
 import url_regex from 'url-regex-safe';
-import { AUTO_THREAD_CHANNELS, HELP_CHANNELS } from '../config';
+import { AUTO_THREAD_CHANNELS } from '../config';
 import { wrap_in_embed } from '../utils/embed_helpers';
 import { add_thread_prefix } from '../utils/threads';
 import { get_title_from_url } from '../utils/unfurl';
@@ -19,7 +19,7 @@ export default event({
 
 		const raw_name = await get_thread_name(message);
 
-		const name = HELP_CHANNELS.includes(message.channelId)
+		const name = AUTO_THREAD_CHANNELS.includes(message.channelId)
 			? add_thread_prefix(raw_name, false)
 			: raw_name;
 
@@ -45,7 +45,7 @@ function send_instruction_message(thread: ThreadChannel) {
 	const base_description =
 		"I've created a thread for your message. Please continue any relevant discussion in this thread. You can rename it with the `/thread rename` command if I failed to set a proper name for it.";
 
-	const description = HELP_CHANNELS.includes(thread.parentId!)
+	const description = AUTO_THREAD_CHANNELS.includes(thread.parentId!)
 		? `${base_description}\n\nWhen your problem is solved close the thread with the \`/thread solve\` command.`
 		: base_description;
 
