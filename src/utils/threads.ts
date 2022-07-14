@@ -10,6 +10,22 @@ import { DEV_MODE, THREAD_ADMIN_IDS } from '../config';
 import { build_embed } from './embed_helpers';
 import { no_op, undefined_on_error } from './promise';
 import { has_any_role_or_id } from './snowflake';
+import { RateLimitStore } from './ratelimit';
+import { AUTO_THREAD_CHANNELS } from '../config';
+import { wrap_in_embed } from './embed_helpers';
+
+/**
+ * Discord allows 2 renames every 10 minutes. We need one always available
+ * for the solve command, so only one rename per 10 minutes is allowed for users.
+ */
+export const rename_limit = new RateLimitStore(1, 10 * 60 * 1000);
+
+/*
+ * This is mostly just to prevent abuse. We could reuse the rename limit but
+ * highly unlikely it'll be legitimately closed and then reopened multiple
+ * times in the same day.
+ */
+export const reopen_limit = new RateLimitStore(1, 1440 * 60 * 1000);
 
 export const add_thread_prefix = (name: string, solved: boolean) => {
 	const prefix = `${solved ? '✅' : '❔'} `;
@@ -28,10 +44,54 @@ export async function rename_thread(
 }
 
 export async function solve_thread(thread: ThreadChannel) {
-	return thread.edit({
+	// Make sure the thread isn't already solved
+	if (thread.name.startsWith('✅'))
+		throw new Error('Thread already marked as solved');
+	// Make sure the thread is located in the AUTO_THREAD_CHANNELS
+	if (!AUTO_THREAD_CHANNELS.includes(thread.parentId || ''))
+		throw new Error(
+			'This command only works in a auto thread',
+		);
+	// Make sure the channel hasn't reached it rename limit
+	if (rename_limit.is_limited(thread.id, true))
+		throw new Error(
+			"You'll have to wait at least 10 minutes from when you renamed the thread to solve it.",
+		);
+	// Mark the thread as solved
+	return await thread.edit({
 		name: add_thread_prefix(thread.name, true).slice(0, 100),
 		// Archiving immediately won't let users click the buttons.
 		autoArchiveDuration: 60,
+	});
+}
+
+export async function reopen_thread(thread: ThreadChannel) {
+	// Make sure the thread is marked as solved
+	if (!thread.name.startsWith('✅'))
+		throw new Error("Thread's not marked as solved");
+	// Make sure the thread is located in the AUTO_THREAD_CHANNELS
+	if (!AUTO_THREAD_CHANNELS.includes(thread.parentId || ''))
+		throw new Error(
+			'This command only works in a auto thread',
+		);
+	// Make sure the thread hasn't reached its reopening limit
+	if (reopen_limit.is_limited(thread.id, true))
+		throw new Error(
+			'You can only reopen a thread once every 24 hours',
+		);
+	// Make sure the thread hasn't reached its renaming limit
+	if (rename_limit.is_limited(thread.id, true))
+		throw new Error(
+			"You'll have to wait at least 10 minutes from when you renamed the thread to reopen it.",
+		);
+	// Mark the thread as reopened
+	return await thread.edit({
+		name: add_thread_prefix(thread.name, false).slice(
+			0,
+			100,
+		),
+		// Archiving immediately won't let users click the buttons.
+		autoArchiveDuration: 1440,
 	});
 }
 
@@ -83,10 +143,10 @@ export async function get_ending_message(
 
 	return clickable_participants.size
 		? {
-				components: [row],
-				embeds: [embed],
-		  }
+			components: [row],
+			embeds: [embed],
+		}
 		: {
-				embeds: [embed],
-		  };
+			embeds: [embed],
+		};
 }
