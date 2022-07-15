@@ -40,6 +40,7 @@ export async function rename_thread(
 	use_prefix: boolean = true,
 ) {
 	const prefixed = add_thread_prefix(new_name, thread.name.startsWith('✅'));
+	console.log(prefixed)
 	await thread.setName((use_prefix ? prefixed : new_name).slice(0, 100));
 }
 

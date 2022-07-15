@@ -83,8 +83,11 @@ export default command({
 			}
 
 			case 'rename': {
-				// Get the new name from the interatction options
-				const new_name = interaction.options.getString('name', true);
+				// Get the new name from the interatction options, remove bloat from links and replace colons with semicolons
+				const new_name = interaction.options.getString('name', true)
+					.replaceAll('http://', '')
+					.replaceAll('https://', '')
+					.replaceAll(':', ';')
 				const parent_id = thread.parentId || '';
 
 				try {

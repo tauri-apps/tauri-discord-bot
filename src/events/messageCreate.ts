@@ -5,6 +5,7 @@ import { AUTO_THREAD_CHANNELS } from '../config';
 import { wrap_in_embed } from '../utils/embed_helpers';
 import { add_thread_prefix } from '../utils/threads';
 import { get_title_from_url } from '../utils/unfurl';
+import { Url } from 'url';
 
 export default event({
 	name: 'messageCreate',
@@ -17,7 +18,11 @@ export default event({
 
 		if (should_ignore) return;
 
-		const raw_name = await get_thread_name(message);
+		// Remove bloat from links and replace colons with semicolons
+		const raw_name = message.content
+			.replaceAll('http://', '')
+			.replaceAll('https://', '')
+			.replaceAll(':', ';')
 
 		const name = AUTO_THREAD_CHANNELS.includes(message.channelId)
 			? add_thread_prefix(raw_name, false)
@@ -29,17 +34,8 @@ export default event({
 				startMessage: message,
 			})
 			.then(send_instruction_message);
-	},
+	}
 });
-
-function get_thread_name(message: Message): string | Promise<string> {
-	const url = message.content.match(url_regex());
-
-	// If the url can't be matched
-	if (!url) return `${message.content.replace(url_regex(), '')}`;
-
-	return get_title_from_url(url[0]);
-}
 
 async function send_instruction_message(thread: ThreadChannel) {
 	const base_description =
