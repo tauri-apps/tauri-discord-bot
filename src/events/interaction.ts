@@ -32,10 +32,10 @@ export default event({
 						await interaction.update(msg)
 					} catch (e) {
 						// Send the error back to the user
-						const reply = await interaction.channel?.send(wrap_in_embed((e as Error).message))
+						await interaction.reply(wrap_in_embed((e as Error).message))
 						// Delete the error message after 5 seconds so it doesn't clutter the chat log
 						setTimeout(async () => {
-							await reply?.delete()
+							await interaction.deleteReply()
 						}, 5000)
 					}
 				}
@@ -60,13 +60,12 @@ export default event({
 						await interaction.update(msg)
 					} catch (e) {
 						// Send the error back to the user
-						const reply = await interaction.channel?.send(wrap_in_embed((e as Error).message))
+						await interaction.reply(wrap_in_embed((e as Error).message))
 						// Delete the error message after 5 seconds so it doesn't clutter the chat log
 						setTimeout(async () => {
-							await reply?.delete()
+							await interaction.deleteReply()
 						}, 5000)
 					}
-
 				}
 			}
 		}
