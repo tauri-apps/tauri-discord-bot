@@ -30,7 +30,7 @@ export default event({
 
 		await message.channel.threads
 			.create({
-				name: name.slice(0, 100),
+				name: name.length > 100 ? name.slice(0, 97) + '...' : name,
 				startMessage: message,
 			})
 			.then(send_instruction_message);
