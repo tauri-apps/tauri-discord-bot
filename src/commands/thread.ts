@@ -1,28 +1,21 @@
 import { command } from 'jellycommands';
 import { AUTO_THREAD_CHANNELS } from '../config';
 import { wrap_in_embed } from '../utils/embed_helpers';
-import { RateLimitStore } from '../utils/ratelimit';
 import { get_member } from '../utils/snowflake';
 import {
-	add_thread_prefix,
 	check_autothread_permissions,
 	rename_thread,
 	solve_thread,
+	rename_limit,
+	reopen_thread,
 } from '../utils/threads.js';
 import { no_op } from '../utils/promise.js';
-
-/**
- * Discord allows 2 renames every 10 minutes. We need one always available
- * for the solve command, so only one rename per 10 minutes is allowed for users.
- */
-const rename_limit = new RateLimitStore(1, 10 * 60 * 1000);
-
-/*
- * This is mostly just to prevent abuse. We could reuse the rename limit but
- * highly unlikely it'll be legitimately closed and then reopened multiple
- * times in the same day.
- */
-const reopen_limit = new RateLimitStore(1, 1440 * 60 * 1000);
+import {
+	Message,
+	MessageActionRow,
+	MessageButton,
+	MessageEditOptions,
+} from 'discord.js';
 
 export default command({
 	name: 'thread',
@@ -62,7 +55,7 @@ export default command({
 
 	global: true,
 	defer: {
-		ephemeral: true,
+		ephemeral: false,
 	},
 
 	run: async ({ interaction }) => {
@@ -95,83 +88,158 @@ export default command({
 			}
 
 			case 'rename': {
-				const new_name = interaction.options.getString('name', true);
+				// Get the new name from the interaction options, remove bloat from links and replace colons with semicolons
+				const new_name = interaction.options
+					.getString('name', true)
+					.replaceAll('http://', '')
+					.replaceAll('https://', '')
+					.replaceAll(':', ';');
 				const parent_id = thread.parentId || '';
 
 				try {
+					// Make sure the new name isn't the same as the old one so rename calls aren't wasted
+					if (new_name === thread.name.slice(2))
+						throw new Error(
+							'The requested name was the same as the current name',
+						);
+					// Check if the command has reached the rename limit
 					if (rename_limit.is_limited(thread.id, true))
-						return await interaction.followUp(
+						throw new Error(
 							'You can only rename a thread once every 10 minutes',
 						);
-
+					// Rename the thread
 					await rename_thread(
 						thread,
 						new_name,
 						AUTO_THREAD_CHANNELS.includes(parent_id),
 					);
-
-					await interaction.followUp('Thread renamed');
-				} catch (error) {
-					await interaction.followUp((error as Error).message);
+					// Follow up the interaction
+					await interaction.followUp(wrap_in_embed('Thread renamed'));
+					// Delete the reply after 10 seconds
+					setTimeout(async () => {
+						await interaction.deleteReply();
+					}, 10000);
+				} catch (e) {
+					// Send the error
+					const reply = (await interaction.followUp(
+						wrap_in_embed((e as Error).message),
+					)) as Message;
+					// Delete the error after 15 seconds
+					try {
+						setTimeout(async () => {
+							reply.delete();
+						}, 15000);
+					} catch (e) {
+						console.error(e);
+					}
 				}
 				break;
 			}
 
 			case 'solve': {
 				try {
-					if (thread.name.startsWith('✅'))
-						throw new Error('Thread already marked as solved');
-
-					if (!AUTO_THREAD_CHANNELS.includes(thread.parentId || ''))
-						throw new Error(
-							'This command only works in a auto thread',
-						);
-
+					// Attempt to solve the thread
 					await solve_thread(thread);
-
-					await Promise.allSettled([
-						thread.send(
-							wrap_in_embed(
-								'Thread solved. Thank you everyone! 🥳',
-							),
-						),
-					]);
+					// Successfully solved the thread
+					// Get the first message in the thread
+					const start_message = await thread.fetchStarterMessage();
+					// Get the first 2 messages after the start message
+					const messages = await thread.messages.fetch({
+						limit: 2,
+						after: start_message.id,
+					});
+					// Filter the messages to find the bot message with the buttons
+					const bot_message = messages
+						.filter((m) => m.components.length > 0)
+						.first() as Message;
+					// Change the message
+					const msg = wrap_in_embed(
+						'Thread solved. Thank you everyone! 🥳',
+					) as MessageEditOptions;
+					// Change the button
+					const row = new MessageActionRow().addComponents(
+						new MessageButton()
+							.setCustomId('reopen')
+							.setLabel('Mark as Unsolved')
+							.setStyle('SECONDARY')
+							.setEmoji('❔'),
+					);
+					msg.components = [row];
+					await bot_message.edit(msg);
+					// Commands require a reply
+					await interaction.followUp(wrap_in_embed('Thread solved.'));
+					// Delete the reply after 10 seconds
+					setTimeout(async () => {
+						await interaction.deleteReply();
+					}, 10000);
 				} catch (e) {
-					await interaction.followUp((e as Error).message);
+					// Send the error
+					const reply = (await interaction.followUp(
+						wrap_in_embed((e as Error).message),
+					)) as Message;
+					// Delete the error after 15 seconds
+					try {
+						setTimeout(async () => {
+							reply.delete();
+						}, 15000);
+					} catch (e) {
+						console.error(e);
+					}
 				}
 				break;
 			}
 
 			case 'reopen':
 				try {
-					if (!thread.name.startsWith('✅'))
-						throw new Error("Thread's not marked as solved");
-
-					if (!AUTO_THREAD_CHANNELS.includes(thread.parentId || ''))
-						throw new Error(
-							'This command only works in a auto thread',
-						);
-
-					if (reopen_limit.is_limited(thread.id, true))
-						throw new Error(
-							'You can only reopen a thread once every 24 hours',
-						);
-					if (rename_limit.is_limited(thread.id, true))
-						throw new Error(
-							"You'll have to wait at least 10 minutes from when you renamed the thread to reopen it.",
-						);
-
-					await thread.edit({
-						name: add_thread_prefix(thread.name, false).slice(
-							0,
-							100,
-						),
-						autoArchiveDuration: 1440,
+					// Attempt to reopen the thread
+					await reopen_thread(thread);
+					// Successfully reopened the thread
+					// Get the start message of the thread
+					const start_message = await thread.fetchStarterMessage();
+					// Get the first 2 messages after the start message
+					const messages = await thread.messages.fetch({
+						limit: 2,
+						after: start_message.id,
 					});
-
-					await interaction.followUp('Thread reopened.');
+					// Filter to get the bot message with the button
+					const bot_message = messages
+						.filter((m) => m.components.length > 0)
+						.first() as Message;
+					// Change the message
+					const msg = wrap_in_embed(
+						"I've created a thread for your message. Please continue any relevant discussion in this thread. You can rename it with the `/thread rename` command if I failed to set a proper name for it.",
+					) as MessageEditOptions;
+					// Change the button
+					const row = new MessageActionRow().addComponents(
+						new MessageButton()
+							.setCustomId('solve')
+							.setLabel('Mark as Solved')
+							.setStyle('PRIMARY')
+							.setEmoji('✅'),
+					);
+					msg.components = [row];
+					await bot_message.edit(msg);
+					// Commands require a reply
+					await interaction.followUp(
+						wrap_in_embed('Thread reopened.'),
+					);
+					// Delete the reply after 10 seconds
+					setTimeout(async () => {
+						await interaction.deleteReply();
+					}, 10000);
 				} catch (e) {
-					await interaction.followUp((e as Error).message);
+					// Send the error
+					const reply = (await interaction.followUp(
+						wrap_in_embed((e as Error).message),
+					)) as Message;
+					// Delete the error after 15 seconds
+					try {
+						setTimeout(async () => {
+							reply.delete();
+						}, 15000);
+					} catch (e) {
+						console.error(e);
+					}
 				}
 				break;
 		}
