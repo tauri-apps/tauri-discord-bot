@@ -163,6 +163,7 @@ export default command({
 							.setLabel('Mark as Unsolved')
 							.setStyle('SECONDARY')
 							.setEmoji('❔'),
+						...bot_message.components[0].components.filter(val => val.customId !== 'solve')
 					);
 					msg.components = [row];
 					await bot_message.edit(msg);
@@ -216,6 +217,7 @@ export default command({
 							.setLabel('Mark as Solved')
 							.setStyle('PRIMARY')
 							.setEmoji('✅'),
+						...bot_message.components[0].components.filter(val => val.customId !== 'reopen')
 					);
 					msg.components = [row];
 					await bot_message.edit(msg);

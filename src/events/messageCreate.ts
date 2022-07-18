@@ -4,6 +4,7 @@ import {
 	MessageActionRow,
 	MessageButton,
 	ThreadChannel,
+	TextInputComponent,
 } from 'discord.js';
 import { event } from 'jellycommands';
 import url_regex from 'url-regex-safe';
@@ -15,7 +16,7 @@ import { Url } from 'url';
 
 export default event({
 	name: 'messageCreate',
-	run: async ({}, message) => {
+	run: async ({ }, message) => {
 		const should_ignore =
 			message.author.bot ||
 			message.channel.type != 'GUILD_TEXT' ||
@@ -51,7 +52,7 @@ async function send_instruction_message(thread: ThreadChannel) {
 		? `${base_description}\n\nWhen your problem is solved close the thread with the \`/thread solve\` command.`
 		: base_description;
 
-	// Add the solve button to the message
+	// Add the solve and bot assist buttons to the message
 	const msg = wrap_in_embed(description) as MessageOptions;
 	const row = new MessageActionRow().addComponents(
 		new MessageButton()
@@ -59,6 +60,11 @@ async function send_instruction_message(thread: ThreadChannel) {
 			.setLabel('Mark as Solved')
 			.setStyle('PRIMARY')
 			.setEmoji('✅'),
+		new MessageButton()
+			.setCustomId('auto_assist')
+			.setLabel('Ask the bot for help')
+			.setStyle('SECONDARY')
+			.setEmoji('🤖')
 	);
 	msg.components = [row];
 
