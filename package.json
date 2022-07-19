@@ -15,7 +15,7 @@
 		"express": "4.18.1",
 		"jellycommands": "1.0.0-next.31",
 		"ts-node": "10.9.1",
-		"tsm": "2.2.1",
+		"tsm": "2.2.2",
 		"unfurl.js": "5.7.0",
 		"url-regex-safe": "3.0.0"
 	},
