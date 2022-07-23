@@ -39,10 +39,6 @@ export default event({
 			let msg;
 			// If the thread was found
 			if (thread) {
-				// Create a message that mentions  the user
-				const usersMessage = wrap_in_embed(`Response by <@${message.author.id}>`) as MessageOptions
-				// Put their original message contents in the new message
-				usersMessage.content = `Response by <@${message.author.id}>\n\n` + message.content
 				// Send the message to the thread
 				await thread.send(`> Response by <@${message.author.id}>\n` + message.content)
 				// Create response message to the user with a link to the thread
