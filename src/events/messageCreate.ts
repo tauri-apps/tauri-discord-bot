@@ -41,8 +41,13 @@ export default event({
 			const baseMessage = "Thanks for helping out! Please send you reply in the thread created for the issue and not directly in the channel."
 			// If the thread was found
 			if (thread) {
+				// Replicate the users message
+				const forwardMessage = {
+					content: `> Reply by <@${message.author.id}>:\n` + message.content,
+					files: message.attachments.map(x => x)
+				} as MessageOptions
 				// Send the message to the thread
-				await thread.send(`> Reply by <@${message.author.id}>:\n` + message.content)
+				await thread.send(forwardMessage)
 				// Create response message to the user with a link to the thread
 				msg = wrap_in_embed(`${baseMessage}\n\nClick this link to go directly to the thread:\n<#${thread.id}>`)
 			} else {
