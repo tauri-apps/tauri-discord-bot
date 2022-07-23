@@ -1,27 +1,64 @@
 import {
-	Message,
 	MessageOptions,
 	MessageActionRow,
 	MessageButton,
 	ThreadChannel,
+	TextChannel,
 } from 'discord.js';
 import { event } from 'jellycommands';
-import url_regex from 'url-regex-safe';
 import { AUTO_THREAD_CHANNELS } from '../config';
 import { wrap_in_embed } from '../utils/embed_helpers';
 import { add_thread_prefix } from '../utils/threads';
-import { get_title_from_url } from '../utils/unfurl';
-import { Url } from 'url';
 
 export default event({
 	name: 'messageCreate',
-	run: async ({}, message) => {
+	run: async ({ }, message) => {
+		// Rules for whether or not the message should be dealt with by the bot
 		const should_ignore =
 			message.author.bot ||
 			message.channel.type != 'GUILD_TEXT' ||
 			message.type != 'DEFAULT' ||
 			!AUTO_THREAD_CHANNELS.includes(message.channelId);
 
+		// If a response is sent by a user in an auto thread channel
+		if (message.type === 'REPLY' && AUTO_THREAD_CHANNELS.includes(message.channelId) && !message.author.bot) {
+			// Delete their message
+			await message.delete()
+			// Get the channel as a TextChannel
+			const channel = message.channel as TextChannel
+			// Get the thread that the message refers to
+			let thread = channel.threads.cache.get(message.reference.messageId) as ThreadChannel
+			// If the thread wasn't found in the cache
+			if (!thread) {
+				// Get all active threads in the guild
+				const threads = (await message.guild.channels.fetchActiveThreads()).threads
+				// Get the thread
+				thread = threads.get(message.reference.messageId) as ThreadChannel
+			}
+			// Make msg available outside the if/else scope
+			let msg;
+			// Base message text to send to the user
+			const baseMessage = "Thanks for helping out! Please send you reply in the thread created for the issue and not directly in the channel."
+			// If the thread was found
+			if (thread) {
+				// Replicate the users message
+				const forwardMessage = {
+					content: `> Reply by <@${message.author.id}>:\n` + message.content,
+					files: message.attachments.map(x => x)
+				} as MessageOptions
+				// Send the message to the thread
+				await thread.send(forwardMessage)
+				// Create response message to the user with a link to the thread
+				msg = wrap_in_embed(`${baseMessage}\n\nClick this link to go directly to the thread:\n<#${thread.id}>`)
+			} else {
+				// Create response message to the user
+				msg = wrap_in_embed(baseMessage)
+			}
+			// Send a DM to the user with the response message
+			await message.author.send(msg)
+		}
+
+		// If the message should be ignored, return without further processing
 		if (should_ignore) return;
 
 		// Remove bloat from links and replace colons with semicolons
