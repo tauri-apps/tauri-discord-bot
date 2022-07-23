@@ -38,13 +38,13 @@ export default event({
 			// Make msg available outside the if/else scope
 			let msg;
 			// Base message text to send to the user
-			const baseMessage = "Please send responses in the thread created for the issue and not directly in the thread channel."
+			const baseMessage = "Thanks for helping out! Please send you reply in the thread created for the issue and not directly in the channel."
 			// If the thread was found
 			if (thread) {
 				// Send the message to the thread
-				await thread.send(`> Response from <@${message.author.id}>\n` + message.content)
+				await thread.send(`> Reply by <@${message.author.id}>:\n` + message.content)
 				// Create response message to the user with a link to the thread
-				msg = wrap_in_embed(`${baseMessage}\n\nClick this link to go to the thread you should respond in\n<#${thread.id}>`)
+				msg = wrap_in_embed(`${baseMessage}\n\nClick this link to go directly to the thread:\n<#${thread.id}>`)
 			} else {
 				// Create response message to the user
 				msg = wrap_in_embed(baseMessage)
