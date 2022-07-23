@@ -1,19 +1,14 @@
 import {
-	Message,
 	MessageOptions,
 	MessageActionRow,
 	MessageButton,
 	ThreadChannel,
-	ThreadManager,
 	TextChannel,
 } from 'discord.js';
 import { event } from 'jellycommands';
-import url_regex from 'url-regex-safe';
 import { AUTO_THREAD_CHANNELS } from '../config';
 import { wrap_in_embed } from '../utils/embed_helpers';
 import { add_thread_prefix } from '../utils/threads';
-import { get_title_from_url } from '../utils/unfurl';
-import { Url } from 'url';
 
 export default event({
 	name: 'messageCreate',
