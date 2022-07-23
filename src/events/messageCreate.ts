@@ -23,6 +23,18 @@ export default event({
 			message.type != 'DEFAULT' ||
 			!AUTO_THREAD_CHANNELS.includes(message.channelId);
 
+		// If a response is sent by a user in an auto thread channel
+		if (message.type === 'REPLY' && AUTO_THREAD_CHANNELS.includes(message.channelId) && !message.author.bot) {
+			// Reply to their message with instructions
+			const response = await message.reply(wrap_in_embed("Please send responses in the issues thread and not directly in this channel"))
+			// Delete their message
+			await message.delete()
+			// Delete the response 5 seconds later
+			setTimeout(() => {
+				response.delete()
+			}, 5000)
+		}
+
 		if (should_ignore) return;
 
 		// Remove bloat from links and replace colons with semicolons
