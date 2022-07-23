@@ -42,7 +42,7 @@ export default event({
 			// If the thread was found
 			if (thread) {
 				// Send the message to the thread
-				await thread.send(`> Response by <@${message.author.id}>\n` + message.content)
+				await thread.send(`> Response from <@${message.author.id}>\n` + message.content)
 				// Create response message to the user with a link to the thread
 				msg = wrap_in_embed(`${baseMessage}\n\nClick this link to go to the thread you should respond in\n<#${thread.id}>`)
 			} else {
