@@ -27,6 +27,8 @@ export default event({
 
 		// If a response is sent by a user in an auto thread channel
 		if (message.type === 'REPLY' && AUTO_THREAD_CHANNELS.includes(message.channelId) && !message.author.bot) {
+			// Delete their message
+			await message.delete()
 			// Get the channel as a TextChannel
 			const channel = message.channel as TextChannel
 			// Get the thread that the message refers to
@@ -45,23 +47,17 @@ export default event({
 				// Create a message that mentions  the user
 				const usersMessage = wrap_in_embed(`Response by <@${message.author.id}>`) as MessageOptions
 				// Put their original message contents in the new message
-				usersMessage.content = message.content
+				usersMessage.content = `Response by <@${message.author.id}>\n\n` + message.content
 				// Send the message to the thread
-				await thread.send(usersMessage)
+				await thread.send(`> Response by <@${message.author.id}>\n` + message.content)
 				// Create response message to the user with a link to the thread
-				msg = wrap_in_embed(`Please send responses in the issues thread and not directly in this channel\n\n<#${thread.id}>`)
+				msg = wrap_in_embed(`Please send responses in the thread created for the issue and not directly in the thread channel.\n\nClick this link to go to the thread you should respond in\n<#${thread.id}>`)
 			} else {
 				// Create response message to the user
-				msg = wrap_in_embed(`Please send responses in the issues thread and not directly in this channel`)
+				msg = wrap_in_embed(`Please send responses in the thread created for the issue and not directly in the thread channel.`)
 			}
-			// Reply to the user
-			const response = await message.reply(msg)
-			// Delete their message
-			await message.delete()
-			// Delete the response 10 seconds later
-			setTimeout(() => {
-				response.delete()
-			}, 10000)
+			// Send a DM to the user with the response message
+			await message.author.send(msg)
 		}
 
 		// If the message should be ignored, return without further processing
