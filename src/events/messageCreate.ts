@@ -58,7 +58,7 @@ export default event({
 			const response = await message.reply(msg)
 			// Delete their message
 			await message.delete()
-			// Delete the response 5 seconds later
+			// Delete the response 10 seconds later
 			setTimeout(() => {
 				response.delete()
 			}, 10000)
