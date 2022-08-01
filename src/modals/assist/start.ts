@@ -2,6 +2,7 @@ import { Modal, TextInputComponent, MessageActionRow, ModalSubmitInteraction, Me
 import { wrap_in_embed } from "../../utils/embed_helpers";
 import { solve_thread } from "../../utils/threads";
 import { MessageOptions } from "child_process";
+import fetch from "node-fetch";
 
 export const assistStartModal = {
     // Create a modal to show to the user
@@ -16,36 +17,59 @@ export const assistStartModal = {
     run: async function (interaction: ModalSubmitInteraction) {
         // Stores all problems found
         let problems: [Problem?] = []
-        // Current version of all dependencies (may need to find more and dynamically)
-        const currentVersion = '1.0.4'
+        // Metadata url
+        const metadataUrl = "https://raw.githubusercontent.com/tauri-apps/tauri/dev/tooling/cli/metadata.json"
+        const response = await fetch(metadataUrl, {
+            headers: {
+                Accept: 'application/json'
+            }
+        })
+        const metadata = await response.json() as LooseObject
+        // Npmjs url of the @tauri-apps/api package
+        const apiUrl = 'https://registry.npmjs.org/@tauri-apps/api'
+        // Get the api metadata
+        const res = await fetch(apiUrl, {
+            headers: {
+                Accept: 'application/vnd.npm.install-v1+json'
+            }
+        })
+        // Convert the response to json
+        const apiMeta = await res.json() as LooseObject
+        // Add the latest api version to the metadata object
+        metadata.api = Object.keys(apiMeta.versions).at(-1)
+
         // Get the tauri_info output from the modal
         const tauriInfoText = interaction.fields.getTextInputValue('tauri_info')
             .split('\n')
             .map(v => v.trim())
             .filter(v => v !== '')
         // Used to store the tauri_info as an object
-        let tauriInfo: LooseObject = {
-            environment: {},
-            packages: {},
-            app: {}
-        }
+        let tauriInfo: LooseObject = {}
         // Current section being handled
         let section = ''
         tauriInfoText.forEach((val) => {
             if (val === 'Environment') {
                 section = 'environment'
+                if (!(section in tauriInfo))
+                    tauriInfo[section] = {}
                 return
             }
             if (val === 'Packages') {
                 section = 'packages'
+                if (!(section in tauriInfo))
+                    tauriInfo[section] = {}
                 return
             }
             if (val === 'App') {
                 section = 'app'
+                if (!(section in tauriInfo))
+                    tauriInfo[section] = {}
                 return
             }
             if (val === 'App directory structure') {
                 section = 'appDirectoryStructure'
+                if (!(section in tauriInfo))
+                    tauriInfo[section] = {}
                 return
             }
             if (section === 'environment' && val.startsWith('›')) {
@@ -62,44 +86,54 @@ export const assistStartModal = {
             }
         })
 
-        // Check if tauri and tauri-build are the same versions
-        if (tauriInfo.packages['tauri [RUST]'] && tauriInfo.packages['tauri [RUST]'] !== tauriInfo.packages['tauri-build [RUST]']) {
+        // Check if any information is missing
+        if (!('environment' in tauriInfo) || !('packages' in tauriInfo) || !('app' in tauriInfo)) {
             problems.push({
-                info: `Your \`tauri\` and \`tauri-build\` dependencies versions do not appear to match, make sure they are both using \`${currentVersion}\``,
-                solutions: ['Edit `Cargo.toml` that all versions are correct', 'Run `cargo update`']
+                info: `Your \`tauri info\` output could not be parsed, did you enter it correctly?`,
+                solutions: ['Run `tauri info` retry asking for help']
             })
-        }
+        } else {
+            // Check if tauri and tauri-build are the same versions
+            /*
+            if (tauriInfo.packages['tauri [RUST]'] && tauriInfo.packages['tauri [RUST]'] !== tauriInfo.packages['tauri-build [RUST]']) {
+                problems.push({
+                    info: `Your \`tauri\` and \`tauri-build\` dependencies versions do not appear to match, make sure they are both using \`${metadata.tauri}\``,
+                    solutions: ['Edit `Cargo.toml` that all versions are correct', 'Run `cargo update`']
+                })
+            }
+            */
 
-        // Check if the CLI is the latest version
-        if (tauriInfo.packages['@tauri-apps/cli [NPM]'] && tauriInfo.packages['@tauri-apps/cli [NPM]'] !== currentVersion && tauriInfo.packages['@tauri-apps/cli [NPM]'] !== 'Not installed!') {
-            problems.push({
-                info: `\`@tauri-apps/cli [NPM]\` appears to be outdated, your version is \`${tauriInfo.packages['@tauri-apps/cli [NPM]']}\`, the current version is \`${currentVersion}\``,
-                solutions: ['Run `yarn add @tauri-apps/cli`']
-            })
-        }
+            // Check if the CLI is the latest version
+            if (tauriInfo.packages['@tauri-apps/cli [NPM]'] && tauriInfo.packages['@tauri-apps/cli [NPM]'] !== metadata['cli.js'].version && tauriInfo.packages['@tauri-apps/cli [NPM]'] !== 'Not installed!') {
+                problems.push({
+                    info: `\`@tauri-apps/cli [NPM]\` appears to be outdated, your version is \`${tauriInfo.packages['@tauri-apps/cli [NPM]']}\`, the current version is \`${metadata['cli.js'].version}\``,
+                    solutions: ['Run `yarn add @tauri-apps/cli`']
+                })
+            }
 
-        // Check if the API is the latest version
-        if (tauriInfo.packages['@tauri-apps/api [NPM]'] && tauriInfo.packages['@tauri-apps/api [NPM]'] !== currentVersion && tauriInfo.packages['@tauri-apps/api [NPM]'] !== 'Not installed!') {
-            problems.push({
-                info: `\`@tauri-apps/api\` [NPM] appears to be outdated, your version is \`${tauriInfo.packages['@tauri-apps/api [NPM]']}\`, the current version is \`${currentVersion}\``,
-                solutions: ['Run `yarn add @tauri-apps/api`']
-            })
-        }
+            // Check if the API is the latest version
+            if (tauriInfo.packages['@tauri-apps/api [NPM]'] && tauriInfo.packages['@tauri-apps/api [NPM]'] !== metadata.api && tauriInfo.packages['@tauri-apps/api [NPM]'] !== 'Not installed!') {
+                problems.push({
+                    info: `\`@tauri-apps/api\` [NPM] appears to be outdated, your version is \`${tauriInfo.packages['@tauri-apps/api [NPM]']}\`, the current version is \`${metadata.api}\``,
+                    solutions: ['Run `yarn add @tauri-apps/api`']
+                })
+            }
 
-        // Check if tauri is the latest version
-        if (tauriInfo.packages['tauri [RUST]'] && tauriInfo.packages['tauri [RUST]'] !== currentVersion) {
-            problems.push({
-                info: `\`tauri [RUST]\` appears to be outdated, your version is \`${tauriInfo.packages['tauri [RUST]']}\`, the current version is \`${currentVersion}\``,
-                solutions: ['Run `cargo update`']
-            })
-        }
+            // Check if tauri is the latest version
+            if (tauriInfo.packages['tauri [RUST]'] && tauriInfo.packages['tauri [RUST]'] !== metadata.tauri) {
+                problems.push({
+                    info: `\`tauri [RUST]\` appears to be outdated, your version is \`${tauriInfo.packages['tauri [RUST]']}\`, the current version is \`${metadata.tauri}\``,
+                    solutions: ['Run `cargo update`']
+                })
+            }
 
-        // Check if tauri-build is the latest version
-        if (tauriInfo.packages['tauri-build [RUST]'] && tauriInfo.packages['tauri-build [RUST]'] !== currentVersion) {
-            problems.push({
-                info: `\`tauri-build [RUST]\` appears to be outdated, your version is \`${tauriInfo.packages['tauri-build [RUST]']}\`, the current version is \`${currentVersion}\``,
-                solutions: ['Run `cargo update`']
-            })
+            // Check if tauri-build is the latest version
+            if (tauriInfo.packages['tauri-build [RUST]'] && tauriInfo.packages['tauri-build [RUST]'] !== metadata['tauri-build']) {
+                problems.push({
+                    info: `\`tauri-build [RUST]\` appears to be outdated, your version is \`${tauriInfo.packages['tauri-build [RUST]']}\`, the current version is \`${metadata['tauri-build']}\``,
+                    solutions: ['Run `cargo update`']
+                })
+            }
         }
 
         // Store the response text
@@ -139,6 +173,8 @@ export const assistStartModal = {
             // If there was text we ask an appropriate question based on what the next buttons are
             text = `${text}\n\n**Did this fix your issue?**`
         }
+        // Add the users tauri info output to the message
+        text = `${interaction.fields.getTextInputValue('tauri_info')}\n\n${text}`
         // Create the response message
         let msg = wrap_in_embed(text) as InteractionReplyOptions
         // Create the MessageActionRow
