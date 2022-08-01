@@ -29,10 +29,14 @@ export default command({
 			type: 'SUB_COMMAND',
 		},
 		{
+			name: 'list',
+			description: 'List open threads',
+			type: 'SUB_COMMAND',
+		},
+		{
 			name: 'rename',
 			description: 'Rename a thread',
 			type: 'SUB_COMMAND',
-
 			options: [
 				{
 					name: 'name',
@@ -43,13 +47,13 @@ export default command({
 			],
 		},
 		{
-			name: 'solve',
-			description: 'Mark a thread as solved',
+			name: 'reopen',
+			description: 'Reopen a solved thread',
 			type: 'SUB_COMMAND',
 		},
 		{
-			name: 'reopen',
-			description: 'Reopen a solved thread',
+			name: 'solve',
+			description: 'Mark a thread as solved',
 			type: 'SUB_COMMAND',
 		},
 	],
@@ -63,6 +67,28 @@ export default command({
 		try {
 			const subcommand = interaction.options.getSubcommand(true);
 			const thread = await interaction.channel?.fetch();
+
+			// This command doesn't have to be run inside a thread nor does it require special permissions
+			if (subcommand === 'list') {
+				// Don't respond to the command wherever it was ran
+				await interaction.deleteReply();
+				// Get all active threads in the guild
+				const threads = (
+					await interaction.guild.channels.fetchActiveThreads()
+				).threads;
+				// Set a title for the DM
+				let message =
+					"**Here's a list of all currently active unsolved threads**\n";
+				// Add all unsolved threads to the message
+				message += threads
+					.map((x) => x)
+					.filter((val) => val.name.startsWith('❔'))
+					.map((thread) => `<#${thread.id}>`)
+					.join('\n');
+				// Send the message to the user
+				await interaction.user.send(message);
+				return;
+			}
 
 			if (!thread?.isThread())
 				throw new Error('This channel is not a thread');
@@ -129,7 +155,6 @@ export default command({
 					}, 10000);
 					break;
 				}
-
 				case 'solve': {
 					// Check if this is a help channel
 					if (!HELP_THREAD_CHANNELS.includes(thread.parentId)) {
