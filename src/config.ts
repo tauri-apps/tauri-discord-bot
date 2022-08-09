@@ -20,9 +20,19 @@ const ADMIN_ROLES = DEV_MODE
 			'761977421305610241',
 	  ];
 
+// list of support roles without admin rights
+export const HELPER_ROLES = DEV_MODE
+	? [process.env.DEV_HELPER_ROLE]
+	: [
+			// Helping Hand
+			'995034988699455609',
+	  ];
+
 export const BOT_DEVS = [
 	// LorenzoLewis
 	'402698003569180674',
+	// Simon
+	// '329752097530839041',
 ];
 
 //  list of roles/user IDs other than the creator allowed to modify threads

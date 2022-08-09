@@ -6,13 +6,12 @@ import {
 	Snowflake,
 	ThreadChannel,
 } from 'discord.js';
-import { DEV_MODE, THREAD_ADMIN_IDS } from '../config';
+import { DEV_MODE, HELPER_ROLES, THREAD_ADMIN_IDS } from '../config';
 import { build_embed } from './embed_helpers';
 import { no_op, undefined_on_error } from './promise';
 import { has_any_role_or_id } from './snowflake';
 import { RateLimitStore } from './ratelimit';
 import { AUTO_THREAD_CHANNELS } from '../config';
-import { wrap_in_embed } from './embed_helpers';
 
 /**
  * Discord allows 2 renames every 10 minutes. We need one always available
@@ -31,7 +30,6 @@ export const add_thread_prefix = (name: string, solved: boolean) => {
 	const prefix = `${solved ? '✅' : '❔'} `;
 
 	return `${prefix}${name.replace(/^[✅❔] /, '')}`;
-
 };
 
 export async function rename_thread(
@@ -43,15 +41,16 @@ export async function rename_thread(
 	await thread.setName((use_prefix ? prefixed : new_name).slice(0, 100));
 }
 
-export async function solve_thread(thread: ThreadChannel) {
+export async function solve_thread(thread: ThreadChannel, member: GuildMember) {
+	if (!(await check_autothread_permissions(thread, member))) {
+		throw new Error("You don't have the permissions to manage this thread");
+	}
 	// Make sure the thread isn't already solved
 	if (thread.name.startsWith('✅'))
 		throw new Error('Thread already marked as solved');
 	// Make sure the thread is located in the AUTO_THREAD_CHANNELS
 	if (!AUTO_THREAD_CHANNELS.includes(thread.parentId || ''))
-		throw new Error(
-			'This command only works in a auto thread',
-		);
+		throw new Error('This command only works in a auto thread');
 	// Make sure the channel hasn't reached it rename limit
 	if (rename_limit.is_limited(thread.id, true))
 		throw new Error(
@@ -71,14 +70,10 @@ export async function reopen_thread(thread: ThreadChannel) {
 		throw new Error("Thread's not marked as solved");
 	// Make sure the thread is located in the AUTO_THREAD_CHANNELS
 	if (!AUTO_THREAD_CHANNELS.includes(thread.parentId || ''))
-		throw new Error(
-			'This command only works in a auto thread',
-		);
+		throw new Error('This command only works in a auto thread');
 	// Make sure the thread hasn't reached its reopening limit
 	if (reopen_limit.is_limited(thread.id, true))
-		throw new Error(
-			'You can only reopen a thread once every 24 hours',
-		);
+		throw new Error('You can only reopen a thread once every 24 hours');
 	// Make sure the thread hasn't reached its renaming limit
 	if (rename_limit.is_limited(thread.id, true))
 		throw new Error(
@@ -86,10 +81,7 @@ export async function reopen_thread(thread: ThreadChannel) {
 		);
 	// Mark the thread as reopened
 	return await thread.edit({
-		name: add_thread_prefix(thread.name, false).slice(
-			0,
-			100,
-		),
+		name: add_thread_prefix(thread.name, false).slice(0, 100),
 		// Archiving immediately won't let users click the buttons.
 		autoArchiveDuration: 1440,
 	});
@@ -99,7 +91,7 @@ export async function check_autothread_permissions(
 	thread: ThreadChannel,
 	member: GuildMember,
 ): Promise<boolean> {
-	const allowed_ids = [...THREAD_ADMIN_IDS];
+	const allowed_ids = [...THREAD_ADMIN_IDS, ...HELPER_ROLES];
 	if (thread.ownerId) allowed_ids.push(thread.ownerId);
 
 	await thread.fetchStarterMessage().then((message) => {
@@ -143,10 +135,10 @@ export async function get_ending_message(
 
 	return clickable_participants.size
 		? {
-			components: [row],
-			embeds: [embed],
-		}
+				components: [row],
+				embeds: [embed],
+		  }
 		: {
-			embeds: [embed],
-		};
+				embeds: [embed],
+		  };
 }

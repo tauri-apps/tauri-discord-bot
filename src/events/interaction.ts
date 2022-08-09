@@ -21,7 +21,7 @@ export default event({
 				if (interaction.customId === 'solve') {
 					try {
 						// Attempt to solve the channel
-						await solve_thread(channel);
+						await solve_thread(channel, interaction.member)
 						// Successfully solved the channel, update the button
 						const msg = wrap_in_embed(
 							'Thread solved. Thank you everyone! 🥳',

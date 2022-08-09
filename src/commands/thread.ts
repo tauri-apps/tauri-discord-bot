@@ -59,44 +59,50 @@ export default command({
 	},
 
 	run: async ({ interaction }) => {
-		const subcommand = interaction.options.getSubcommand(true);
-		const thread = await interaction.channel?.fetch();
+		try {
+			const subcommand = interaction.options.getSubcommand(true);
+			const thread = await interaction.channel?.fetch();
 
-		if (!thread?.isThread())
-			return await interaction.followUp('This channel is not a thread');
+			if (!thread?.isThread())
+				throw new Error('This channel is not a thread');
 
-		const member = await get_member(interaction);
+			const member = await get_member(interaction);
 
-		if (!member) return await interaction.followUp('Unable to find you');
+			if (!member) throw new Error('Unable to find you');
 
-		const has_permission = await check_autothread_permissions(
-			thread,
-			member,
-		);
-
-		if (!has_permission)
-			return await interaction.followUp(
-				"You don't have the permissions to manage this thread",
+			const has_permission = await check_autothread_permissions(
+				thread,
+				member,
 			);
 
-		switch (subcommand) {
-			case 'archive': {
-				await thread.setArchived(true).catch(no_op);
+			if (!has_permission)
+				throw new Error(
+					"You don't have the permissions to manage this thread",
+				);
 
-				await interaction.followUp('Thread archived');
-				break;
-			}
+			switch (subcommand) {
+				case 'archive': {
+					await thread.setArchived(true).catch(no_op);
+					// Follow up the interaction
+					await interaction.followUp(
+						wrap_in_embed('Thread archived'),
+					);
+					// Delete the reply after 10 seconds
+					setTimeout(async () => {
+						await interaction.deleteReply();
+					}, 10000);
+					break;
+				}
 
-			case 'rename': {
-				// Get the new name from the interaction options, remove bloat from links and replace colons with semicolons
-				const new_name = interaction.options
-					.getString('name', true)
-					.replaceAll('http://', '')
-					.replaceAll('https://', '')
-					.replaceAll(':', ';');
-				const parent_id = thread.parentId || '';
+				case 'rename': {
+					// Get the new name from the interaction options, remove bloat from links and replace colons with semicolons
+					const new_name = interaction.options
+						.getString('name', true)
+						.replaceAll('http://', '')
+						.replaceAll('https://', '')
+						.replaceAll(':', ';');
+					const parent_id = thread.parentId || '';
 
-				try {
 					// Make sure the new name isn't the same as the old one so rename calls aren't wasted
 					if (new_name === thread.name.slice(2))
 						throw new Error(
@@ -119,27 +125,12 @@ export default command({
 					setTimeout(async () => {
 						await interaction.deleteReply();
 					}, 10000);
-				} catch (e) {
-					// Send the error
-					const reply = (await interaction.followUp(
-						wrap_in_embed((e as Error).message),
-					)) as Message;
-					// Delete the error after 15 seconds
-					try {
-						setTimeout(async () => {
-							reply.delete();
-						}, 15000);
-					} catch (e) {
-						console.error(e);
-					}
+					break;
 				}
-				break;
-			}
 
-			case 'solve': {
-				try {
+				case 'solve': {
 					// Attempt to solve the thread
-					await solve_thread(thread);
+					await solve_thread(thread, interaction.member);
 					// Successfully solved the thread
 					// Get the first message in the thread
 					const start_message = await thread.fetchStarterMessage();
@@ -172,25 +163,10 @@ export default command({
 					setTimeout(async () => {
 						await interaction.deleteReply();
 					}, 10000);
-				} catch (e) {
-					// Send the error
-					const reply = (await interaction.followUp(
-						wrap_in_embed((e as Error).message),
-					)) as Message;
-					// Delete the error after 15 seconds
-					try {
-						setTimeout(async () => {
-							reply.delete();
-						}, 15000);
-					} catch (e) {
-						console.error(e);
-					}
+					break;
 				}
-				break;
-			}
 
-			case 'reopen':
-				try {
+				case 'reopen':
 					// Attempt to reopen the thread
 					await reopen_thread(thread);
 					// Successfully reopened the thread
@@ -227,21 +203,21 @@ export default command({
 					setTimeout(async () => {
 						await interaction.deleteReply();
 					}, 10000);
-				} catch (e) {
-					// Send the error
-					const reply = (await interaction.followUp(
-						wrap_in_embed((e as Error).message),
-					)) as Message;
-					// Delete the error after 15 seconds
-					try {
-						setTimeout(async () => {
-							reply.delete();
-						}, 15000);
-					} catch (e) {
-						console.error(e);
-					}
-				}
-				break;
+					break;
+			}
+		} catch (e) {
+			// Send the error
+			const reply = (await interaction.followUp(
+				wrap_in_embed((e as Error).message),
+			)) as Message;
+			// Delete the error after 15 seconds
+			try {
+				setTimeout(async () => {
+					reply.delete();
+				}, 15000);
+			} catch (e) {
+				console.error(e);
+			}
 		}
 	},
 });
