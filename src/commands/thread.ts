@@ -101,7 +101,8 @@ export default command({
 						.getString('name', true)
 						.replaceAll('http://', '')
 						.replaceAll('https://', '')
-						.replaceAll(':', ';');
+						.replaceAll(':', ';')
+						.replace('\n', ' ');
 					const parent_id = thread.parentId || '';
 
 					// Make sure the new name isn't the same as the old one so rename calls aren't wasted

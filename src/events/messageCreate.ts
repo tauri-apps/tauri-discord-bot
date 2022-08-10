@@ -81,7 +81,8 @@ export default event({
 		const raw_name = message.content
 			.replaceAll('http://', '')
 			.replaceAll('https://', '')
-			.replaceAll(':', ';');
+			.replaceAll(':', ';')
+			.replace('\n', ' ');
 
 		const name = HELP_THREAD_CHANNELS.includes(message.channelId)
 			? add_thread_prefix(raw_name, false)
