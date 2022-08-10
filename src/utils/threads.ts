@@ -6,7 +6,7 @@ import {
 	Snowflake,
 	ThreadChannel,
 } from 'discord.js';
-import { DEV_MODE, HELPER_ROLES, THREAD_ADMIN_IDS } from '../config';
+import { DEV_MODE, HELPER_ROLES, HELP_THREAD_CHANNELS, THREAD_ADMIN_IDS } from '../config';
 import { build_embed } from './embed_helpers';
 import { no_op, undefined_on_error } from './promise';
 import { has_any_role_or_id } from './snowflake';
@@ -49,8 +49,8 @@ export async function solve_thread(thread: ThreadChannel, member: GuildMember) {
 	if (thread.name.startsWith('✅'))
 		throw new Error('Thread already marked as solved');
 	// Make sure the thread is located in the AUTO_THREAD_CHANNELS
-	if (!AUTO_THREAD_CHANNELS.includes(thread.parentId || ''))
-		throw new Error('This command only works in a auto thread');
+	if (!HELP_THREAD_CHANNELS.includes(thread.parentId || ''))
+		throw new Error('This command only works in a help thread');
 	// Make sure the channel hasn't reached it rename limit
 	if (rename_limit.is_limited(thread.id, true))
 		throw new Error(
@@ -68,9 +68,9 @@ export async function reopen_thread(thread: ThreadChannel) {
 	// Make sure the thread is marked as solved
 	if (!thread.name.startsWith('✅'))
 		throw new Error("Thread's not marked as solved");
-	// Make sure the thread is located in the AUTO_THREAD_CHANNELS
-	if (!AUTO_THREAD_CHANNELS.includes(thread.parentId || ''))
-		throw new Error('This command only works in a auto thread');
+	// Make sure the thread is located in the HELP_THREAD_CHANNELS
+	if (!HELP_THREAD_CHANNELS.includes(thread.parentId || ''))
+		throw new Error('This command only works in a help thread');
 	// Make sure the thread hasn't reached its reopening limit
 	if (reopen_limit.is_limited(thread.id, true))
 		throw new Error('You can only reopen a thread once every 24 hours');

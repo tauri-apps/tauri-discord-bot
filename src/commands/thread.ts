@@ -1,5 +1,5 @@
 import { command } from 'jellycommands';
-import { AUTO_THREAD_CHANNELS } from '../config';
+import { HELP_THREAD_CHANNELS } from '../config';
 import { wrap_in_embed } from '../utils/embed_helpers';
 import { get_member } from '../utils/snowflake';
 import {
@@ -63,7 +63,7 @@ export default command({
 			const subcommand = interaction.options.getSubcommand(true);
 			const thread = await interaction.channel?.fetch();
 
-			if (!thread?.isThread())
+			if (!thread?.isThread()) 
 				throw new Error('This channel is not a thread');
 
 			const member = await get_member(interaction);
@@ -117,7 +117,7 @@ export default command({
 					await rename_thread(
 						thread,
 						new_name,
-						AUTO_THREAD_CHANNELS.includes(parent_id),
+						HELP_THREAD_CHANNELS.includes(parent_id),
 					);
 					// Follow up the interaction
 					await interaction.followUp(wrap_in_embed('Thread renamed'));
@@ -129,6 +129,10 @@ export default command({
 				}
 
 				case 'solve': {
+					// Check if this is a help channel
+					if (!HELP_THREAD_CHANNELS.includes(thread.parentId)){
+						throw new Error("Can't solve a non-help channel")
+					}
 					// Attempt to solve the thread
 					await solve_thread(thread, interaction.member);
 					// Successfully solved the thread
@@ -167,6 +171,10 @@ export default command({
 				}
 
 				case 'reopen':
+					// Check if this is a help channel
+					if (!HELP_THREAD_CHANNELS.includes(thread.parentId)){
+						throw new Error("Can't reopen a non-help channel")
+					}
 					// Attempt to reopen the thread
 					await reopen_thread(thread);
 					// Successfully reopened the thread
