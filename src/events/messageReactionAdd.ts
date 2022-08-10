@@ -1,6 +1,4 @@
-import { Client, GuildTextBasedChannel } from 'discord.js';
 import { event } from 'jellycommands';
-import { REACTION_ROLE, REACTION_ROLE_CHANNEL } from '../config';
 import { hasPermission } from '../utils/reactionHandler';
 
 export default event({

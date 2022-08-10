@@ -63,7 +63,7 @@ export default command({
 			const subcommand = interaction.options.getSubcommand(true);
 			const thread = await interaction.channel?.fetch();
 
-			if (!thread?.isThread()) 
+			if (!thread?.isThread())
 				throw new Error('This channel is not a thread');
 
 			const member = await get_member(interaction);
@@ -130,8 +130,8 @@ export default command({
 
 				case 'solve': {
 					// Check if this is a help channel
-					if (!HELP_THREAD_CHANNELS.includes(thread.parentId)){
-						throw new Error("Can't solve a non-help channel")
+					if (!HELP_THREAD_CHANNELS.includes(thread.parentId)) {
+						throw new Error("Can't solve a non-help channel");
 					}
 					// Attempt to solve the thread
 					await solve_thread(thread, interaction.member);
@@ -172,8 +172,8 @@ export default command({
 
 				case 'reopen':
 					// Check if this is a help channel
-					if (!HELP_THREAD_CHANNELS.includes(thread.parentId)){
-						throw new Error("Can't reopen a non-help channel")
+					if (!HELP_THREAD_CHANNELS.includes(thread.parentId)) {
+						throw new Error("Can't reopen a non-help channel");
 					}
 					// Attempt to reopen the thread
 					await reopen_thread(thread);

@@ -6,12 +6,16 @@ import {
 	Snowflake,
 	ThreadChannel,
 } from 'discord.js';
-import { DEV_MODE, HELPER_ROLES, HELP_THREAD_CHANNELS, THREAD_ADMIN_IDS } from '../config';
+import {
+	DEV_MODE,
+	HELPER_ROLES,
+	HELP_THREAD_CHANNELS,
+	THREAD_ADMIN_IDS,
+} from '../config';
 import { build_embed } from './embed_helpers';
 import { no_op, undefined_on_error } from './promise';
 import { has_any_role_or_id } from './snowflake';
 import { RateLimitStore } from './ratelimit';
-import { AUTO_THREAD_CHANNELS } from '../config';
 
 /**
  * Discord allows 2 renames every 10 minutes. We need one always available
