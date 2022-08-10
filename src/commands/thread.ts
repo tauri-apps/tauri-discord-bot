@@ -11,6 +11,7 @@ import {
 } from '../utils/threads.js';
 import { no_op } from '../utils/promise.js';
 import {
+	GuildMember,
 	Message,
 	MessageActionRow,
 	MessageButton,
@@ -134,7 +135,10 @@ export default command({
 						throw new Error("Can't solve a non-help channel");
 					}
 					// Attempt to solve the thread
-					await solve_thread(thread, interaction.member);
+					await solve_thread(
+						thread,
+						interaction.member as GuildMember,
+					);
 					// Successfully solved the thread
 					// Get the first message in the thread
 					const start_message = await thread.fetchStarterMessage();
