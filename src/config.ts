@@ -38,12 +38,21 @@ export const BOT_DEVS = [
 //  list of roles/user IDs other than the creator allowed to modify threads
 export const THREAD_ADMIN_IDS = [...ADMIN_ROLES, ...BOT_DEVS];
 
-// channels that will be automatically threaded when a message is created
-export const AUTO_THREAD_CHANNELS = DEV_MODE
+// auto thread channels with the issue handling feature
+export const HELP_THREAD_CHANNELS = DEV_MODE
 	? [process.env.DEV_HELP_CHANNEL]
 	: [
 			// #help-triage
 			'625037620996734986',
+	  ];
+
+// channels that will be automatically threaded when a message is created
+export const AUTO_THREAD_CHANNELS = DEV_MODE
+	? [process.env.DEV_DID_A_THING_CHANNEL, ...HELP_THREAD_CHANNELS]
+	: [
+			// #did-a-thing
+			'616234029842300930',
+			...HELP_THREAD_CHANNELS,
 	  ];
 
 export const REACTION_ROLE: {

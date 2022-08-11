@@ -1,5 +1,5 @@
 import { command } from 'jellycommands';
-import { AUTO_THREAD_CHANNELS } from '../config';
+import { HELP_THREAD_CHANNELS } from '../config';
 import { wrap_in_embed } from '../utils/embed_helpers';
 import { get_member } from '../utils/snowflake';
 import {
@@ -11,6 +11,7 @@ import {
 } from '../utils/threads.js';
 import { no_op } from '../utils/promise.js';
 import {
+	GuildMember,
 	Message,
 	MessageActionRow,
 	MessageButton,
@@ -100,7 +101,8 @@ export default command({
 						.getString('name', true)
 						.replaceAll('http://', '')
 						.replaceAll('https://', '')
-						.replaceAll(':', ';');
+						.replaceAll(':', ';')
+						.replace(/\n+/g, ' ');
 					const parent_id = thread.parentId || '';
 
 					// Make sure the new name isn't the same as the old one so rename calls aren't wasted
@@ -117,7 +119,7 @@ export default command({
 					await rename_thread(
 						thread,
 						new_name,
-						AUTO_THREAD_CHANNELS.includes(parent_id),
+						HELP_THREAD_CHANNELS.includes(parent_id),
 					);
 					// Follow up the interaction
 					await interaction.followUp(wrap_in_embed('Thread renamed'));
@@ -129,8 +131,15 @@ export default command({
 				}
 
 				case 'solve': {
+					// Check if this is a help channel
+					if (!HELP_THREAD_CHANNELS.includes(thread.parentId)) {
+						throw new Error("Can't solve a non-help channel");
+					}
 					// Attempt to solve the thread
-					await solve_thread(thread, interaction.member);
+					await solve_thread(
+						thread,
+						interaction.member as GuildMember,
+					);
 					// Successfully solved the thread
 					// Get the first message in the thread
 					const start_message = await thread.fetchStarterMessage();
@@ -167,6 +176,10 @@ export default command({
 				}
 
 				case 'reopen':
+					// Check if this is a help channel
+					if (!HELP_THREAD_CHANNELS.includes(thread.parentId)) {
+						throw new Error("Can't reopen a non-help channel");
+					}
 					// Attempt to reopen the thread
 					await reopen_thread(thread);
 					// Successfully reopened the thread
