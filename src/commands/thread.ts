@@ -71,7 +71,7 @@ export default command({
 			// This command doesn't have to be run inside a thread nor does it require special permissions
 			if (subcommand === 'list') {
 				// Don't respond to the command wherever it was ran
-				await interaction.deleteReply();
+				await interaction.deleteReply(); 
 				// Get all active threads in the guild
 				const threads = (
 					await interaction.guild.channels.fetchActiveThreads()
@@ -86,7 +86,7 @@ export default command({
 					.map((thread) => `<#${thread.id}>`)
 					.join('\n');
 				// Send the message to the user
-				await interaction.user.send(message);
+				await interaction.user.send(wrap_in_embed(message));
 				return;
 			}
 
