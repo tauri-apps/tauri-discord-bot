@@ -94,15 +94,20 @@ export default command({
 				// Don't respond to the command wherever it was ran
 				await interaction.deleteReply();
 
-				// Get all active threads in the guild that the user has READ_MESSAGE_HISTORY access to
+				// Get all active non-private threads in the guild that the user has access to
 				const threads = (
 					await interaction.guild.channels.fetchActiveThreads()
 				).threads
 					.map((x) => x)
-					.filter((thread) =>
-						thread
-							.permissionsFor(interaction.user)
-							.has('READ_MESSAGE_HISTORY'),
+					.filter(
+						(thread) =>
+							!thread.isPrivate() &&
+							thread
+								.permissionsFor(interaction.user)
+								.has(
+									['READ_MESSAGE_HISTORY', 'VIEW_CHANNEL'],
+									false,
+								),
 					);
 
 				let message = '';
@@ -115,7 +120,7 @@ export default command({
 						// Set a title for the DM
 						message =
 							"**Here's a list of all currently active threads**\n";
-						// Add all unsolved threads to the message
+						// Add all threads to the message
 						message += threads
 							.map((thread) => `<#${thread.id}>`)
 							.join('\n');
@@ -125,7 +130,7 @@ export default command({
 						// Set a title for the DM
 						message =
 							"**Here's a list of all currently active chats**\n";
-						// Add all unsolved threads to the message
+						// Add all chat threads to the message
 						message += threads
 							.filter(
 								(val) =>
@@ -140,7 +145,7 @@ export default command({
 						// Set a title for the DM
 						message =
 							"**Here's a list of all currently active unsolved issues**\n";
-						// Add all unsolved threads to the message
+						// Add all unsolved issue threads to the message
 						message += threads
 							.filter((val) => val.name.startsWith('❔'))
 							.map((thread) => `<#${thread.id}>`)
