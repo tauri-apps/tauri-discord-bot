@@ -89,75 +89,6 @@ export default command({
 			const subcommand = interaction.options.getSubcommand(true);
 			const thread = await interaction.channel?.fetch();
 
-			// This command doesn't have to be run inside a thread nor does it require special permissions
-			if (subcommand === 'list') {
-				// Don't respond to the command wherever it was ran
-				await interaction.deleteReply();
-
-				// Get all active non-private threads in the guild that the user has access to
-				const threads = (
-					await interaction.guild.channels.fetchActiveThreads()
-				).threads
-					.map((x) => x)
-					.filter(
-						(thread) =>
-							!thread.isPrivate() &&
-							thread
-								.permissionsFor(interaction.user)
-								.has(
-									['READ_MESSAGE_HISTORY', 'VIEW_CHANNEL'],
-									false,
-								),
-					);
-
-				let message = '';
-				// 'all', 'chats', 'unsolved_issues'
-				const filter = interaction.options.get('filter')
-					? interaction.options.get('filter').value
-					: 'all';
-				switch (filter) {
-					case 'all': {
-						// Set a title for the DM
-						message =
-							"**Here's a list of all currently active threads**\n";
-						// Add all threads to the message
-						message += threads
-							.map((thread) => `<#${thread.id}>`)
-							.join('\n');
-						break;
-					}
-					case 'chats': {
-						// Set a title for the DM
-						message =
-							"**Here's a list of all currently active chats**\n";
-						// Add all chat threads to the message
-						message += threads
-							.filter(
-								(val) =>
-									!val.name.startsWith('✅') &&
-									!val.name.startsWith('❔'),
-							)
-							.map((thread) => `<#${thread.id}>`)
-							.join('\n');
-						break;
-					}
-					case 'unsolved_issues': {
-						// Set a title for the DM
-						message =
-							"**Here's a list of all currently active unsolved issues**\n";
-						// Add all unsolved issue threads to the message
-						message += threads
-							.filter((val) => val.name.startsWith('❔'))
-							.map((thread) => `<#${thread.id}>`)
-							.join('\n');
-						break;
-					}
-				}
-				// Send the message to the user
-				await interaction.user.send(wrap_in_embed(message));
-				return;
-			}
-
 			if (!thread?.isThread())
 				throw new Error('This channel is not a thread');
 
@@ -186,6 +117,74 @@ export default command({
 					setTimeout(async () => {
 						await interaction.deleteReply();
 					}, 10000);
+					break;
+				}
+
+				case 'list': {
+					// Don't respond to the command wherever it was ran
+					await interaction.deleteReply();
+
+					// Get all active non-private threads in the guild that the user has access to
+					const threads = (
+						await interaction.guild.channels.fetchActiveThreads()
+					).threads
+						.map((x) => x)
+						.filter(
+							(thread) =>
+								!thread.isPrivate() &&
+								thread
+									.permissionsFor(interaction.user)
+									.has([
+										'READ_MESSAGE_HISTORY',
+										'VIEW_CHANNEL',
+									]),
+						);
+
+					let message = '';
+					// 'all', 'chats', 'unsolved_issues'
+					const filter = interaction.options.get('filter')
+						? interaction.options.get('filter').value
+						: 'all';
+					switch (filter) {
+						case 'all': {
+							// Set a title for the DM
+							message =
+								"**Here's a list of all currently active threads**\n";
+							// Add all threads to the message
+							message += threads
+								.map((thread) => `<#${thread.id}>`)
+								.join('\n');
+							break;
+						}
+						case 'chats': {
+							// Set a title for the DM
+							message =
+								"**Here's a list of all currently active chats**\n";
+							// Add all chat threads to the message
+							message += threads
+								.filter(
+									(val) =>
+										!val.name.startsWith('✅') &&
+										!val.name.startsWith('❔'),
+								)
+								.map((thread) => `<#${thread.id}>`)
+								.join('\n');
+							break;
+						}
+						case 'unsolved_issues': {
+							// Set a title for the DM
+							message =
+								"**Here's a list of all currently active unsolved issues**\n";
+							// Add all unsolved issue threads to the message
+							message += threads
+								.filter((val) => val.name.startsWith('❔'))
+								.map((thread) => `<#${thread.id}>`)
+								.join('\n');
+							break;
+						}
+					}
+					// Send the message to the user
+					await interaction.user.send(wrap_in_embed(message));
 					break;
 				}
 
@@ -223,6 +222,7 @@ export default command({
 					}, 10000);
 					break;
 				}
+
 				case 'solve': {
 					// Check if this is a help channel
 					if (!HELP_THREAD_CHANNELS.includes(thread.parentId)) {
