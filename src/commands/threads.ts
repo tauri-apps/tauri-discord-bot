@@ -10,14 +10,7 @@ export default command({
 		{
 			name: 'list',
 			description: 'List all open threads',
-			type: 'SUB_COMMAND',
-			options: [
-				{
-					name: 'filter',
-					description: 'List open threads',
-					type: 'STRING',
-				},
-			],
+			type: 'SUB_COMMAND'
 		},
 	],
 
