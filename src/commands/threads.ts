@@ -23,17 +23,6 @@ export default command({
 					name: 'filter',
 					description: 'List open threads',
 					type: 'STRING',
-					required: true,
-					choices: [
-						{
-							name: 'Active',
-							value: 'active',
-						},
-						{
-							name: 'Unsolved issues',
-							value: 'unsolved_issues',
-						},
-					],
 				},
 			],
 		},
@@ -63,86 +52,36 @@ export default command({
 				);
 
 			switch (subcommand) {
-				case 'list':
-					{
-						let message = '';
-						// 'active', 'unsolved_issues'
-						const filter = interaction.options.get('filter')
-							? interaction.options.get('filter').value
-							: 'active';
-						switch (filter) {
-							case 'active': {
-								// Set a title for the DM
-								message =
-									"**Here's a list of all currently active chats**\n";
-								// Add all chat threads to the message
-								message += threads
-									.filter(
-										(val) =>
-											!val.name.startsWith('✅') &&
-											!val.name.startsWith('❔'),
-									)
-									.map((thread) => `<#${thread.id}>`)
-									.join('\n');
-								break;
-							}
-							case 'unsolved_issues': {
-								// Set a title for the DM
-								message =
-									"**Here's a list of all currently active unsolved issues**\n";
-								// Add all unsolved issue threads to the message
-								message += threads
-									.filter((val) => val.name.startsWith('❔'))
-									.map((thread) => `<#${thread.id}>`)
-									.join('\n');
-								break;
-							}
-						}
-						// Send the message to the user
-						await interaction.user.send(wrap_in_embed(message));
-						break;
+				case 'list': {
+					// Get the parent channel if we're using it inside a thread
+					const parentChannel =
+						interaction.channel.type === 'GUILD_TEXT'
+							? interaction.channel
+							: interaction.channel.parent;
+					// Filter all threads based on the channel the command was ran in
+					const listThreads = threads
+						.filter(
+							(thread) => thread.parentId === parentChannel.id,
+						)
+						.map((thread) => `<#${thread.id}>`);
+					// Set a title for the DM
+					let message = `**Here's a list of all currently active threads in <#${parentChannel.id}>**\n`;
+					if (listThreads.length === 0) {
+						message = `**There are currently no active threads in <#${parentChannel.id}>**`;
+					} else {
+						// Add all chat threads to the message
+						message += threads
+							.filter(
+								(thread) =>
+									thread.parentId === parentChannel.id,
+							)
+							.map((thread) => `<#${thread.id}>`)
+							.join('\n');
 					}
-					// Check if this is a help channel
-					if (!HELP_THREAD_CHANNELS.includes(thread.parentId)) {
-						throw new Error("Can't reopen a non-help channel");
-					}
-					// Attempt to reopen the thread
-					await reopen_thread(thread);
-					// Successfully reopened the thread
-					// Get the start message of the thread
-					const start_message = await thread.fetchStarterMessage();
-					// Get the first 2 messages after the start message
-					const messages = await thread.messages.fetch({
-						limit: 2,
-						after: start_message.id,
-					});
-					// Filter to get the bot message with the button
-					const bot_message = messages
-						.filter((m) => m.components.length > 0)
-						.first() as Message;
-					// Change the message
-					const msg = wrap_in_embed(
-						"I've created a thread for your message. Please continue any relevant discussion in this thread. You can rename it with the `/thread rename` command if I failed to set a proper name for it.",
-					) as MessageEditOptions;
-					// Change the button
-					const row = new MessageActionRow().addComponents(
-						new MessageButton()
-							.setCustomId('solve')
-							.setLabel('Mark as Solved')
-							.setStyle('PRIMARY')
-							.setEmoji('✅'),
-					);
-					msg.components = [row];
-					await bot_message.edit(msg);
-					// Commands require a reply
-					await interaction.followUp(
-						wrap_in_embed('Thread reopened.'),
-					);
-					// Delete the reply after 10 seconds
-					setTimeout(async () => {
-						await interaction.deleteReply();
-					}, 10000);
+					// Send the message to the user
+					await interaction.user.send(wrap_in_embed(message));
 					break;
+				}
 			}
 		} catch (e) {
 			// Send the error
