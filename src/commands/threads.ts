@@ -1,13 +1,6 @@
 import { command } from 'jellycommands';
-import { HELP_THREAD_CHANNELS } from '../config';
 import { wrap_in_embed } from '../utils/embed_helpers';
-import { reopen_thread } from '../utils/threads.js';
-import {
-	Message,
-	MessageActionRow,
-	MessageButton,
-	MessageEditOptions,
-} from 'discord.js';
+import { Message } from 'discord.js';
 
 export default command({
 	name: 'threads',
