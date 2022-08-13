@@ -23,14 +23,11 @@ export default command({
 					name: 'filter',
 					description: 'List open threads',
 					type: 'STRING',
+					required: true,
 					choices: [
 						{
 							name: 'Active',
 							value: 'active',
-						},
-						{
-							name: 'Chats',
-							value: 'chats',
 						},
 						{
 							name: 'Unsolved issues',
@@ -69,22 +66,12 @@ export default command({
 				case 'list':
 					{
 						let message = '';
-						// 'active', 'chats', 'unsolved_issues'
+						// 'active', 'unsolved_issues'
 						const filter = interaction.options.get('filter')
 							? interaction.options.get('filter').value
 							: 'active';
 						switch (filter) {
 							case 'active': {
-								// Set a title for the DM
-								message =
-									"**Here's a list of all currently active threads**\n";
-								// Add all threads to the message
-								message += threads
-									.map((thread) => `<#${thread.id}>`)
-									.join('\n');
-								break;
-							}
-							case 'chats': {
 								// Set a title for the DM
 								message =
 									"**Here's a list of all currently active chats**\n";
