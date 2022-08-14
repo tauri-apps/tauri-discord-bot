@@ -121,9 +121,9 @@ export async function sendReactionRoleMessage(client: Client) {
 
             // Get all users that reacted minus the bot
             console.debug('Getting users who reacted...');
-            const reactedUsers = (await reaction.users.fetch()).filter(
-                (user) => user.id !== message.author.id,
-            );
+            const reactedUsers = (await reaction.users.fetch())
+                .filter((user) => user.id !== message.author.id);
+                // .filter((user) => !!channel.guild.members.fetch(user.id));
             console.debug('Finished fetching users');
 
             // Loop all users and add the role
