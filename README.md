@@ -28,7 +28,7 @@ This bot is based off of the amazing [Svelte Bot](https://github.com/pngwn/svelt
     -   `/thread archive`: Archive an active thread without marking it as solved
     -   `/thread reopen`: Reopen a thread that's been accidentally marked as solved
 -   `threads`: These are commands to manage all threads in the guild
-    -   `/threads list`: Lists currently active threads in the channel the command was ran in
+    -   `/threads list`: Lists currently active threads in the channel the command was ran in. If ran in a help channel it will only output the unsolved threads
 
 ## Stack
 
