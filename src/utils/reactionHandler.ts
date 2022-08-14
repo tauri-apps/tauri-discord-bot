@@ -127,12 +127,18 @@ export async function sendReactionRoleMessage(client: Client) {
             console.debug('Finished fetching users');
 
             // Loop all users and add the role
+            let counter = 0;
             reactedUsers.forEach(async (user) => {
                 try {
                     const result = await hasPermission(reaction, user);
-                    console.debug('Attempting to add role...');
+                    counter += 1;
+                    console.debug(
+                        `(${counter} / ${reactedUsers.size}) Attempting to add role...`,
+                    );
                     await result.member.roles.add(result.roleId);
-                    console.debug('Role added');
+                    console.debug(
+                        `(${counter} / ${reactedUsers.size}) Role added`,
+                    );
                 } catch (error) {
                     console.error(`Issue adding role: ${error}`);
                 }
