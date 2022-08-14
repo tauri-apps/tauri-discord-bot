@@ -132,13 +132,16 @@ export async function sendReactionRoleMessage(client: Client) {
                 try {
                     const result = await hasPermission(reaction, user);
                     counter += 1;
+                    const localCounter = counter;
                     console.debug(
-                        `(${counter} / ${reactedUsers.size}) Attempting to add role...`,
+                        `(${localCounter} / ${reactedUsers.size}) Attempting to add role...`,
                     );
-                    await result.member.roles.add(result.roleId);
-                    console.debug(
-                        `(${counter} / ${reactedUsers.size}) Role added`,
-                    );
+                    if (result) {
+                        await result.member.roles.add(result.roleId);
+                        console.debug(
+                            `(${localCounter} / ${reactedUsers.size}) Role added`,
+                        );
+                    }
                 } catch (error) {
                     console.error(`Issue adding role: ${error}`);
                 }
