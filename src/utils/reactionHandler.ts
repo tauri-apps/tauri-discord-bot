@@ -136,7 +136,7 @@ export async function sendReactionRoleMessage(client: Client) {
                         `(${counter}/${reactedUsers.size.toString()}) Attempting to add role...`,
                     );
                     await result.member.roles.add(result.roleId);
-                    console.debug('Role added');
+                    console.debug(`(${counter}/${reactedUsers.size.toString()}) Role added`);
                 } catch (error) {
                     console.error(`Issue adding role: ${error}`);
                 }
