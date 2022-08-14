@@ -1,6 +1,7 @@
 import { command } from 'jellycommands';
 import { wrap_in_embed } from '../utils/embed_helpers';
 import { Message } from 'discord.js';
+import { HELP_THREAD_CHANNELS } from '../config';
 
 export default command({
     name: 'threads',
@@ -43,22 +44,20 @@ export default command({
                             ? interaction.channel
                             : interaction.channel.parent;
                     // Filter all threads based on the channel the command was ran in
-                    const listThreads = threads
+                    let listThreads = threads
                         .filter(
                             (thread) => thread.parentId === parentChannel.id,
-                        )
-                        .map((thread) => `<#${thread.id}>`);
+                        );
+					if (HELP_THREAD_CHANNELS.includes(parentChannel.id)) {
+						listThreads = listThreads.filter((thread)=>thread.name.startsWith('❔'))
+					}
                     // Set a title for the DM
                     let message = `**Here's a list of all currently active threads in <#${parentChannel.id}>**\n`;
                     if (listThreads.length === 0) {
                         message = `**There are currently no active threads in <#${parentChannel.id}>**`;
                     } else {
                         // Add all chat threads to the message
-                        message += threads
-                            .filter(
-                                (thread) =>
-                                    thread.parentId === parentChannel.id,
-                            )
+                        message += listThreads
                             .map((thread) => `<#${thread.id}>`)
                             .join('\n');
                     }
