@@ -32,7 +32,6 @@ export default command({
 			name: 'rename',
 			description: 'Rename a thread',
 			type: 'SUB_COMMAND',
-
 			options: [
 				{
 					name: 'name',
@@ -43,13 +42,13 @@ export default command({
 			],
 		},
 		{
-			name: 'solve',
-			description: 'Mark a thread as solved',
+			name: 'reopen',
+			description: 'Reopen a solved thread',
 			type: 'SUB_COMMAND',
 		},
 		{
-			name: 'reopen',
-			description: 'Reopen a solved thread',
+			name: 'solve',
+			description: 'Mark a thread as solved',
 			type: 'SUB_COMMAND',
 		},
 	],
@@ -175,7 +174,7 @@ export default command({
 					break;
 				}
 
-				case 'reopen':
+				case 'reopen': {
 					// Check if this is a help channel
 					if (!HELP_THREAD_CHANNELS.includes(thread.parentId)) {
 						throw new Error("Can't reopen a non-help channel");
@@ -217,6 +216,7 @@ export default command({
 						await interaction.deleteReply();
 					}, 10000);
 					break;
+				}
 			}
 		} catch (e) {
 			// Send the error
