@@ -10,20 +10,18 @@ export default command({
 		{
 			name: 'list',
 			description: 'List all open threads',
-			type: 'SUB_COMMAND'
+			type: 'SUB_COMMAND',
 		},
 	],
 
 	global: true,
 	defer: {
-		ephemeral: false,
+		ephemeral: true,
 	},
 
 	run: async ({ interaction }) => {
 		try {
 			const subcommand = interaction.options.getSubcommand(true);
-			// Don't respond to the command wherever it was ran
-			await interaction.deleteReply();
 			// Get all active non-private threads in the guild that the user has access to
 			const threads = (
 				await interaction.guild.channels.fetchActiveThreads()
@@ -65,7 +63,7 @@ export default command({
 							.join('\n');
 					}
 					// Send the message to the user
-					await interaction.user.send(wrap_in_embed(message));
+					await interaction.followUp(wrap_in_embed(message));
 					break;
 				}
 			}
