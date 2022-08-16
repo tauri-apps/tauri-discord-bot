@@ -44,13 +44,14 @@ export default command({
                             ? interaction.channel
                             : interaction.channel.parent;
                     // Filter all threads based on the channel the command was ran in
-                    let listThreads = threads
-                        .filter(
-                            (thread) => thread.parentId === parentChannel.id,
+                    let listThreads = threads.filter(
+                        (thread) => thread.parentId === parentChannel.id,
+                    );
+                    if (HELP_THREAD_CHANNELS.includes(parentChannel.id)) {
+                        listThreads = listThreads.filter((thread) =>
+                            thread.name.startsWith('❔'),
                         );
-					if (HELP_THREAD_CHANNELS.includes(parentChannel.id)) {
-						listThreads = listThreads.filter((thread)=>thread.name.startsWith('❔'))
-					}
+                    }
                     // Set a title for the DM
                     let message = `**Here's a list of all currently active threads in <#${parentChannel.id}>**\n`;
                     if (listThreads.length === 0) {
@@ -62,7 +63,7 @@ export default command({
                             .join('\n');
                     }
                     // Send the message to the user
-                    await interaction.followUp(wrap_in_embed(message));
+                    await interaction.followUp(message);
                     break;
                 }
             }
