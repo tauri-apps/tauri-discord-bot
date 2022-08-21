@@ -400,15 +400,15 @@ discord-api-types@^0.33.3:
   resolved "https://registry.npmjs.org/discord-api-types/-/discord-api-types-0.33.5.tgz"
   integrity sha512-dvO5M52v7m7Dy96+XUnzXNsQ/0npsYpU6dL205kAtEDueswoz3aU3bh1UMoK4cQmcGtB1YRyLKqp+DXi05lzFg==
 
-discord-api-types@^0.36.1:
-  version "0.36.1"
-  resolved "https://registry.npmjs.org/discord-api-types/-/discord-api-types-0.36.1.tgz"
-  integrity sha512-PTDinUU574hXA9Ko9wrftL1iww1raNiRVKjuPIWQ5Li1g7vQPArpZWw9x01kh/IXLPdzSAJ6H8T0eAYzxzFzIg==
-
 discord-api-types@^0.36.2:
   version "0.36.2"
   resolved "https://registry.yarnpkg.com/discord-api-types/-/discord-api-types-0.36.2.tgz#2362bc544837be965ec99a5919f900c9699a7028"
   integrity sha512-TunPAvzwneK/m5fr4hxH3bMsrtI22nr9yjfHyo5NBGMjpsAauGNiGCmwoFf0oO3jSd2mZiKUvZwCKDaB166u2Q==
+
+discord-api-types@^0.37.3:
+  version "0.37.3"
+  resolved "https://registry.yarnpkg.com/discord-api-types/-/discord-api-types-0.37.3.tgz#41e0139304d75b75e1e12d514eb28970bb9add04"
+  integrity sha512-LWcx1jDL8zanQJOPwNmHdFQTr/PFflDw1VYoRmTjme7LEKLr2Qqa2uz04gjN0eNEYskM2TYkOvNn3H5rblFM6g==
 
 discord.js@13.10.2:
   version "13.10.2"
@@ -841,13 +841,13 @@ is-number@^7.0.0:
   resolved "https://registry.npmjs.org/is-number/-/is-number-7.0.0.tgz"
   integrity sha512-41Cifkg6e8TylSpdtTpeLVMqvSBEVzTttHvERD741+pnZ8ANv0004MRL43QKPDlK9cGvNp6NZWZUBlbGXYxxng==
 
-jellycommands@1.0.0-next.31:
-  version "1.0.0-next.31"
-  resolved "https://registry.yarnpkg.com/jellycommands/-/jellycommands-1.0.0-next.31.tgz#02169302b558e16d0868f4ab577e08133fe645d8"
-  integrity sha512-Yq16xNvbPqZZMmeJ99zPKrFIiiL1sWLg2pUTe4FuVCy+XaxFFK9UkM/DyZnyCtNTHBpNHkC3SB1Lbogi9LYZ1Q==
+jellycommands@1.0.0-next.34:
+  version "1.0.0-next.34"
+  resolved "https://registry.yarnpkg.com/jellycommands/-/jellycommands-1.0.0-next.34.tgz#dc3f818abf604014be94a206ab436e0c6fa53f8f"
+  integrity sha512-h8uX5gLbvz58w5N9LNXpKIQOe7Hny0+IcThcYZlVqP5u04U+Nkd4vVjFluBWIRieVdzgP2vW9tHEZoYNxt6low==
   dependencies:
     axios "^0.27.2"
-    discord-api-types "^0.36.1"
+    discord-api-types "^0.37.3"
     ghoststools "^0.6.3"
     joi "^17.6.0"
 
