@@ -853,10 +853,10 @@ is-number@^7.0.0:
   resolved "https://registry.npmjs.org/is-number/-/is-number-7.0.0.tgz"
   integrity sha512-41Cifkg6e8TylSpdtTpeLVMqvSBEVzTttHvERD741+pnZ8ANv0004MRL43QKPDlK9cGvNp6NZWZUBlbGXYxxng==
 
-jellycommands@1.0.0-next.34:
-  version "1.0.0-next.34"
-  resolved "https://registry.yarnpkg.com/jellycommands/-/jellycommands-1.0.0-next.34.tgz#dc3f818abf604014be94a206ab436e0c6fa53f8f"
-  integrity sha512-h8uX5gLbvz58w5N9LNXpKIQOe7Hny0+IcThcYZlVqP5u04U+Nkd4vVjFluBWIRieVdzgP2vW9tHEZoYNxt6low==
+jellycommands@1.0.0-next.36:
+  version "1.0.0-next.36"
+  resolved "https://registry.yarnpkg.com/jellycommands/-/jellycommands-1.0.0-next.36.tgz#685bd0273591466b55ba760cd155bcd987c724a6"
+  integrity sha512-qrbPrCgQeDTuQPiCmYRQ3UKSWqgm8vzbHapHmHVgkx1yEPIYerMZFIAJuXmP3+MSfmGWACdZLemqVbVqdGmwvg==
   dependencies:
     axios "^0.27.2"
     discord-api-types "^0.37.3"
