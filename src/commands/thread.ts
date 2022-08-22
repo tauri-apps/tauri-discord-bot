@@ -13,9 +13,10 @@ import { no_op } from '../utils/promise.js';
 import {
     GuildMember,
     Message,
-    MessageActionRow,
-    MessageButton,
+    ActionRowBuilder,
+    ButtonBuilder,
     MessageEditOptions,
+    ButtonStyle,
 } from 'discord.js';
 
 export default command({
@@ -26,17 +27,17 @@ export default command({
         {
             name: 'archive',
             description: 'Archive a thread',
-            type: 'SUB_COMMAND',
+            type: 'Subcommand',
         },
         {
             name: 'rename',
             description: 'Rename a thread',
-            type: 'SUB_COMMAND',
+            type: 'Subcommand',
             options: [
                 {
                     name: 'name',
                     description: 'The new name of the thread',
-                    type: 'STRING',
+                    type: 'String',
                     required: true,
                 },
             ],
@@ -44,12 +45,12 @@ export default command({
         {
             name: 'reopen',
             description: 'Reopen a solved thread',
-            type: 'SUB_COMMAND',
+            type: 'Subcommand',
         },
         {
             name: 'solve',
             description: 'Mark a thread as solved',
-            type: 'SUB_COMMAND',
+            type: 'Subcommand',
         },
     ],
 
@@ -156,13 +157,14 @@ export default command({
                         'Thread solved. Thank you everyone! 🥳',
                     ) as MessageEditOptions;
                     // Change the button
-                    const row = new MessageActionRow().addComponents(
-                        new MessageButton()
-                            .setCustomId('reopen')
-                            .setLabel('Mark as Unsolved')
-                            .setStyle('SECONDARY')
-                            .setEmoji('❔'),
-                    );
+                    const row =
+                        new ActionRowBuilder<ButtonBuilder>().addComponents(
+                            new ButtonBuilder()
+                                .setCustomId('reopen')
+                                .setLabel('Mark as Unsolved')
+                                .setStyle(ButtonStyle.Secondary)
+                                .setEmoji('❔'),
+                        );
                     msg.components = [row];
                     await bot_message.edit(msg);
                     // Commands require a reply
@@ -198,13 +200,14 @@ export default command({
                         "I've created a thread for your message. Please continue any relevant discussion in this thread. You can rename it with the `/thread rename` command if I failed to set a proper name for it.",
                     ) as MessageEditOptions;
                     // Change the button
-                    const row = new MessageActionRow().addComponents(
-                        new MessageButton()
-                            .setCustomId('solve')
-                            .setLabel('Mark as Solved')
-                            .setStyle('PRIMARY')
-                            .setEmoji('✅'),
-                    );
+                    const row =
+                        new ActionRowBuilder<ButtonBuilder>().addComponents(
+                            new ButtonBuilder()
+                                .setCustomId('solve')
+                                .setLabel('Mark as Solved')
+                                .setStyle(ButtonStyle.Primary)
+                                .setEmoji('✅'),
+                        );
                     msg.components = [row];
                     await bot_message.edit(msg);
                     // Commands require a reply
