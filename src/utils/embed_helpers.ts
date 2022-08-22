@@ -1,8 +1,8 @@
-import { GuildMember, MessageEmbed, MessageEmbedOptions } from 'discord.js';
+import { GuildMember, EmbedBuilder, EmbedData } from 'discord.js';
 import { TAURI_BLUE } from '../config';
 
-export const build_embed = (options: MessageEmbedOptions) =>
-    new MessageEmbed({ color: TAURI_BLUE, ...options });
+export const build_embed = (options: EmbedData) =>
+    new EmbedBuilder({ color: TAURI_BLUE, ...options });
 
 export function wrap_in_embed(content: string, ephemeral?: boolean) {
     const embed = build_embed({ description: content });

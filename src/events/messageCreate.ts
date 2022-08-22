@@ -1,9 +1,12 @@
 import {
     MessageOptions,
-    MessageActionRow,
-    MessageButton,
+    ActionRowBuilder,
+    ButtonBuilder,
     ThreadChannel,
     TextChannel,
+    MessageType,
+    ChannelType,
+    ButtonStyle,
 } from 'discord.js';
 import { event } from 'jellycommands';
 import { AUTO_THREAD_CHANNELS, HELP_THREAD_CHANNELS } from '../config';
@@ -16,13 +19,13 @@ export default event({
         // Rules for whether or not the message should be dealt with by the bot
         const should_ignore =
             message.author.bot ||
-            message.channel.type != 'GUILD_TEXT' ||
-            message.type != 'DEFAULT' ||
+            message.channel.type != ChannelType.GuildText ||
+            message.type != MessageType.Default ||
             !AUTO_THREAD_CHANNELS.includes(message.channelId);
 
         // If a response is sent by a user in an auto thread channel
         if (
-            message.type === 'REPLY' &&
+            message.type === MessageType.Reply &&
             AUTO_THREAD_CHANNELS.includes(message.channelId) &&
             !message.author.bot
         ) {
@@ -38,7 +41,7 @@ export default event({
             if (!thread) {
                 // Get all active threads in the guild
                 const threads = (
-                    await message.guild.channels.fetchActiveThreads()
+                    await message.guild.channels.fetchActiveThreads(true)
                 ).threads;
                 // Get the thread
                 thread = threads.get(
@@ -73,21 +76,17 @@ export default event({
             // Send a DM to the user with the response message
             await message.author.send(msg);
         }
-
         // If the message should be ignored, return without further processing
         if (should_ignore) return;
-
         // Remove bloat from links and replace colons with semicolons
         const raw_name = message.content
             .replaceAll('http://', '')
             .replaceAll('https://', '')
             .replaceAll(':', ';')
             .replace(/\n+/g, ' ');
-
         const name = HELP_THREAD_CHANNELS.includes(message.channelId)
             ? add_thread_prefix(raw_name, false)
             : raw_name;
-
         const thread = await message.channel.threads.create({
             name: name.length > 100 ? name.slice(0, 97) + '...' : name,
             startMessage: message,
@@ -108,11 +107,11 @@ async function send_instruction_message(thread: ThreadChannel) {
 
     // Add the solve button to the message
     const msg = wrap_in_embed(description) as MessageOptions;
-    const row = new MessageActionRow().addComponents(
-        new MessageButton()
+    const row = new ActionRowBuilder<ButtonBuilder>().addComponents(
+        new ButtonBuilder()
             .setCustomId('solve')
             .setLabel('Mark as Solved')
-            .setStyle('PRIMARY')
+            .setStyle(ButtonStyle.Primary)
             .setEmoji('✅'),
     );
     msg.components = [row];

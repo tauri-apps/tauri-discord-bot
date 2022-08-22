@@ -1,6 +1,6 @@
 import { command } from 'jellycommands';
 import { wrap_in_embed } from '../utils/embed_helpers';
-import { Message } from 'discord.js';
+import { ChannelType, Message } from 'discord.js';
 import { HELP_THREAD_CHANNELS } from '../config';
 
 export default command({
@@ -11,7 +11,7 @@ export default command({
         {
             name: 'list',
             description: 'List all open threads',
-            type: 'SUB_COMMAND',
+            type: 'Subcommand',
         },
     ],
 
@@ -30,17 +30,16 @@ export default command({
                 .map((x) => x)
                 .filter(
                     (thread) =>
-                        !thread.isPrivate() &&
                         thread
                             .permissionsFor(interaction.user)
-                            .has(['READ_MESSAGE_HISTORY', 'VIEW_CHANNEL']),
+                            .has(['ReadMessageHistory', 'ViewChannel']),
                 );
 
             switch (subcommand) {
                 case 'list': {
                     // Get the parent channel if we're using it inside a thread
                     const parentChannel =
-                        interaction.channel.type === 'GUILD_TEXT'
+                        interaction.channel.type === ChannelType.GuildText
                             ? interaction.channel
                             : interaction.channel.parent;
                     // Filter all threads based on the channel the command was ran in

@@ -2,10 +2,12 @@ import { event } from 'jellycommands';
 import { reopen_thread, solve_thread } from '../utils/threads.js';
 import {
     ButtonInteraction,
+    GuildMember,
     InteractionUpdateOptions,
-    MessageActionRow,
-    MessageButton,
+    ActionRowBuilder,
+    ButtonBuilder,
     ThreadChannel,
+    ButtonStyle,
 } from 'discord.js';
 import { wrap_in_embed } from '../utils/embed_helpers.js';
 
@@ -21,18 +23,22 @@ export default event({
                 if (interaction.customId === 'solve') {
                     try {
                         // Attempt to solve the channel
-                        await solve_thread(channel, interaction.member);
+                        await solve_thread(
+                            channel,
+                            interaction.member as GuildMember,
+                        );
                         // Successfully solved the channel, update the button
                         const msg = wrap_in_embed(
                             'Thread solved. Thank you everyone! 🥳',
                         ) as InteractionUpdateOptions;
-                        const row = new MessageActionRow().addComponents(
-                            new MessageButton()
-                                .setCustomId('reopen')
-                                .setLabel('Mark as Unsolved')
-                                .setStyle('SECONDARY')
-                                .setEmoji('❔'),
-                        );
+                        const row =
+                            new ActionRowBuilder<ButtonBuilder>().addComponents(
+                                new ButtonBuilder()
+                                    .setCustomId('reopen')
+                                    .setLabel('Mark as Unsolved')
+                                    .setStyle(ButtonStyle.Secondary)
+                                    .setEmoji('❔'),
+                            );
                         msg.components = [row];
                         await interaction.update(msg);
                     } catch (e) {
@@ -55,13 +61,14 @@ export default event({
                         const msg = wrap_in_embed(
                             "I've created a thread for your message. Please continue any relevant discussion in this thread. You can rename it with the `/thread rename` command if I failed to set a proper name for it.",
                         ) as InteractionUpdateOptions;
-                        const row = new MessageActionRow().addComponents(
-                            new MessageButton()
-                                .setCustomId('solve')
-                                .setLabel('Mark as Solved')
-                                .setStyle('PRIMARY')
-                                .setEmoji('✅'),
-                        );
+                        const row =
+                            new ActionRowBuilder<ButtonBuilder>().addComponents(
+                                new ButtonBuilder()
+                                    .setCustomId('solve')
+                                    .setLabel('Mark as Solved')
+                                    .setStyle(ButtonStyle.Primary)
+                                    .setEmoji('✅'),
+                            );
                         msg.components = [row];
                         await interaction.update(msg);
                     } catch (e) {

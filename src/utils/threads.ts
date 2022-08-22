@@ -1,10 +1,11 @@
 import {
     GuildMember,
     InteractionReplyOptions,
-    MessageActionRow,
-    MessageButton,
+    ActionRowBuilder,
+    ButtonBuilder,
     Snowflake,
     ThreadChannel,
+    ButtonStyle,
 } from 'discord.js';
 import {
     DEV_MODE,
@@ -104,7 +105,7 @@ export async function check_autothread_permissions(
 
     return has_any_role_or_id(member, allowed_ids);
 }
-
+/*
 export async function get_ending_message(
     thread: ThreadChannel,
     initiator_id: Snowflake,
@@ -127,12 +128,12 @@ export async function get_ending_message(
         description: `Thread marked as solved.`,
     });
 
-    const row = new MessageActionRow().setComponents(
+    const row = new ActionRowBuilder().setComponents(
         clickable_participants.map((m) =>
-            new MessageButton()
+            new ButtonBuilder()
                 .setCustomId(`thread_solver_${m.id}`)
                 .setLabel(m.displayName)
-                .setStyle('PRIMARY')
+                .setStyle(ButtonStyle.Primary)
                 .setDisabled(false),
         ),
     );
@@ -146,3 +147,4 @@ export async function get_ending_message(
               embeds: [embed],
           };
 }
+*/
