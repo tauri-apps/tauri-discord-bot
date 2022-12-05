@@ -16,7 +16,7 @@
 		"jellycommands": "1.0.0-next.36",
 		"ts-node": "10.9.1",
 		"tsm": "2.3.0",
-		"unfurl.js": "5.7.0",
+		"unfurl.js": "6.0.0",
 		"url-regex-safe": "3.0.0"
 	},
 	"devDependencies": {
