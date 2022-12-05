@@ -83,3 +83,8 @@ export const REACTION_ROLE: {
 export const REACTION_ROLE_CHANNEL = DEV_MODE
 	? process.env.DEV_REACTION_ROLE_CHANNEL
 	: '616210923354456064';
+
+
+export const SOLVABLE_FORUMS = [DEV_MODE ? process.env.DEV_SUPPORT_FORUM_CHANNEL : '1047150269156294677'];
+export const UNSOLVED_TAG = 'unsolved';
+export const SOLVED_TAG = 'solved';
