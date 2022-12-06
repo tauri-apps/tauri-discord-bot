@@ -10,6 +10,7 @@ This bot is based off of the amazing [Svelte Bot](https://github.com/pngwn/svelt
     -   `DEV_GUILD_ID`: Guide/server to test the bot in
     -   `DEV_ADMIN_ROLE`: A role or user ID that the bot will consider an administrator
     -   `DEV_HELP_CHANNEL`: Channel(s) to automatically thread any messages in (see the Threads functionality below)
+    -   `DEV_SUPPORT_FORUM_CHANNEL`: Support forum channel id
 -   `src/config.ts`: The bots main config is located at [src/config.ts](src/config.ts)
     -   `ADMIN_ROLES`: Role or user IDs that the bot will consider administrators
     -   `BOT_DEVS`: Currently the same functionality as `ADMIN_ROLES`
