@@ -21,24 +21,21 @@ export default event({
             const solveTag = solveChannel.availableTags.find(tag => tag.name === SOLVED_TAG).id
             // Unsolve tag
             const unsolveTag = solveChannel.availableTags.find(tag => tag.name === UNSOLVED_TAG).id
-            // Tags to apply
-            let tags = [...message.channel.appliedTags]
+            // The channel will have one of the tags, no further action required
+            if (message.channel.appliedTags.filter(tag => tag === unsolveTag || tag === solveTag).length === 1) return
+            // Tags to apply, without solve or unsolved, maximum 4 entries
+            let tags = message.channel.appliedTags.filter(tag => tag !== solveTag && tag !== unsolveTag).splice(0, 4)
             // Marked as both solved and unsolved
-            if (tags.includes(solveTag) && tags.includes(unsolveTag)) {
-                // Remove the unsolve tag
-                tags = tags.filter(tag => tag !== unsolveTag)
+            if (message.channel.appliedTags.includes(solveTag) && message.channel.appliedTags.includes(unsolveTag)) {
+                // Add the solved tag
+                tags.unshift(solveTag)
             }
-            else if (tags.includes(solveTag) || tags.includes(unsolveTag)) {
-                // Do nothing if it has one of the tags
-            }
-            else {
-                // Not marked as either, add unsolved tag
-                tags.push(unsolveTag)
-            }
+            // If neither tag is going to exist in the channel, add unsolved
+            if (!tags.includes(solveTag) && !tags.includes(unsolveTag)) tags.unshift(unsolveTag)
             // Ensure no duplicates are in the array
-            tags = [...new Set(tags)]
+            tags = [...new Set(tags)].sort()
             // Apply tags
-            if (tags !== message.channel.appliedTags) message.channel.setAppliedTags(tags)
+            if (tags.toString() !== message.channel.appliedTags.sort().toString()) message.channel.setAppliedTags(tags)
         }
     },
 });
