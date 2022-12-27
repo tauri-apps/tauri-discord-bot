@@ -72,7 +72,7 @@ export async function sendReactionRoleMessage(client: Client) {
 
         messageArray.push('\n**<#616186924390023173>**');
         messageArray.push(
-            "Talk with other Tauri developers in <#731495028677148753>, ask for help in <#1047150269156294677>, or show off what you've created with Tauri in <#616234029842300930>.",
+            "Talk with other Tauri developers in <#731495028677148753>, ask for help in <#1047150269156294677>, or show off what you've created with Tauri in <#1047149172144492604>.",
         );
         messageArray.push('\n**<#879007560429088800>**');
         messageArray.push(
