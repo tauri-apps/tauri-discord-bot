@@ -1,0 +1,26 @@
+envs:
+- key: DISCORD_TOKEN
+  scope: RUN_AND_BUILD_TIME
+  type: SECRET
+  value: ******
+- key: NODE_ENV
+  scope: RUN_AND_BUILD_TIME
+  value: production
+name: tauri-discord-bot
+region: lon
+services:
+- environment_slug: node-js
+  github:
+    branch: main
+    deploy_on_push: true
+    repo: tauri-apps/tauri-discord-bot
+  health_check:
+    http_path: /api/v1/health
+  http_port: 3000
+  instance_count: 1
+  instance_size_slug: basic-xxs
+  name: tauri-discord-bot
+  routes:
+  - path: /
+  source_dir: /
+  
