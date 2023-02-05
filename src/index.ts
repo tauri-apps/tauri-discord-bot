@@ -31,7 +31,13 @@ const client = new JellyCommands({
     cache: DEV_MODE,
 });
 
-// Auto reads the DISCORD_TOKEN environment variable
-client.login();
+function health() {
+    if (!client.isReady())
+        return 502
+    return 200
+}
 
-healthcheck;
+healthcheck(health);
+
+// Auto reads the DISCORD_TOKEN environment variable
+await client.login()

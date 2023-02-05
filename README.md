@@ -50,7 +50,7 @@ All contributions are welcome, please try and make an issue first since most new
     cp .env.example .env
     ```
 
-2. Run the bot with `yarn dev`
+2. Run the bot with `pnpm dev`
 
 ### Code Conventions
 
@@ -61,5 +61,5 @@ Since there is no user facing code, prefer `snake_case` for variables and functi
 The bot uses the [tsm](https://github.com/lukeed/tsm) module loader to transpile its Typescript code on the fly so there's no build step involved.
 
 ```sh
-yarn start
+pnpm start
 ```
