@@ -14,6 +14,7 @@ const client = new JellyCommands({
             GatewayIntentBits.GuildMessages,
             GatewayIntentBits.GuildMessageReactions,
             GatewayIntentBits.MessageContent,
+            GatewayIntentBits.GuildMessages
         ],
     },
 

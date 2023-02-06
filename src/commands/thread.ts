@@ -1,5 +1,5 @@
 import { command } from 'jellycommands';
-import { HELP_THREAD_CHANNELS } from '../config';
+import { HELP_THREAD_CHANNELS, SOLVED_TAG, UNSOLVED_TAG } from '../config';
 import { wrap_in_embed } from '../utils/embed_helpers';
 import { get_member } from '../utils/snowflake';
 import {
@@ -17,6 +17,7 @@ import {
     ButtonBuilder,
     MessageEditOptions,
     ButtonStyle,
+    ForumChannel,
 } from 'discord.js';
 
 export default command({
@@ -132,41 +133,65 @@ export default command({
 
                 case 'solve': {
                     // Check if this is a help channel
-                    if (!HELP_THREAD_CHANNELS.includes(thread.parentId)) {
-                        throw new Error("Can't solve a non-help channel");
-                    }
-                    // Attempt to solve the thread
-                    await solve_thread(
-                        thread,
-                        interaction.member as GuildMember,
-                    );
-                    // Successfully solved the thread
-                    // Get the first message in the thread
-                    const start_message = await thread.fetchStarterMessage();
-                    // Get the first 2 messages after the start message
-                    const messages = await thread.messages.fetch({
-                        limit: 2,
-                        after: start_message.id,
-                    });
-                    // Filter the messages to find the bot message with the buttons
-                    const bot_message = messages
-                        .filter((m) => m.components.length > 0)
-                        .first() as Message;
-                    // Change the message
-                    const msg = wrap_in_embed(
-                        'Thread solved. Thank you everyone! 🥳',
-                    ) as MessageEditOptions;
-                    // Change the button
-                    const row =
-                        new ActionRowBuilder<ButtonBuilder>().addComponents(
-                            new ButtonBuilder()
-                                .setCustomId('reopen')
-                                .setLabel('Mark as Unsolved')
-                                .setStyle(ButtonStyle.Secondary)
-                                .setEmoji('❔'),
+                    if (HELP_THREAD_CHANNELS.includes(thread.parentId)) {
+                        // Attempt to solve the thread
+                        await solve_thread(
+                            thread,
+                            interaction.member as GuildMember,
                         );
-                    msg.components = [row];
-                    await bot_message.edit(msg);
+                        // Successfully solved the thread
+                        // Get the first message in the thread
+                        const start_message = await thread.fetchStarterMessage();
+                        // Get the first 2 messages after the start message
+                        const messages = await thread.messages.fetch({
+                            limit: 2,
+                            after: start_message.id,
+                        });
+                        // Filter the messages to find the bot message with the buttons
+                        const bot_message = messages
+                            .filter((m) => m.components.length > 0)
+                            .first() as Message;
+                        // Change the message
+                        const msg = wrap_in_embed(
+                            'Thread solved. Thank you everyone! 🥳',
+                        ) as MessageEditOptions;
+                        // Change the button
+                        const row =
+                            new ActionRowBuilder<ButtonBuilder>().addComponents(
+                                new ButtonBuilder()
+                                    .setCustomId('reopen')
+                                    .setLabel('Mark as Unsolved')
+                                    .setStyle(ButtonStyle.Secondary)
+                                    .setEmoji('❔'),
+                            );
+                        msg.components = [row];
+                        await bot_message.edit(msg);
+                        // Commands require a reply
+                        await interaction.followUp(wrap_in_embed('Thread solved.'));
+                        // Delete the reply after 10 seconds
+                        setTimeout(async () => {
+                            await interaction.deleteReply();
+                        }, 10000);
+                    }
+                    // Not a help channel, check if its parent is a ForumChannel
+                    if (!(thread.parent instanceof ForumChannel))
+                        throw new Error("Can't solve a non-help channel");
+                    // Parent forum channel
+                    const solveChannel = thread.guild.channels.cache.get(thread.parentId) as ForumChannel
+                    // Solve tag
+                    const solveTag = solveChannel.availableTags.find(tag => tag.name === SOLVED_TAG).id
+                    // Unsolve tag
+                    const unsolveTag = solveChannel.availableTags.find(tag => tag.name === UNSOLVED_TAG).id
+                    // If this is a ThreadChannel
+                    let tags = thread.appliedTags.filter(tag => tag !== solveTag && tag !== unsolveTag).splice(0, 4)
+                    // Add the solved tag
+                    tags.unshift(solveTag)
+                    // If neither tag is going to exist in the channel, add unsolved
+                    if (!tags.includes(solveTag) && !tags.includes(unsolveTag)) tags.unshift(unsolveTag)
+                    // Ensure no duplicates are in the array
+                    tags = [...new Set(tags)].sort()
+                    // Apply tags
+                    if (tags.toString() !== thread.appliedTags.sort().toString()) thread.setAppliedTags(tags)
                     // Commands require a reply
                     await interaction.followUp(wrap_in_embed('Thread solved.'));
                     // Delete the reply after 10 seconds
