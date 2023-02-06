@@ -4,7 +4,8 @@ import {
     ForumChannel,
 } from 'discord.js';
 import { event } from 'jellycommands';
-import { SOLVABLE_FORUMS, UNSOLVED_TAG, SOLVED_TAG } from '../config';
+import { wrap_in_embed } from '../utils/embed_helpers';
+import { SOLVABLE_FORUMS, UNSOLVED_TAG, SOLVED_TAG, MESSAGE_READ } from '../config';
 
 export default event({
     name: 'messageCreate',
@@ -36,6 +37,21 @@ export default event({
             tags = [...new Set(tags)].sort()
             // Apply tags
             if (tags.toString() !== message.channel.appliedTags.sort().toString()) message.channel.setAppliedTags(tags)
+            // If this is a new post and not just a regular message
+            if (!message.nonce && message.position === 0) {
+                const msg = await message.channel.send(wrap_in_embed(
+                    `Thank you for your message!
+
+                    1. Search the #support forum for existing posts
+                    2. Search Github issues to see if this is a known issue
+                    3. Send the output of \`tauri info\`
+                    4. Provide reproduction steps for your issue
+                    5. Be polite and remember that we are all contributing our spare time, none of us are paid to be here
+
+                    Once you've read this and taken the appropriate steps, react to this message`
+                ))
+                await msg.react(MESSAGE_READ)
+            }
         }
     },
 });
