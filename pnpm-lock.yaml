@@ -13,7 +13,7 @@ specifiers:
   ts-node: 10.9.1
   tsm: 2.3.0
   typescript: 4.9.4
-  unfurl.js: 6.0.0
+  unfurl.js: 6.2.0
   url-regex-safe: 3.0.0
 
 dependencies:
@@ -23,7 +23,7 @@ dependencies:
   jellycommands: 1.0.0-next.38_discord.js@14.7.1
   ts-node: 10.9.1_pdhdgy3lb7m4vyjxkl5qaywlx4
   tsm: 2.3.0
-  unfurl.js: 6.0.0
+  unfurl.js: 6.2.0
   url-regex-safe: 3.0.0
 
 devDependencies:
@@ -1403,8 +1403,8 @@ packages:
       busboy: 1.6.0
     dev: false
 
-  /unfurl.js/6.0.0:
-    resolution: {integrity: sha512-gBu3HEBf+TOKDxKx3ajARyzYZ70iJDiLOU25KrSuF93oO8ORtOW6Ae4yKrN3DXaE0GIYn9QqsXKjvNn7gWQ0Hg==}
+  /unfurl.js/6.2.0:
+    resolution: {integrity: sha512-zo448qaysLfffQ7PdfTexpDiA+qXrdkPJgGtyA6sBF8+27DaLZcSinZBBPD/ZOCcuyDTTE1cVjsjQwVN/Nro9w==}
     engines: {node: '>=6.0.0'}
     dependencies:
       debug: 3.2.7
