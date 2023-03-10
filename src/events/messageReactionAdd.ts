@@ -1,6 +1,6 @@
 import { ThreadChannel } from 'discord.js';
 import { event } from 'jellycommands';
-import { MESSAGE_READ, REACTION_ROLE_CHANNEL } from '../config'
+import { MESSAGE_READ, REACTION_ROLE_CHANNEL, SOLVABLE_FORUMS } from '../config'
 import { hasPermission } from '../utils/reactionHandler';
 
 export default event({
@@ -8,7 +8,7 @@ export default event({
     run: async (_, reaction, user) => {
         try {
             // The bot shouldn't react to its own reactions
-            if (user.bot)
+            if (user.bot || SOLVABLE_FORUMS.includes(reaction.message.channelId))
                 return
             // If this is a reaction in the role reaction channel
             if (reaction.message.channelId === REACTION_ROLE_CHANNEL) {

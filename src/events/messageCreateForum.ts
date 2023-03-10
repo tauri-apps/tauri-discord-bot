@@ -5,7 +5,7 @@ import {
 } from 'discord.js';
 import { event } from 'jellycommands';
 import { wrap_in_embed } from '../utils/embed_helpers';
-import { SOLVABLE_FORUMS, UNSOLVED_TAG, SOLVED_TAG, MESSAGE_READ } from '../config';
+import { SOLVABLE_FORUMS, UNSOLVED_TAG, SOLVED_TAG, MESSAGE_READ, SUPPORT_FORUM } from '../config';
 
 export default event({
     name: 'messageCreate',
@@ -42,11 +42,11 @@ export default event({
                 const msg = await message.channel.send(wrap_in_embed(
                     `Thank you for your message!
 
-                    1. Search the #support forum for existing posts
+                    1. Search the <#${SUPPORT_FORUM}> forum for existing posts
                     2. Search Github issues to see if this is a known issue
                     3. Send the output of \`tauri info\`
                     4. Provide reproduction steps for your issue
-                    5. Be polite and remember that we are all contributing our spare time, none of us are paid to be here
+                    5. Be polite and remember to follow the [Tauri Code of Conduct](https://github.com/tauri-apps/governance-and-guidance/blob/main/CODE_OF_CONDUCT.md)
 
                     Once you've read this and taken the appropriate steps, react to this message`
                 ))
