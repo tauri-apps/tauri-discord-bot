@@ -22,7 +22,10 @@ export default event({
                 }
             }
         } catch (error) {
-            console.error(`Issue in messageReactionAdd: ${error}`);
+            // Couldn't get it to raise the unwanted error in the test server, so instead of
+            // checking for an error code we'll just filter out any errors that include this text
+            if (!`${error}`.includes('Not performed in a monitored channel'))
+                console.error(`Issue in messageReactionAdd: ${error}`);
         }
     },
 });
