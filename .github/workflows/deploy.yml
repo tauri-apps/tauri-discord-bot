@@ -8,7 +8,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: Deploy
-      uses: digitalocean/app_action@1.1.4
+      uses: digitalocean/app_action@v1.1.4
       with:
         app_name: clownfish-app
         token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
