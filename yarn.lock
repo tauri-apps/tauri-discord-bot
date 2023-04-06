@@ -1294,10 +1294,10 @@ undici@^5.20.0:
   dependencies:
     busboy "^1.6.0"
 
-unfurl.js@6.2.0:
-  version "6.2.0"
-  resolved "https://registry.yarnpkg.com/unfurl.js/-/unfurl.js-6.2.0.tgz#60621c9d44fdca047a65fad993e329187fa3eb3a"
-  integrity sha512-zo448qaysLfffQ7PdfTexpDiA+qXrdkPJgGtyA6sBF8+27DaLZcSinZBBPD/ZOCcuyDTTE1cVjsjQwVN/Nro9w==
+unfurl.js@6.3.1:
+  version "6.3.1"
+  resolved "https://registry.yarnpkg.com/unfurl.js/-/unfurl.js-6.3.1.tgz#ca86878b2b425743977acbf980e0b3785ae9d2a9"
+  integrity sha512-hPSc4CifebcfCTHF+jGz0Qo67P/OPyQm/zC46tgVXvDhBEYVnoZlJ3e1WOmlmpoHx8KkmikbbeLlIMYDdRFM9w==
   dependencies:
     debug "^3.1.0"
     he "^1.2.0"
