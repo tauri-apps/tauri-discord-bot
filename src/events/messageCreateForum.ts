@@ -38,7 +38,8 @@ export default event({
             // Apply tags
             if (tags.toString() !== message.channel.appliedTags.sort().toString()) message.channel.setAppliedTags(tags)
             // If this is a new post and not just a regular message
-            if (!message.nonce && message.position === 0) {
+            // Disabled for now due to the fact that nobody reads the message
+            if (!message.nonce && message.position === 0 && false) {
                 const msg = await message.channel.send(wrap_in_embed(
                     `Thank you for your message!
 
