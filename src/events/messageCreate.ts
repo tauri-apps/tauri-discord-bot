@@ -1,5 +1,4 @@
 import {
-    MessageOptions,
     ActionRowBuilder,
     ButtonBuilder,
     ThreadChannel,
@@ -15,7 +14,7 @@ import { add_thread_prefix } from '../utils/threads';
 
 export default event({
     name: 'messageCreate',
-    run: async ({}, message) => {
+    run: async ({ }, message) => {
         // Rules for whether or not the message should be dealt with by the bot
         const should_ignore =
             message.author.bot ||
@@ -62,7 +61,7 @@ export default event({
                         `> Reply by <@${message.author.id}>:\n` +
                         message.content,
                     files: message.attachments.map((x) => x),
-                } as MessageOptions;
+                };
                 // Send the message to the thread
                 await thread.send(forwardMessage);
                 // Create response message to the user with a link to the thread
@@ -106,7 +105,7 @@ async function send_instruction_message(thread: ThreadChannel) {
         : base_description;
 
     // Add the solve button to the message
-    const msg = wrap_in_embed(description) as MessageOptions;
+    const msg = wrap_in_embed(description) as any;
     const row = new ActionRowBuilder<ButtonBuilder>().addComponents(
         new ButtonBuilder()
             .setCustomId('solve')

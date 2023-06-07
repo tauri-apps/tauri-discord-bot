@@ -8,7 +8,6 @@ import {
     User,
 } from 'discord.js';
 import { REACTION_ROLE, REACTION_ROLE_CHANNEL } from '../config';
-import { wrap_in_embed } from './embed_helpers';
 
 export async function hasPermission(
     reaction: MessageReaction | PartialMessageReaction,
@@ -76,14 +75,12 @@ export async function sendReactionRoleMessage(client: Client) {
         );
         messageArray.push('\n**<#879007560429088800>**');
         messageArray.push(
-            "If you'd like to get involved with Tauri development you can react to the Tauri Contributor role below to be able to chat in the various channels.",
+            "Get involved with Tauri development and browse the different projects.",
         );
         messageArray.push('\n**<#683637724116418561>**');
         messageArray.push(
             "See what the community is working on outside of Tauri. Reach out if you have a passion project you'd like to talk about.",
         );
-        messageArray.push('\n**Server Roles**');
-        messageArray.push('React below to receive the relative role');
 
         let messageBody = messageArray.join('\n');
 
@@ -93,71 +90,24 @@ export async function sendReactionRoleMessage(client: Client) {
 
         console.debug('Got messages');
 
+        // Get an existing message with identical contents
         let message = messages
             .filter((item) => item.content === messageBody)
             .last();
 
         if (message && message.author.id == message.client.user.id) {
             console.debug('Attempting to edit message...');
+            // Edit the message
             await message.edit(messageBody);
             console.debug('Message edited');
         } else {
+            // Delete old messages from the bot
+            messages.filter((item) => item.author.id == item.client.user.id).forEach((item) => item.delete())
             console.debug('Attempting to send message...');
+            // Send the message
             message = await channel.send(messageBody);
             console.debug('Message sent');
         }
-
-        // Loop all available reaction roles
-        REACTION_ROLE.forEach(async (role) => {
-            // Get the reaction
-            console.debug('Attempting to get reactions...');
-            const reaction = await message.reactions.resolve(role.emojiId);
-            console.debug('Got reactions');
-
-            // No reactions yet
-            if (!reaction) {
-                return;
-            }
-
-            // Get all users that reacted minus the bot
-            console.debug('Getting users who reacted...');
-            const reactedUsers = (await reaction.users.fetch()).filter(
-                (user) => user.id !== message.author.id,
-            );
-            console.debug('Finished fetching users');
-
-            // Loop all users and add the role
-            let counter = 0;
-            reactedUsers.forEach(async (user) => {
-                try {
-                    const result = await hasPermission(reaction, user);
-                    counter += 1;
-                    const localCounter = counter;
-                    console.debug(
-                        `(${localCounter} / ${reactedUsers.size}) Attempting to add role...`,
-                    );
-                    if (result) {
-                        await result.member.roles.add(result.roleId);
-                        console.debug(
-                            `(${localCounter} / ${reactedUsers.size}) Role added`,
-                        );
-                    }
-                } catch (error) {
-                    console.error(`Issue adding role: ${error}`);
-                }
-            });
-        });
-
-        var roleDescription: string[] = [];
-
-        REACTION_ROLE.forEach(async (reaction) => {
-            message.react(reaction.emojiId);
-            roleDescription.push(
-                `<:${reaction.emojiName}:${reaction.emojiId}> ${reaction.description}`,
-            );
-        });
-
-        await message.edit(wrap_in_embed(roleDescription.join('\n')));
     } catch (error) {
         console.error(`Issue starting up reaction: ${error}`);
     }
