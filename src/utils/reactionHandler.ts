@@ -8,9 +8,8 @@ import {
     User,
 } from 'discord.js';
 import { REACTION_ROLE, REACTION_ROLE_CHANNEL } from '../config';
-import { wrap_in_embed } from './embed_helpers';
 
-export async function hasPermission(
+export async function hasPermission (
     reaction: MessageReaction | PartialMessageReaction,
     user: User | PartialUser,
 ): Promise<{ member: GuildMember; roleId: string }> {
@@ -56,7 +55,7 @@ export async function hasPermission(
     }
 }
 
-export async function sendReactionRoleMessage(client: Client) {
+export async function sendReactionRoleMessage (client: Client) {
     try {
         const channel = client.channels.cache.get(
             REACTION_ROLE_CHANNEL,
@@ -82,8 +81,6 @@ export async function sendReactionRoleMessage(client: Client) {
         messageArray.push(
             "See what the community is working on outside of Tauri. Reach out if you have a passion project you'd like to talk about.",
         );
-        messageArray.push('\n**Server Roles**');
-        messageArray.push('React below to receive the relative role');
 
         let messageBody = messageArray.join('\n');
 
@@ -106,58 +103,6 @@ export async function sendReactionRoleMessage(client: Client) {
             message = await channel.send(messageBody);
             console.debug('Message sent');
         }
-
-        // Loop all available reaction roles
-        REACTION_ROLE.forEach(async (role) => {
-            // Get the reaction
-            console.debug('Attempting to get reactions...');
-            const reaction = await message.reactions.resolve(role.emojiId);
-            console.debug('Got reactions');
-
-            // No reactions yet
-            if (!reaction) {
-                return;
-            }
-
-            // Get all users that reacted minus the bot
-            console.debug('Getting users who reacted...');
-            const reactedUsers = (await reaction.users.fetch()).filter(
-                (user) => user.id !== message.author.id,
-            );
-            console.debug('Finished fetching users');
-
-            // Loop all users and add the role
-            let counter = 0;
-            reactedUsers.forEach(async (user) => {
-                try {
-                    const result = await hasPermission(reaction, user);
-                    counter += 1;
-                    const localCounter = counter;
-                    console.debug(
-                        `(${localCounter} / ${reactedUsers.size}) Attempting to add role...`,
-                    );
-                    if (result) {
-                        await result.member.roles.add(result.roleId);
-                        console.debug(
-                            `(${localCounter} / ${reactedUsers.size}) Role added`,
-                        );
-                    }
-                } catch (error) {
-                    console.error(`Issue adding role: ${error}`);
-                }
-            });
-        });
-
-        var roleDescription: string[] = [];
-
-        REACTION_ROLE.forEach(async (reaction) => {
-            message.react(reaction.emojiId);
-            roleDescription.push(
-                `<:${reaction.emojiName}:${reaction.emojiId}> ${reaction.description}`,
-            );
-        });
-
-        await message.edit(wrap_in_embed(roleDescription.join('\n')));
     } catch (error) {
         console.error(`Issue starting up reaction: ${error}`);
     }

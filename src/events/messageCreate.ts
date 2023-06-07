@@ -1,5 +1,4 @@
 import {
-    MessageOptions,
     ActionRowBuilder,
     ButtonBuilder,
     ThreadChannel,
@@ -62,7 +61,7 @@ export default event({
                         `> Reply by <@${message.author.id}>:\n` +
                         message.content,
                     files: message.attachments.map((x) => x),
-                } as MessageOptions;
+                };
                 // Send the message to the thread
                 await thread.send(forwardMessage);
                 // Create response message to the user with a link to the thread
@@ -97,7 +96,7 @@ export default event({
     },
 });
 
-async function send_instruction_message(thread: ThreadChannel) {
+async function send_instruction_message (thread: ThreadChannel) {
     const base_description =
         "I've created a thread for your message. Please continue any discussion in this thread. You can rename it with the `/thread rename` command if I didn't set a proper name for it.";
 
@@ -106,7 +105,7 @@ async function send_instruction_message(thread: ThreadChannel) {
         : base_description;
 
     // Add the solve button to the message
-    const msg = wrap_in_embed(description) as MessageOptions;
+    const msg = wrap_in_embed(description) as any;
     const row = new ActionRowBuilder<ButtonBuilder>().addComponents(
         new ButtonBuilder()
             .setCustomId('solve')
