@@ -14,7 +14,7 @@ import { add_thread_prefix } from '../utils/threads';
 
 export default event({
     name: 'messageCreate',
-    run: async ({}, message) => {
+    run: async ({ }, message) => {
         // Rules for whether or not the message should be dealt with by the bot
         const should_ignore =
             message.author.bot ||
@@ -96,7 +96,7 @@ export default event({
     },
 });
 
-async function send_instruction_message (thread: ThreadChannel) {
+async function send_instruction_message(thread: ThreadChannel) {
     const base_description =
         "I've created a thread for your message. Please continue any discussion in this thread. You can rename it with the `/thread rename` command if I didn't set a proper name for it.";
 

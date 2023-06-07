@@ -9,7 +9,7 @@ import {
 } from 'discord.js';
 import { REACTION_ROLE, REACTION_ROLE_CHANNEL } from '../config';
 
-export async function hasPermission (
+export async function hasPermission(
     reaction: MessageReaction | PartialMessageReaction,
     user: User | PartialUser,
 ): Promise<{ member: GuildMember; roleId: string }> {
@@ -55,7 +55,7 @@ export async function hasPermission (
     }
 }
 
-export async function sendReactionRoleMessage (client: Client) {
+export async function sendReactionRoleMessage(client: Client) {
     try {
         const channel = client.channels.cache.get(
             REACTION_ROLE_CHANNEL,
@@ -75,7 +75,7 @@ export async function sendReactionRoleMessage (client: Client) {
         );
         messageArray.push('\n**<#879007560429088800>**');
         messageArray.push(
-            "If you'd like to get involved with Tauri development you can react to the Tauri Contributor role below to be able to chat in the various channels.",
+            "Get involved with Tauri development and browse the different projects.",
         );
         messageArray.push('\n**<#683637724116418561>**');
         messageArray.push(
