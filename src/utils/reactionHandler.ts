@@ -90,16 +90,21 @@ export async function sendReactionRoleMessage(client: Client) {
 
         console.debug('Got messages');
 
+        // Get an existing message with identical contents
         let message = messages
             .filter((item) => item.content === messageBody)
             .last();
 
         if (message && message.author.id == message.client.user.id) {
             console.debug('Attempting to edit message...');
+            // Edit the message
             await message.edit(messageBody);
             console.debug('Message edited');
         } else {
+            // Delete old messages from the bot
+            messages.filter((item) => item.author.id == item.client.user.id).forEach((item) => item.delete())
             console.debug('Attempting to send message...');
+            // Send the message
             message = await channel.send(messageBody);
             console.debug('Message sent');
         }
