@@ -77,10 +77,6 @@ export async function sendReactionRoleMessage(client: Client) {
         messageArray.push(
             "Get involved with Tauri development and browse the different projects.",
         );
-        messageArray.push('\n**<#683637724116418561>**');
-        messageArray.push(
-            "See what the community is working on outside of Tauri. Reach out if you have a passion project you'd like to talk about.",
-        );
 
         let messageBody = messageArray.join('\n');
 
