@@ -25,6 +25,6 @@
 		"@types/url-regex-safe": "1.0.0",
 		"nodemon": "2.0.22",
 		"prettier": "2.8.8",
-		"typescript": "5.0.4"
+		"typescript": "5.4.3"
 	}
 }
