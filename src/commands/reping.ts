@@ -12,20 +12,14 @@ export default command({
         {
             name: 'role',
             description: 'The role you want to ping',
-            type: 'String',
+            type: 'Role',
             required: true,
         },
     ],
 
     run: async ({ interaction }) => {
-        // Make sure the cache has all roles
-        interaction.guild.roles.fetch();
         // Find the desired role
-        const role = interaction.guild.roles.cache.find(
-            (val) => val.name === interaction.options.getString('role', true),
-        );
-        // Exit if the role wasn't found
-        if (!role) return;
+        const role = interaction.options.getRole('role', true);
         // Check if the user has the role
         let hasRole = (
             interaction.member.roles as GuildMemberRoleManager
