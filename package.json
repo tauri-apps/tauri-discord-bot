@@ -24,7 +24,7 @@
 		"@types/node": "18.16.7",
 		"@types/url-regex-safe": "1.0.2",
 		"nodemon": "3.1.0",
-		"prettier": "2.8.8",
+		"prettier": "3.2.5",
 		"typescript": "5.0.4"
 	}
 }
