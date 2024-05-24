@@ -14,7 +14,7 @@ const client = new JellyCommands({
             GatewayIntentBits.GuildMessages,
             GatewayIntentBits.GuildMessageReactions,
             GatewayIntentBits.MessageContent,
-            GatewayIntentBits.GuildMessages
+            GatewayIntentBits.GuildMessages,
         ],
     },
 
@@ -33,12 +33,11 @@ const client = new JellyCommands({
 });
 
 function health() {
-    if (!client.isReady())
-        return 502
-    return 200
+    if (!client.isReady()) return 502;
+    return 200;
 }
 
 healthcheck(health);
 
 // Auto reads the DISCORD_TOKEN environment variable
-await client.login()
+await client.login();

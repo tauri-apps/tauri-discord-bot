@@ -14,7 +14,7 @@ import { add_thread_prefix } from '../utils/threads';
 
 export default event({
     name: 'messageCreate',
-    run: async ({ }, message) => {
+    run: async ({}, message) => {
         // Rules for whether or not the message should be dealt with by the bot
         const should_ignore =
             message.author.bot ||
