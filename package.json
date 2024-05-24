@@ -11,7 +11,7 @@
 	"license": "MIT",
 	"dependencies": {
 		"discord.js": "14.11.0",
-		"dotenv": "16.0.3",
+		"dotenv": "16.4.5",
 		"express": "4.19.2",
 		"jellycommands": "1.0.0-next.43",
 		"ts-node": "10.9.1",
