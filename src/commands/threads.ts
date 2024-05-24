@@ -68,17 +68,10 @@ async function handleList(
 ) {
     const parentChannel = getParentChannel(interaction.channel);
     if (!parentChannel) {
-        return interaction.reply({
+        return interaction.followUp({
             ephemeral: true,
             content:
                 'You can only use this command in a text channel or thread.',
-        });
-    }
-
-    if (!parentChannel.isTextBased()) {
-        return interaction.reply({
-            ephemeral: true,
-            content: 'The parent of the thread must be a text channel.',
         });
     }
 
@@ -93,7 +86,7 @@ async function handleList(
         : threadsWithinChannel.filter((thread) => thread.name.startsWith('❔'));
 
     if (!threads.size) {
-        return interaction.reply({
+        return interaction.followUp({
             ephemeral: true,
             content: `There are no active threads in <#${parentChannel.id}>.`,
         });
@@ -101,7 +94,7 @@ async function handleList(
 
     const threadList = threads.map((thread) => `<#${thread.id}>`).join(', ');
 
-    await interaction.reply({
+    await interaction.followUp({
         content: `Active threads in <#${parentChannel.id}>: ${threadList}`,
     });
 }

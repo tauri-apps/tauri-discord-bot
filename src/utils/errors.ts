@@ -9,9 +9,8 @@ export function wrapErrors(
         } catch (error) {
             console.error(error);
 
-            await interaction.reply({
+            await interaction.editReply({
                 content: `Runtime error: ${error}`,
-                ephemeral: true,
             });
         }
     };
