@@ -9,6 +9,9 @@
 		"start": "tsm ."
 	},
 	"license": "MIT",
+	"engines": {
+	  "node": "20.x"
+	},
 	"dependencies": {
 		"discord.js": "14.15.2",
 		"dotenv": "16.4.5",
