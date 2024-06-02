@@ -18,7 +18,15 @@ export default command({
         // Fetch the role and make sure it's pingable.
         const role = interaction.options.getRole('role', true);
 
-        let pingable = pingableStatus(role);
+        // Fetch the member, since the interaction member might not be fully resolved.
+        const member = await interaction.guild.members.fetch(
+            interaction.user.id,
+        );
+
+        // Check if the role is pingable or the member has permission to ping everyone anyways.
+        let pingable = member.permissions.has('MentionEveryone', true)
+            ? 'yes'
+            : pingableStatus(role);
 
         if (pingable === 'no') {
             return await interaction.reply({
@@ -29,11 +37,6 @@ export default command({
 
         // The user has to have the role to ping it in some circumstances.
         if (pingable === 'self') {
-            // Fetch the member, since the interaction member might not be fully resolved.
-            const member = await interaction.guild.members.fetch(
-                interaction.user.id,
-            );
-
             if (!member.roles.cache.has(role.id)) {
                 return await interaction.reply({
                     content: 'You do not have permission to ping this role.',
