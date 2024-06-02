@@ -1,6 +1,5 @@
 import { APIRole, Role, roleMention } from 'discord.js';
 import { command } from 'jellycommands';
-import { ADMIN_ROLES } from '../config';
 
 export default command({
     name: 'ping',
@@ -53,7 +52,7 @@ export default command({
 function pingableStatus(role: Role | APIRole): 'yes' | 'no' | 'self' {
     if (role.name === 'working-group' || role.name.startsWith('wg-')) {
         return 'self';
-    } else if (ADMIN_ROLES.includes(role.id)) {
+    } else if (['mod', 'moderator'].includes(role.name)) {
         return 'yes';
     } else {
         return 'no';
