@@ -28,11 +28,10 @@ export default command({
                 await interaction.guild.channels.fetchActiveThreads()
             ).threads
                 .map((x) => x)
-                .filter(
-                    (thread) =>
-                        thread
-                            .permissionsFor(interaction.user)
-                            .has(['ReadMessageHistory', 'ViewChannel']),
+                .filter((thread) =>
+                    thread
+                        .permissionsFor(interaction.user)
+                        .has(['ReadMessageHistory', 'ViewChannel']),
                 );
 
             switch (subcommand) {

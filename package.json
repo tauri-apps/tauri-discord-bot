@@ -1,33 +1,33 @@
 {
-	"name": "tauri-discord-bot",
-	"private": true,
-	"version": "0.0.0",
-	"main": "src/index.ts",
-	"type": "module",
-	"scripts": {
-		"dev": "nodemon --ext ts,js,mjs,json --legacy-watch --loader tsm .",
-		"start": "tsm ."
-	},
-	"license": "MIT",
-	"engines": {
-	  "node": "20.x"
-	},
-	"dependencies": {
-		"discord.js": "14.15.2",
-		"dotenv": "16.4.5",
-		"express": "4.19.2",
-		"jellycommands": "1.0.0-next.43",
-		"ts-node": "10.9.2",
-		"tsm": "2.3.0",
-		"unfurl.js": "6.3.1",
-		"url-regex-safe": "3.0.0"
-	},
-	"devDependencies": {
-		"@types/express": "4.17.21",
-		"@types/node": "20.12.12",
-		"@types/url-regex-safe": "1.0.2",
-		"nodemon": "3.1.1",
-		"prettier": "3.2.5",
-		"typescript": "5.4.5"
-	}
+    "name": "tauri-discord-bot",
+    "private": true,
+    "version": "0.0.0",
+    "main": "src/index.ts",
+    "type": "module",
+    "scripts": {
+        "dev": "nodemon --ext ts,js,mjs,json --legacy-watch --loader tsm .",
+        "start": "tsm ."
+    },
+    "license": "MIT",
+    "engines": {
+        "node": ">=20.x"
+    },
+    "dependencies": {
+        "discord.js": "14.15.2",
+        "dotenv": "16.4.5",
+        "express": "4.19.2",
+        "jellycommands": "1.0.0-next.43",
+        "ts-node": "10.9.2",
+        "tsm": "2.3.0",
+        "unfurl.js": "6.3.1",
+        "url-regex-safe": "3.0.0"
+    },
+    "devDependencies": {
+        "@types/express": "4.17.21",
+        "@types/node": "20.12.12",
+        "@types/url-regex-safe": "1.0.2",
+        "nodemon": "3.1.1",
+        "prettier": "3.2.5",
+        "typescript": "5.4.5"
+    }
 }
