@@ -10,11 +10,11 @@ export default event({
         // Send the message for role reactions
         sendReactionRoleMessage(client);
         // Update the cache so that the bot can properly react to messages sent before it went live
-        updateCache(client)
+        updateCache(client);
         // Run a task in the background every 60 minutes
         setInterval(async () => {
             // Update the cache so that old messages can be reacted to
-            updateCache(client)
-        }, 60_000 * 60) // Every 60 minutes
+            updateCache(client);
+        }, 60_000 * 60); // Every 60 minutes
     },
 });

@@ -75,7 +75,7 @@ export async function sendReactionRoleMessage(client: Client) {
         );
         messageArray.push('\n**<#879007560429088800>**');
         messageArray.push(
-            "Get involved with Tauri development and browse the different projects.",
+            'Get involved with Tauri development and browse the different projects.',
         );
 
         let messageBody = messageArray.join('\n');
@@ -98,7 +98,9 @@ export async function sendReactionRoleMessage(client: Client) {
             console.debug('Message edited');
         } else {
             // Delete old messages from the bot
-            messages.filter((item) => item.author.id == item.client.user.id).forEach((item) => item.delete())
+            messages
+                .filter((item) => item.author.id == item.client.user.id)
+                .forEach((item) => item.delete());
             console.debug('Attempting to send message...');
             // Send the message
             message = await channel.send(messageBody);
