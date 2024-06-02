@@ -1,13 +1,11 @@
+import { APIRole, Role, roleMention } from 'discord.js';
 import { command } from 'jellycommands';
-import { wrap_in_embed } from '../utils/embed_helpers';
-import { GuildMemberRoleManager } from 'discord.js';
+import { ADMIN_ROLES } from '../config';
 
 export default command({
-    name: 'reping',
+    name: 'ping',
     description: 'Ping a role',
-
     global: true,
-
     options: [
         {
             name: 'role',
@@ -16,23 +14,45 @@ export default command({
             required: true,
         },
     ],
-
     run: async ({ interaction }) => {
-        // Find the desired role
+        // Fetch the role and make sure it's pingable.
         const role = interaction.options.getRole('role', true);
-        // Check if the user has the role
-        let hasRole = (
-            interaction.member.roles as GuildMemberRoleManager
-        ).cache.find((val) => val.id === role.id);
-        // Exit if the user doesn't have the role
-        if (!hasRole) return;
-        // Send the ping message
-        interaction.channel.send(`<@&${role.id}>`);
-        // Follow up the interaction
-        await interaction.reply(wrap_in_embed('Role pinged'));
-        // Delete the reply after 3 seconds
-        setTimeout(async () => {
-            await interaction.deleteReply();
-        }, 3000);
+
+        let pingable = pingableStatus(role);
+
+        if (pingable === 'no') {
+            return await interaction.reply({
+                content: 'This role is not pingable.',
+                ephemeral: true,
+            });
+        }
+
+        // The user has to have the role to ping it in some circumstances.
+        if (pingable === 'self') {
+            // Fetch the member, since the interaction member might not be fully resolved.
+            const member = await interaction.guild.members.fetch(
+                interaction.user.id,
+            );
+
+            if (!member.roles.cache.has(role.id)) {
+                return await interaction.reply({
+                    content: 'You do not have permission to ping this role.',
+                    ephemeral: true,
+                });
+            }
+        }
+
+        // Ping the role in a reply so that you can see the original sender of the command.
+        await interaction.reply(`${roleMention(role.id)}`);
     },
 });
+
+function pingableStatus(role: Role | APIRole): 'yes' | 'no' | 'self' {
+    if (role.name === 'working-group' || role.name.startsWith('wg-')) {
+        return 'self';
+    } else if (ADMIN_ROLES.includes(role.id)) {
+        return 'yes';
+    } else {
+        return 'no';
+    }
+}

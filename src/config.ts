@@ -9,7 +9,7 @@ export const DISCORD_TOKEN = process.env.DISCORD_TOKEN;
 export const TAURI_BLUE = 0x67d6ed;
 
 // people
-const ADMIN_ROLES = DEV_MODE
+export const ADMIN_ROLES = DEV_MODE
     ? [process.env.DEV_ADMIN_ROLE]
     : [
           // admin
