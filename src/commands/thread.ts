@@ -141,7 +141,8 @@ export default command({
                         );
                         // Successfully solved the thread
                         // Get the first message in the thread
-                        const start_message = await thread.fetchStarterMessage();
+                        const start_message =
+                            await thread.fetchStarterMessage();
                         // Get the first 2 messages after the start message
                         const messages = await thread.messages.fetch({
                             limit: 2,
@@ -167,7 +168,9 @@ export default command({
                         msg.components = [row];
                         await bot_message.edit(msg);
                         // Commands require a reply
-                        await interaction.followUp(wrap_in_embed('Thread solved.'));
+                        await interaction.followUp(
+                            wrap_in_embed('Thread solved.'),
+                        );
                         // Delete the reply after 10 seconds
                         setTimeout(async () => {
                             await interaction.deleteReply();
@@ -177,21 +180,33 @@ export default command({
                     if (!(thread.parent instanceof ForumChannel))
                         throw new Error("Can't solve a non-help channel");
                     // Parent forum channel
-                    const solveChannel = thread.guild.channels.cache.get(thread.parentId) as ForumChannel
+                    const solveChannel = thread.guild.channels.cache.get(
+                        thread.parentId,
+                    ) as ForumChannel;
                     // Solve tag
-                    const solveTag = solveChannel.availableTags.find(tag => tag.name === SOLVED_TAG).id
+                    const solveTag = solveChannel.availableTags.find(
+                        (tag) => tag.name === SOLVED_TAG,
+                    ).id;
                     // Unsolve tag
-                    const unsolveTag = solveChannel.availableTags.find(tag => tag.name === UNSOLVED_TAG).id
+                    const unsolveTag = solveChannel.availableTags.find(
+                        (tag) => tag.name === UNSOLVED_TAG,
+                    ).id;
                     // If this is a ThreadChannel
-                    let tags = thread.appliedTags.filter(tag => tag !== solveTag && tag !== unsolveTag).splice(0, 4)
+                    let tags = thread.appliedTags
+                        .filter((tag) => tag !== solveTag && tag !== unsolveTag)
+                        .splice(0, 4);
                     // Add the solved tag
-                    tags.unshift(solveTag)
+                    tags.unshift(solveTag);
                     // If neither tag is going to exist in the channel, add unsolved
-                    if (!tags.includes(solveTag) && !tags.includes(unsolveTag)) tags.unshift(unsolveTag)
+                    if (!tags.includes(solveTag) && !tags.includes(unsolveTag))
+                        tags.unshift(unsolveTag);
                     // Ensure no duplicates are in the array
-                    tags = [...new Set(tags)].sort()
+                    tags = [...new Set(tags)].sort();
                     // Apply tags
-                    if (tags.toString() !== thread.appliedTags.sort().toString()) thread.setAppliedTags(tags)
+                    if (
+                        tags.toString() !== thread.appliedTags.sort().toString()
+                    )
+                        thread.setAppliedTags(tags);
                     // Commands require a reply
                     await interaction.followUp(wrap_in_embed('Thread solved.'));
                     // Delete the reply after 10 seconds
