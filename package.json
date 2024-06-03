@@ -20,7 +20,7 @@
         "ts-node": "10.9.2",
         "tsm": "2.3.0",
         "unfurl.js": "6.3.1",
-        "url-regex-safe": "3.0.0"
+        "url-regex-safe": "4.0.0"
     },
     "devDependencies": {
         "@types/express": "4.17.21",

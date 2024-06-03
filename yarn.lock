@@ -1174,10 +1174,10 @@ supports-color@^5.5.0:
   dependencies:
     has-flag "^3.0.0"
 
-tlds@^1.228.0:
-  version "1.237.0"
-  resolved "https://registry.yarnpkg.com/tlds/-/tlds-1.237.0.tgz#71e5ca558878a046bc9e253db7a1f2b602ce1a2d"
-  integrity sha512-4IA6zR7jQop4pEdziQaptOgkIwnnZ537fXM3MKAzOXjXLjiHm77SA3/E0nXWJGSVRnKcn/JxDJmwTqyPgQ+ozg==
+tlds@^1.242.0:
+  version "1.252.0"
+  resolved "https://registry.yarnpkg.com/tlds/-/tlds-1.252.0.tgz#71d9617f4ef4cc7347843bee72428e71b8b0f419"
+  integrity sha512-GA16+8HXvqtfEnw/DTcwB0UU354QE1n3+wh08oFjr6Znl7ZLAeUgYzCcK+/CCrOyE0vnHR8/pu3XXG3vDijXpQ==
 
 to-regex-range@^5.0.1:
   version "5.0.1"
@@ -1288,13 +1288,13 @@ unpipe@1.0.0, unpipe@~1.0.0:
   resolved "https://registry.yarnpkg.com/unpipe/-/unpipe-1.0.0.tgz#b2bf4ee8514aae6165b4817829d21b2ef49904ec"
   integrity sha512-pjy2bYhSsufwWlKwPc+l3cN7+wuJlK6uz0YdJEOlQDbl6jo/YlPi4mb8agUkVC8BF7V8NuzeyPNqRksA3hztKQ==
 
-url-regex-safe@3.0.0:
-  version "3.0.0"
-  resolved "https://registry.yarnpkg.com/url-regex-safe/-/url-regex-safe-3.0.0.tgz#102a38f74a1a731973fa42690c6a56656fddff12"
-  integrity sha512-+2U40NrcmtWFVjuxXVt9bGRw6c7/MgkGKN9xIfPrT/2RX0LTkkae6CCEDp93xqUN0UKm/rr821QnHd2dHQmN3A==
+url-regex-safe@4.0.0:
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/url-regex-safe/-/url-regex-safe-4.0.0.tgz#2ac972bfc012e6ab1363d8f3f1c540145b64e15e"
+  integrity sha512-BrnFCWKNFrFnRzKD66NtJqQepfJrUHNPvPxE5y5NSAhXBb4OlobQjt7907Jm4ItPiXaeX+dDWMkcnOd4jR9N8A==
   dependencies:
     ip-regex "4.3.0"
-    tlds "^1.228.0"
+    tlds "^1.242.0"
 
 utils-merge@1.0.1:
   version "1.0.1"
