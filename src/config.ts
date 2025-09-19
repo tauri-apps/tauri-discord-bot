@@ -92,3 +92,7 @@ export const SUPPORT_FORUM = DEV_MODE
 export const SOLVABLE_FORUMS = [SUPPORT_FORUM];
 export const UNSOLVED_TAG = 'unsolved';
 export const SOLVED_TAG = 'solved';
+
+export const JOBS_FORUM = DEV_MODE
+    ? process.env.DEV_JOBS_FORUM_CHANNEL
+    : '1115940750044168192';
