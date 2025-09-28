@@ -66,16 +66,36 @@ export async function sendReactionRoleMessage(client: Client) {
             '\nTauri is a toolkit to build an optimized, secure, and frontend-independent application for multi-platform deployment.',
         );
         messageArray.push(
-            '\nFamiliarize yourself with our Code of Conduct: <https://github.com/tauri-apps/tauri/blob/dev/.github/CODE_OF_CONDUCT.md>',
+            "\nEveryone on this server must follow the rules outlined in our Code of Conduct: <https://github.com/tauri-apps/tauri/blob/dev/.github/CODE_OF_CONDUCT.md> and Discord's Community Guidelines: <https://discord.com/guidelines/>. Due to the nature of Discord servers we are forced to ban users more liberally, but you can always send ban appeals to the contact channels listed in our Code of Conduct.",
+        );
+        messageArray.push(
+            "Additionally, please read each channel's description and each forum's posting guidelines.",
+        );
+        messageArray.push(
+            'These rules may be updated at any time and you are expected to regularly check this channel for any changes.',
         );
 
         messageArray.push('\n**<#616186924390023173>**');
         messageArray.push(
-            "Talk with other Tauri developers in <#731495028677148753>, ask for help in <#1047150269156294677>, or show off what you've created with Tauri in <#1047149172144492604>.",
+            "Meet other Tauri developers or get help if you're stuck.",
         );
+        messageArray.push(
+            '- Talk about topics related to Tauri in <#731495028677148753>.',
+        );
+        messageArray.push('- Ask for help in <#1047150269156294677>!');
+        messageArray.push(
+            '- Show off your projects in <#1047149172144492604>.',
+        );
+        messageArray.push(
+            '- Look for job opportunities in <#1115940750044168192>. This is the only channel where job hunting is allowed!',
+        );
+        messageArray.push(
+            '- Talk about anything not related to Tauri in <#618328921330417692>.',
+        );
+
         messageArray.push('\n**<#879007560429088800>**');
         messageArray.push(
-            'Get involved with Tauri development and browse the different projects.',
+            'Get involved with Tauri development and browse the different projects. This category of channels is **not** a place to ask for help with your apps.',
         );
 
         let messageBody = messageArray.join('\n');
