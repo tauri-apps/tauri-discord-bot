@@ -86,7 +86,10 @@ export default event({
             }
         } else if (
             message.channel instanceof ThreadChannel &&
-            JOBS_FORUM === message.channel.parentId
+            JOBS_FORUM === message.channel.parentId &&
+            !message.member.roles.cache.some(
+                (role) => role.name === 'working-group',
+            )
         ) {
             try {
                 const allJobPosts = await message.channel.messages.fetch();
