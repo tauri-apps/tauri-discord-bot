@@ -51,8 +51,8 @@ export default event({
             let msg;
             // Base message text to send to the user
             const baseMessage = HELP_THREAD_CHANNELS.includes(message.channelId)
-                ? 'Thanks for helping out! Please send you reply in the thread created for the issue and not directly in the channel.'
-                : 'Please send you reply in the thread created for the topic and not directly in the channel.';
+                ? 'Thanks for helping out! Please send your reply in the thread created for the issue and not directly in the channel.'
+                : 'Please send your reply in the thread created for the topic and not directly in the channel.';
             // If the thread was found
             if (thread) {
                 // Replicate the users message

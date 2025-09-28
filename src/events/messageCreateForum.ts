@@ -7,6 +7,7 @@ import {
     SOLVED_TAG,
     MESSAGE_READ,
     SUPPORT_FORUM,
+    JOBS_FORUM,
 } from '../config';
 
 export default event({
@@ -82,6 +83,26 @@ export default event({
                     ),
                 );
                 await msg.react(MESSAGE_READ);
+            }
+        } else if (
+            message.channel instanceof ThreadChannel &&
+            JOBS_FORUM === message.channel.parentId &&
+            !message.member.roles.cache.some(
+                (role) => role.name === 'working-group',
+            )
+        ) {
+            try {
+                const allJobPosts =
+                    await message.channel.parent.threads.fetch();
+                const userThreads = allJobPosts.threads
+                    .filter((thread) => thread.ownerId === message.author.id)
+                    .filter((thread) => thread.id !== message.id);
+                // bulkDelete only works for messages younger than 2 weeks.
+                userThreads.forEach((thread) =>
+                    thread.delete().catch(console.error),
+                );
+            } catch (err) {
+                console.error('Error handling post in Jobs forum.', err);
             }
         }
     },
