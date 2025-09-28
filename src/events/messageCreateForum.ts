@@ -92,12 +92,15 @@ export default event({
             )
         ) {
             try {
-                const allJobPosts = await message.channel.messages.fetch();
-                const userMessages = allJobPosts
-                    .filter((msg) => msg.author.id === message.author.id)
-                    .filter((msg) => msg.id !== message.id);
+                const allJobPosts =
+                    await message.channel.parent.threads.fetch();
+                const userThreads = allJobPosts.threads
+                    .filter((thread) => thread.ownerId === message.author.id)
+                    .filter((thread) => thread.id !== message.id);
                 // bulkDelete only works for messages younger than 2 weeks.
-                userMessages.forEach((item) => item.delete());
+                userThreads.forEach((thread) =>
+                    thread.delete().catch(console.error),
+                );
             } catch (err) {
                 console.error('Error handling post in Jobs forum.', err);
             }
