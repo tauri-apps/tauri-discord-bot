@@ -66,24 +66,26 @@ export async function sendReactionRoleMessage(client: Client) {
             '\nTauri is a toolkit to build an optimized, secure, and frontend-independent application for multi-platform deployment.',
         );
         messageArray.push(
-            "\nEveryone on this server must follow the rules outlined in our [Code of Conduct](<https://github.com/tauri-apps/tauri/blob/dev/.github/CODE_OF_CONDUCT.md>) and Discord's [Community Guidelines](<https://discord.com/guidelines/>)! Please also read the descriptions and posting guidelines in each channel.",
+            "\nEveryone on this server must follow the rules outlined in our [Code of Conduct](<https://github.com/tauri-apps/tauri/blob/dev/.github/CODE_OF_CONDUCT.md>) and Discord's [Community Guidelines](<https://discord.com/guidelines/>)!",
         );
         messageArray.push(
-            'Due to the nature of Discord servers we are forced to ban users more liberally than explained in these documents, but you are welcome to send ban appeals to the contact channels listed in our Code of Conduct if you believe that we made a mistake.',
+            'Please also read the descriptions and posting guidelines in each channel.',
         );
+        // TODO: Fix the wording and uncomment
+        // messageArray.push('\nDue to the nature of Discord servers we are forced to ban users more liberally than explained in these documents, but you are welcome to send ban appeals to the contact channels listed in our Code of Conduct if you believe that we made a mistake.',);
         messageArray.push(
-            '\n**These rules may be updated at any time and you are expected to regularly check this channel for any changes.**',
+            '\n**Our rules may be updated at any time so we expect you to regularly check this channel for changes.**',
         );
 
         messageArray.push('\nServer Overview:');
-        messageArray.push('**<#616186924390023173>**');
+        messageArray.push('\n**<#616186924390023173>**');
         messageArray.push(
             "- Meet other Tauri developers or get help if you're stuck.",
         );
         messageArray.push(
             '  - Talk about topics related to Tauri in <#731495028677148753>.',
         );
-        messageArray.push('- Ask for help in <#1047150269156294677>!');
+        messageArray.push('  - Ask for help in <#1047150269156294677>!');
         messageArray.push(
             '  - Show off your projects in <#1047149172144492604>.',
         );
