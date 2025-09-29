@@ -91,6 +91,7 @@ export default event({
                 (role) => role.name === 'working-group',
             )
         ) {
+            console.log('Handling new thread in Jobs channel');
             try {
                 const allJobPosts =
                     await message.channel.parent.threads.fetch();
@@ -98,8 +99,20 @@ export default event({
                     .filter((thread) => thread.ownerId === message.author.id)
                     .filter((thread) => thread.id !== message.id);
                 // bulkDelete only works for messages younger than 2 weeks.
+                console.log(`Deleting ${userThreads.size} threads`);
                 userThreads.forEach((thread) =>
-                    thread.delete().catch(console.error),
+                    thread
+                        .delete()
+                        .then(() => {
+                            console.log(
+                                `thread ${thread.id} "${thread.name}" deleted`,
+                            );
+                        })
+                        .catch((err) =>
+                            console.error(
+                                `Error deleting thread ${thread.id}: ${err}`,
+                            ),
+                        ),
                 );
             } catch (err) {
                 console.error('Error handling post in Jobs forum.', err);
