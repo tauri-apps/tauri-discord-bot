@@ -99,6 +99,7 @@ export default event({
                     await message.channel.parent.threads.fetchArchived(
                         {
                             fetchAll: true,
+                            limit: 100,
                         },
                         false,
                     );
