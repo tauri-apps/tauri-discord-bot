@@ -93,13 +93,29 @@ export default event({
         ) {
             console.log('Handling new thread in Jobs channel');
             try {
-                const allJobPosts =
-                    await message.channel.parent.threads.fetch();
-                const userThreads = allJobPosts.threads
+                const threadCacheA =
+                    await message.channel.parent.threads.fetchActive(false);
+                const threadCacheB =
+                    await message.channel.parent.threads.fetchArchived(
+                        {
+                            fetchAll: true,
+                        },
+                        false,
+                    );
+
+                console.log(
+                    `Fetched ${threadCacheA.threads.size} active and ${threadCacheB.threads.size} archived threads. hasMore is ${threadCacheB.hasMore}`,
+                );
+
+                const allJobPosts = [
+                    ...threadCacheA.threads.values(),
+                    ...threadCacheB.threads.values(),
+                ];
+                const userThreads = allJobPosts
                     .filter((thread) => thread.ownerId === message.author.id)
                     .filter((thread) => thread.id !== message.id);
                 // bulkDelete only works for messages younger than 2 weeks.
-                console.log(`Deleting ${userThreads.size} threads`);
+                console.log(`Deleting ${userThreads.length} threads`);
                 userThreads.forEach((thread) =>
                     thread
                         .delete()
