@@ -427,7 +427,7 @@ debug@2.6.9:
   dependencies:
     ms "2.0.0"
 
-debug@^3.1.0:
+debug@^3.2.7:
   version "3.2.7"
   resolved "https://registry.yarnpkg.com/debug/-/debug-3.2.7.tgz#72580b7e9145fb39b6676f9c5e5fb100b934179a"
   integrity sha512-CFjzYYAi4ThfiQvizrFQevTTXHtnCqWfe7x1AhgEscTz6ZbLbfoLRLPugTQyBth6f8ZERVUSyWHFD/7Wu4t1XQ==
@@ -1272,12 +1272,12 @@ undici@6.13.0:
   resolved "https://registry.yarnpkg.com/undici/-/undici-6.13.0.tgz#7edbf4b7f3aac5f8a681d515151bf55cb3589d72"
   integrity sha512-Q2rtqmZWrbP8nePMq7mOJIN98M0fYvSgV89vwl/BQRT4mDOeY2GXZngfGpcBBhtky3woM7G24wZV3Q304Bv6cw==
 
-unfurl.js@6.3.1:
-  version "6.3.1"
-  resolved "https://registry.yarnpkg.com/unfurl.js/-/unfurl.js-6.3.1.tgz#ca86878b2b425743977acbf980e0b3785ae9d2a9"
-  integrity sha512-hPSc4CifebcfCTHF+jGz0Qo67P/OPyQm/zC46tgVXvDhBEYVnoZlJ3e1WOmlmpoHx8KkmikbbeLlIMYDdRFM9w==
+unfurl.js@6.4.0:
+  version "6.4.0"
+  resolved "https://registry.yarnpkg.com/unfurl.js/-/unfurl.js-6.4.0.tgz#222cfc95b71d26529b5baa5dde9813019fa87c67"
+  integrity sha512-DogJFWPkOWMcu2xPdpmbcsL+diOOJInD3/jXOv6saX1upnWmMK8ndAtDWUfJkuInqNI9yzADud4ID9T+9UeWCw==
   dependencies:
-    debug "^3.1.0"
+    debug "^3.2.7"
     he "^1.2.0"
     htmlparser2 "^8.0.1"
     iconv-lite "^0.4.24"
