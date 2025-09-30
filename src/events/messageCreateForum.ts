@@ -93,25 +93,35 @@ export default event({
         ) {
             console.log('Handling new thread in Jobs channel');
             try {
+                let allJobPosts = [];
+
                 const threadCacheA =
                     await message.channel.parent.threads.fetchActive(false);
-                const threadCacheB =
-                    await message.channel.parent.threads.fetchArchived(
-                        {
-                            fetchAll: true,
-                            limit: 100,
-                        },
-                        false,
-                    );
+                allJobPosts = [...threadCacheA.threads.values()];
 
-                console.log(
-                    `Fetched ${threadCacheA.threads.size} active and ${threadCacheB.threads.size} archived threads. hasMore is ${threadCacheB.hasMore}`,
-                );
+                let hasMore = true;
+                let before;
 
-                const allJobPosts = [
-                    ...threadCacheA.threads.values(),
-                    ...threadCacheB.threads.values(),
-                ];
+                while (hasMore) {
+                    const threadCacheB =
+                        await message.channel.parent.threads.fetchArchived(
+                            {
+                                fetchAll: true,
+                                limit: 100,
+                                before,
+                            },
+                            false,
+                        );
+                    hasMore = threadCacheB.hasMore;
+                    before = threadCacheB.threads.last();
+                    allJobPosts = [
+                        ...allJobPosts,
+                        ...threadCacheB.threads.values(),
+                    ];
+                }
+
+                console.log(`Fetched ${allJobPosts.length} threads`);
+
                 const userThreads = allJobPosts
                     .filter((thread) => thread.ownerId === message.author.id)
                     .filter((thread) => thread.id !== message.id);
