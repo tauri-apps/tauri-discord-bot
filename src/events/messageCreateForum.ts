@@ -68,22 +68,22 @@ export default event({
                 message.channel.setAppliedTags(tags);
             // If this is a new post and not just a regular message
             // Disabled for now due to the fact that nobody reads the message
-            if (!message.nonce && message.position === 0 && false) {
-                const msg = await message.channel.send(
-                    wrap_in_embed(
-                        `Thank you for your message!
+            // if (!message.nonce && message.position === 0) {
+            //     const msg = await message.channel.send(
+            //         wrap_in_embed(
+            //             `Thank you for your message!
 
-                    1. Search the <#${SUPPORT_FORUM}> forum for existing posts
-                    2. Search Github issues to see if this is a known issue
-                    3. Send the output of \`tauri info\`
-                    4. Provide reproduction steps for your issue
-                    5. Be polite and remember to follow the [Tauri Code of Conduct](https://github.com/tauri-apps/governance-and-guidance/blob/main/CODE_OF_CONDUCT.md)
+            //         1. Search the <#${SUPPORT_FORUM}> forum for existing posts
+            //         2. Search Github issues to see if this is a known issue
+            //         3. Send the output of \`tauri info\`
+            //         4. Provide reproduction steps for your issue
+            //         5. Be polite and remember to follow the [Tauri Code of Conduct](https://github.com/tauri-apps/governance-and-guidance/blob/main/CODE_OF_CONDUCT.md)
 
-                    Once you've read this and taken the appropriate steps, react to this message`,
-                    ),
-                );
-                await msg.react(MESSAGE_READ);
-            }
+            //         Once you've read this and taken the appropriate steps, react to this message`,
+            //         ),
+            //     );
+            //     await msg.react(MESSAGE_READ);
+            // }
         } else if (
             message.channel instanceof ThreadChannel &&
             JOBS_FORUM === message.channel.parentId &&
@@ -126,7 +126,9 @@ export default event({
                     .filter((thread) => thread.ownerId === message.author.id)
                     .filter((thread) => thread.id !== message.id);
                 // bulkDelete only works for messages younger than 2 weeks.
-                console.log(`Deleting ${userThreads.length} threads`);
+                console.log(
+                    `Deleting ${userThreads.length} threads of same author`,
+                );
                 userThreads.forEach((thread) =>
                     thread
                         .delete()
@@ -137,10 +139,58 @@ export default event({
                         })
                         .catch((err) =>
                             console.error(
-                                `Error deleting thread ${thread.id}: ${err}`,
+                                `Error deleting thread ${thread.id} "${thread.name}": ${err}`,
                             ),
                         ),
                 );
+
+                const oldThreads = allJobPosts
+                    .filter(
+                        (thread) =>
+                            thread.createdTimestamp + 15778476 < Date.now(),
+                    )
+                    .filter((thread) => thread.archived);
+                console.log(
+                    `Deleting ${oldThreads.length} old archived threads`,
+                );
+                oldThreads.forEach(async (thread) => {
+                    try {
+                        if (thread.id === '1115981718336311296') {
+                            console.log('skipping Guidelines thread');
+                            return;
+                        }
+                        const owner = await thread.fetchOwner();
+                        if (
+                            owner.guildMember.roles.cache.some(
+                                (role) => role.name === 'working-group',
+                            )
+                        ) {
+                            console.log(
+                                `skipping thread ${thread.id} "${thread.name}" by WG member`,
+                            );
+                            return;
+                        }
+                        userThreads.forEach((thread) =>
+                            thread
+                                .delete()
+                                .then(() => {
+                                    console.log(
+                                        `thread ${thread.id} "${thread.name}" deleted`,
+                                    );
+                                })
+                                .catch((err) =>
+                                    console.error(
+                                        `Error deleting thread ${thread.id} "${thread.name}": ${err}`,
+                                    ),
+                                ),
+                        );
+                    } catch (err) {
+                        console.error(
+                            `Error handling old thread ${thread.id} - "${thread.name}"`,
+                            err,
+                        );
+                    }
+                });
             } catch (err) {
                 console.error('Error handling post in Jobs forum.', err);
             }
