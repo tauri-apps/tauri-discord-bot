@@ -1,4 +1,9 @@
-import { ThreadChannel, ChannelType, ForumChannel } from 'discord.js';
+import {
+    ThreadChannel,
+    ChannelType,
+    ForumChannel,
+    AnyThreadChannel,
+} from 'discord.js';
 import { event } from 'jellycommands';
 import { wrap_in_embed } from '../utils/embed_helpers';
 import {
@@ -91,7 +96,7 @@ export default event({
                 (role) => role.name === 'working-group',
             )
         ) {
-            console.log('Handling new thread in Jobs channel');
+            console.log('Handling new post in Jobs channel');
             try {
                 let allJobPosts = [];
 
@@ -129,20 +134,7 @@ export default event({
                 console.log(
                     `Deleting ${userThreads.length} threads of same author`,
                 );
-                userThreads.forEach((thread) =>
-                    thread
-                        .delete()
-                        .then(() => {
-                            console.log(
-                                `thread ${thread.id} "${thread.name}" deleted`,
-                            );
-                        })
-                        .catch((err) =>
-                            console.error(
-                                `Error deleting thread ${thread.id} "${thread.name}": ${err}`,
-                            ),
-                        ),
-                );
+                userThreads.forEach(deleteThread);
 
                 const oldThreads = allJobPosts
                     .filter(
@@ -154,39 +146,48 @@ export default event({
                     `Deleting ${oldThreads.length} old archived threads`,
                 );
                 oldThreads.forEach(async (thread) => {
+                    const threadName = `${thread.id} "${thread.name}"`;
+
                     try {
                         if (thread.id === '1115981718336311296') {
                             console.log('skipping Guidelines thread');
                             return;
                         }
+
                         const owner = await thread.fetchOwner();
+                        if (!owner) {
+                            // Assuming user left the server
+                            console.log(
+                                `Deleting ${threadName} due to missing owner`,
+                            );
+                            deleteThread(thread);
+                            return;
+                        }
+                        const member = await owner.guildMember.fetch();
+                        if (!member) {
+                            // Assuming user left the server
+                            console.log(
+                                `Deleting ${threadName} due to missing member`,
+                            );
+                            deleteThread(thread);
+                            return;
+                        }
+
                         if (
-                            owner.guildMember.roles.cache.some(
+                            member.roles.cache.some(
                                 (role) => role.name === 'working-group',
                             )
                         ) {
                             console.log(
-                                `skipping thread ${thread.id} "${thread.name}" by WG member`,
+                                `Skipping thread ${threadName} by WG member`,
                             );
                             return;
                         }
-                        userThreads.forEach((thread) =>
-                            thread
-                                .delete()
-                                .then(() => {
-                                    console.log(
-                                        `thread ${thread.id} "${thread.name}" deleted`,
-                                    );
-                                })
-                                .catch((err) =>
-                                    console.error(
-                                        `Error deleting thread ${thread.id} "${thread.name}": ${err}`,
-                                    ),
-                                ),
-                        );
+
+                        userThreads.forEach(deleteThread);
                     } catch (err) {
                         console.error(
-                            `Error handling old thread ${thread.id} - "${thread.name}"`,
+                            `Error handling old thread ${threadName}`,
                             err,
                         );
                     }
@@ -197,3 +198,16 @@ export default event({
         }
     },
 });
+
+function deleteThread(thread: AnyThreadChannel) {
+    thread
+        .delete()
+        .then(() => {
+            console.log(`Thread ${thread.id} "${thread.name}" deleted`);
+        })
+        .catch((err) =>
+            console.error(
+                `Error deleting thread ${thread.id} "${thread.name}": ${err}`,
+            ),
+        );
+}
