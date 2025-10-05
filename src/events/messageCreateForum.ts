@@ -146,51 +146,15 @@ export default event({
                     `Deleting ${oldThreads.length} old archived threads`,
                 );
                 oldThreads.forEach(async (thread) => {
-                    const threadName = `${thread.id} "${thread.name}"`;
-
-                    try {
-                        if (thread.id === '1115981718336311296') {
-                            console.log('skipping Guidelines thread');
-                            return;
-                        }
-
-                        const owner = await thread.fetchOwner();
-                        if (!owner) {
-                            // Assuming user left the server
-                            console.log(
-                                `Deleting ${threadName} due to missing owner`,
-                            );
-                            deleteThread(thread);
-                            return;
-                        }
-                        const member = await owner.guildMember.fetch();
-                        if (!member) {
-                            // Assuming user left the server
-                            console.log(
-                                `Deleting ${threadName} due to missing member`,
-                            );
-                            deleteThread(thread);
-                            return;
-                        }
-
-                        if (
-                            member.roles.cache.some(
-                                (role) => role.name === 'working-group',
-                            )
-                        ) {
-                            console.log(
-                                `Skipping thread ${threadName} by WG member`,
-                            );
-                            return;
-                        }
-
-                        userThreads.forEach(deleteThread);
-                    } catch (err) {
-                        console.error(
-                            `Error handling old thread ${threadName}`,
-                            err,
-                        );
+                    if (
+                        ['1115981718336311296', '1348662651848228924'].includes(
+                            thread.id,
+                        )
+                    ) {
+                        console.log('skipping guarded thread');
+                        return;
                     }
+                    userThreads.forEach(deleteThread);
                 });
             } catch (err) {
                 console.error('Error handling post in Jobs forum.', err);
