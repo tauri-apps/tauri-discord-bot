@@ -141,6 +141,7 @@ export default event({
                         (thread) =>
                             thread.createdTimestamp + 15778476 < Date.now(),
                     )
+                    .filter((thread) => thread.ownerId !== message.author.id)
                     .filter((thread) => thread.archived);
                 console.log(
                     `Deleting ${oldThreads.length} old archived threads`,
@@ -154,7 +155,7 @@ export default event({
                         console.log('skipping guarded thread');
                         return;
                     }
-                    userThreads.forEach(deleteThread);
+                    deleteThread(thread);
                 });
             } catch (err) {
                 console.error('Error handling post in Jobs forum.', err);
