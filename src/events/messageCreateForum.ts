@@ -137,12 +137,7 @@ export default event({
                 userThreads.forEach(deleteThread);
 
                 const oldThreads = allJobPosts
-                    .filter((thread) => {
-                        console.log(
-                            `creadedTimestamp: ${thread.createdTimestamp} - dateNow: ${Date.now()} - ${thread.createdTimestamp + 15778476 < Date.now()}`,
-                        );
-                        return thread.createdTimestamp + 15778476 < Date.now();
-                    })
+                    .filter((thread) => thread.createdTimestamp + 15778800000 < Date.now())
                     .filter((thread) => thread.ownerId !== message.author.id)
                     .filter((thread) => thread.archived);
                 console.log(
