@@ -71,6 +71,9 @@ export async function sendReactionRoleMessage(client: Client) {
         messageArray.push(
             'Please also read the descriptions and posting guidelines in each channel.',
         );
+        messageArray.push(
+            '\nAny kind of "Job hunting" and "Job offer" posts are strictly forbidden on this server! Due to fighting Scam and Bots we have to be very quick to mute or ban offenders. Please ping @mods if you see messages we missed.',
+        );
         // TODO: Fix the wording and uncomment
         // messageArray.push('\nDue to the nature of Discord servers we are forced to ban users more liberally than explained in these documents, but you are welcome to send ban appeals to the contact channels listed in our Code of Conduct if you believe that we made a mistake.',);
         messageArray.push(
@@ -88,9 +91,6 @@ export async function sendReactionRoleMessage(client: Client) {
         messageArray.push('  - Ask for help in <#1047150269156294677>!');
         messageArray.push(
             '  - Show off your projects in <#1047149172144492604>.',
-        );
-        messageArray.push(
-            '  - Look for job opportunities in <#1115940750044168192>. This is the only channel where job hunting is allowed!',
         );
         messageArray.push(
             '  - Talk about anything not related to Tauri in <#618328921330417692>.',
