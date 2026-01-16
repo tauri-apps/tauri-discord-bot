@@ -72,7 +72,7 @@ export async function sendReactionRoleMessage(client: Client) {
             'Please also read the descriptions and posting guidelines in each channel.',
         );
         messageArray.push(
-            '\nAny kind of "Job hunting" and "Job offer" posts are strictly forbidden on this server! Due to fighting Scam and Bots we have to be very quick to mute or ban offenders. Please ping @mods if you see messages we missed.',
+            '\nAny kind of "Job hunting" and "Job offer" posts are strictly forbidden on this server! Due to fighting Scam and Bots we have to be very quick to mute or ban offenders. Please ping @mod if you see messages we missed.',
         );
         // TODO: Fix the wording and uncomment
         // messageArray.push('\nDue to the nature of Discord servers we are forced to ban users more liberally than explained in these documents, but you are welcome to send ban appeals to the contact channels listed in our Code of Conduct if you believe that we made a mistake.',);
