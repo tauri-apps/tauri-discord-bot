@@ -8,7 +8,6 @@ import {
 import type { InteractionReplyOptions, Snowflake } from 'discord.js';
 import {
     DEV_MODE,
-    HELPER_ROLES,
     HELP_THREAD_CHANNELS,
     THREAD_ADMIN_IDS,
 } from '../config.ts';
@@ -95,7 +94,7 @@ export async function check_autothread_permissions(
     thread: ThreadChannel,
     member: GuildMember,
 ): Promise<boolean> {
-    const allowed_ids = [...THREAD_ADMIN_IDS, ...HELPER_ROLES];
+    const allowed_ids = [...THREAD_ADMIN_IDS];
     if (thread.ownerId) allowed_ids.push(thread.ownerId);
 
     await thread.fetchStarterMessage().then((message) => {

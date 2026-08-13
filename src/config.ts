@@ -1,7 +1,7 @@
 export const DEV_MODE = process.env.NODE_ENV !== 'production';
 
 export const GUILD_ID = DEV_MODE
-    ? process.env.DEV_GUILD_ID
+    ? (process.env.DEV_GUILD_ID ?? '0')
     : '616186924390023171';
 
 export const DISCORD_TOKEN = process.env.DISCORD_TOKEN;
@@ -10,33 +10,18 @@ export const TAURI_BLUE = 0x67d6ed;
 
 // people
 const ADMIN_ROLES = DEV_MODE
-    ? [process.env.DEV_ADMIN_ROLE]
+    ? [process.env.DEV_ADMIN_ROLE ?? '0']
     : [
           // admin
           '985400380663935088',
-          // core
-          '616187491715907585',
+          // mod
+          '1115985763423748227',
           // working-group
           '761977421305610241',
       ];
 
-// list of support roles without admin rights
-export const HELPER_ROLES = DEV_MODE
-    ? [process.env.DEV_HELPER_ROLE]
-    : [
-          // Helping Hand
-          '995034988699455609',
-      ];
-
-export const BOT_DEVS = [
-    // LorenzoLewis
-    '402698003569180674',
-    // Simon
-    // '329752097530839041',
-];
-
 //  list of roles/user IDs other than the creator allowed to modify threads
-export const THREAD_ADMIN_IDS = [...ADMIN_ROLES, ...BOT_DEVS];
+export const THREAD_ADMIN_IDS = [...ADMIN_ROLES];
 
 // auto thread channels with the issue handling feature
 export const HELP_THREAD_CHANNELS = DEV_MODE

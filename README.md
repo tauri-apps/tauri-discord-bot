@@ -13,7 +13,6 @@ This bot is based off of the amazing [Svelte Bot](https://github.com/pngwn/svelt
     -   `DEV_SUPPORT_FORUM_CHANNEL`: Support forum channel id
 -   `src/config.ts`: The bots main config is located at [src/config.ts](src/config.ts)
     -   `ADMIN_ROLES`: Role or user IDs that the bot will consider administrators
-    -   `BOT_DEVS`: Currently the same functionality as `ADMIN_ROLES`
     -   `AUTO_THREAD_CHANNELS`: Channel(s) that automatically thread any messages sent in them (extends `HELP_CHANNELS` below)
     -   `HELP_CHANNELS`: Channel(s) that in addition to being auto threaded also come with issue handling capabilities
 
