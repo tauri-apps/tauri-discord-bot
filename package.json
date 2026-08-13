@@ -11,9 +11,9 @@
     },
     "license": "MIT",
     "engines": {
-        "node": ">=24.x",
-        "pnpm": "11.x"
+        "node": "24.x"
     },
+    "packageManager": "pnpm@11.13.0",
     "dependencies": {
         "discord.js": "14.26.5",
         "dotenv": "16.4.5",
