@@ -27,8 +27,8 @@ importers:
         specifier: 2.3.0
         version: 2.3.0
       unfurl.js:
-        specifier: 6.3.1
-        version: 6.3.1(supports-color@5.5.0)
+        specifier: 6.4.0
+        version: 6.4.0(supports-color@5.5.0)
       url-regex-safe:
         specifier: 3.0.0
         version: 3.0.0
@@ -840,8 +840,8 @@ packages:
     resolution: {integrity: sha512-LIY910g9TI13YS95lrMFrs8Rm/u/irgHeTWoKCoteeJ04CUJ92eEfj0rVn+7VKMPBpUPiUoBKfhNyLI23EE/KA==}
     engines: {node: '>=18.17'}
 
-  unfurl.js@6.3.1:
-    resolution: {integrity: sha512-hPSc4CifebcfCTHF+jGz0Qo67P/OPyQm/zC46tgVXvDhBEYVnoZlJ3e1WOmlmpoHx8KkmikbbeLlIMYDdRFM9w==}
+  unfurl.js@6.4.0:
+    resolution: {integrity: sha512-DogJFWPkOWMcu2xPdpmbcsL+diOOJInD3/jXOv6saX1upnWmMK8ndAtDWUfJkuInqNI9yzADud4ID9T+9UeWCw==}
     engines: {node: '>=6.0.0'}
 
   unpipe@1.0.0:
@@ -1676,7 +1676,7 @@ snapshots:
 
   undici@6.28.0: {}
 
-  unfurl.js@6.3.1(supports-color@5.5.0):
+  unfurl.js@6.4.0(supports-color@5.5.0):
     dependencies:
       debug: 3.2.7(supports-color@5.5.0)
       he: 1.2.0
