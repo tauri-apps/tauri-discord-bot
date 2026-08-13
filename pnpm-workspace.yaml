@@ -1,5 +1,8 @@
 allowBuilds:
-    esbuild: true
+  esbuild: true
 
 minimumReleaseAge: 10080
 trustPolicy: no-downgrade
+minimumReleaseAgeExclude:
+  # Renovate security update: express@4.20.0
+  - express@4.20.0
