@@ -1,13 +1,18 @@
 {
     "compilerOptions": {
-        "module": "ESNext",
+        "target": "esnext",
+        "module": "esnext",
+        "moduleResolution": "bundler",
         "esModuleInterop": true,
-        "target": "ESNext",
         "noImplicitAny": true,
-        "moduleResolution": "Node",
-        "sourceMap": true,
-        "outDir": "dist",
-        "skipLibCheck": true
+        "allowJs": true,
+        "skipLibCheck": true,
+        "verbatimModuleSyntax": true,
+        "erasableSyntaxOnly": true,
+        "noEmit": true,
+        "allowImportingTsExtensions": true,
+        "allowSyntheticDefaultImports": true,
+        "declaration": false
     },
-    "include": ["src"]
+    "include": ["src/**/*"]
 }

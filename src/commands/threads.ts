@@ -1,7 +1,7 @@
 import { command } from 'jellycommands';
-import { wrap_in_embed } from '../utils/embed_helpers';
+import { wrap_in_embed } from '../utils/embed_helpers.ts';
 import { ChannelType, Message } from 'discord.js';
-import { HELP_THREAD_CHANNELS } from '../config';
+import { HELP_THREAD_CHANNELS } from '../config.ts';
 
 export default command({
     name: 'threads',

@@ -1,7 +1,7 @@
 import { TextChannel, ThreadChannel } from 'discord.js';
 import { event } from 'jellycommands';
-import { updateCache } from '../utils/cacheManagement';
-import { sendReactionRoleMessage } from '../utils/reactionHandler';
+import { updateCache } from '../utils/cacheManagement.ts';
+import { sendReactionRoleMessage } from '../utils/reactionHandler.ts';
 
 export default event({
     name: 'ready',

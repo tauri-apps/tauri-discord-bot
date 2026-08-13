@@ -1,6 +1,6 @@
 import { command } from 'jellycommands';
-import { DEV_MODE } from '../config';
-import { wrap_in_embed } from '../utils/embed_helpers';
+import { DEV_MODE } from '../config.ts';
+import { wrap_in_embed } from '../utils/embed_helpers.ts';
 
 export default command({
     name: 'test',

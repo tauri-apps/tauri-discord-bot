@@ -1,4 +1,4 @@
-import { APIRole, Role, roleMention } from 'discord.js';
+import { type APIRole, Role, roleMention } from 'discord.js';
 import { command } from 'jellycommands';
 
 export default command({

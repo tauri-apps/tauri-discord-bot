@@ -1,13 +1,13 @@
 import {
     Client,
     GuildMember,
-    GuildTextBasedChannel,
+    type GuildTextBasedChannel,
     MessageReaction,
-    PartialMessageReaction,
-    PartialUser,
+    type PartialMessageReaction,
+    type PartialUser,
     User,
 } from 'discord.js';
-import { REACTION_ROLE, REACTION_ROLE_CHANNEL } from '../config';
+import { REACTION_ROLE, REACTION_ROLE_CHANNEL } from '../config.ts';
 
 export async function hasPermission(
     reaction: MessageReaction | PartialMessageReaction,

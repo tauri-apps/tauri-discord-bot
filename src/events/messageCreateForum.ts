@@ -2,10 +2,10 @@ import {
     ThreadChannel,
     ChannelType,
     ForumChannel,
-    AnyThreadChannel,
+    type AnyThreadChannel,
 } from 'discord.js';
 import { event } from 'jellycommands';
-import { wrap_in_embed } from '../utils/embed_helpers';
+import { wrap_in_embed } from '../utils/embed_helpers.ts';
 import {
     SOLVABLE_FORUMS,
     UNSOLVED_TAG,
@@ -13,7 +13,7 @@ import {
     MESSAGE_READ,
     SUPPORT_FORUM,
     JOBS_FORUM,
-} from '../config';
+} from '../config.ts';
 
 export default event({
     name: 'messageCreate',
@@ -137,7 +137,10 @@ export default event({
                 userThreads.forEach(deleteThread);
 
                 const oldThreads = allJobPosts
-                    .filter((thread) => thread.createdTimestamp + 15778800000 < Date.now())
+                    .filter(
+                        (thread) =>
+                            thread.createdTimestamp + 15778800000 < Date.now(),
+                    )
                     .filter((thread) => thread.ownerId !== message.author.id)
                     .filter((thread) => thread.archived);
                 console.log(

@@ -8,9 +8,9 @@ import {
     ButtonStyle,
 } from 'discord.js';
 import { event } from 'jellycommands';
-import { AUTO_THREAD_CHANNELS, HELP_THREAD_CHANNELS } from '../config';
-import { wrap_in_embed } from '../utils/embed_helpers';
-import { add_thread_prefix } from '../utils/threads';
+import { AUTO_THREAD_CHANNELS, HELP_THREAD_CHANNELS } from '../config.ts';
+import { wrap_in_embed } from '../utils/embed_helpers.ts';
+import { add_thread_prefix } from '../utils/threads.ts';
 
 export default event({
     name: 'messageCreate',

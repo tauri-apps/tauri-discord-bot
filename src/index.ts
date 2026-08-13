@@ -1,8 +1,8 @@
 import 'dotenv/config';
-import { DEV_MODE, GUILD_ID } from './config';
+import { DEV_MODE, GUILD_ID } from './config.ts';
 import { JellyCommands } from 'jellycommands';
 import { GatewayIntentBits } from 'discord.js';
-import healthcheck from './healthcheck';
+import healthcheck from './healthcheck.ts';
 
 const client = new JellyCommands({
     commands: 'src/commands',

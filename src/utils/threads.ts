@@ -1,22 +1,21 @@
 import {
     GuildMember,
-    InteractionReplyOptions,
     ActionRowBuilder,
     ButtonBuilder,
-    Snowflake,
     ThreadChannel,
     ButtonStyle,
 } from 'discord.js';
+import type { InteractionReplyOptions, Snowflake } from 'discord.js';
 import {
     DEV_MODE,
     HELPER_ROLES,
     HELP_THREAD_CHANNELS,
     THREAD_ADMIN_IDS,
-} from '../config';
-import { build_embed } from './embed_helpers';
-import { no_op, undefined_on_error } from './promise';
-import { has_any_role_or_id } from './snowflake';
-import { RateLimitStore } from './ratelimit';
+} from '../config.ts';
+import { build_embed } from './embed_helpers.ts';
+import { no_op, undefined_on_error } from './promise.ts';
+import { has_any_role_or_id } from './snowflake.ts';
+import { RateLimitStore } from './ratelimit.ts';
 
 /**
  * Discord allows 2 renames every 10 minutes. We need one always available
@@ -100,7 +99,7 @@ export async function check_autothread_permissions(
     if (thread.ownerId) allowed_ids.push(thread.ownerId);
 
     await thread.fetchStarterMessage().then((message) => {
-        allowed_ids.push(message.author.id);
+        if (message) allowed_ids.push(message.author.id);
     }, no_op);
 
     return has_any_role_or_id(member, allowed_ids);

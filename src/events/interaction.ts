@@ -1,15 +1,15 @@
 import { event } from 'jellycommands';
-import { reopen_thread, solve_thread } from '../utils/threads.js';
+import { reopen_thread, solve_thread } from '../utils/threads.ts';
 import {
     ButtonInteraction,
     GuildMember,
-    InteractionUpdateOptions,
+    type InteractionUpdateOptions,
     ActionRowBuilder,
     ButtonBuilder,
     ThreadChannel,
     ButtonStyle,
 } from 'discord.js';
-import { wrap_in_embed } from '../utils/embed_helpers.js';
+import { wrap_in_embed } from '../utils/embed_helpers.ts';
 
 export default event({
     name: 'interactionCreate',

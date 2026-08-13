@@ -4,8 +4,8 @@ import {
     MESSAGE_READ,
     REACTION_ROLE_CHANNEL,
     SOLVABLE_FORUMS,
-} from '../config';
-import { hasPermission } from '../utils/reactionHandler';
+} from '../config.ts';
+import { hasPermission } from '../utils/reactionHandler.ts';
 
 export default event({
     name: 'messageReactionAdd',

@@ -1,5 +1,5 @@
-import { GuildMember, EmbedBuilder, EmbedData } from 'discord.js';
-import { TAURI_BLUE } from '../config';
+import { GuildMember, EmbedBuilder, type EmbedData } from 'discord.js';
+import { TAURI_BLUE } from '../config.ts';
 
 export const build_embed = (options: EmbedData) =>
     new EmbedBuilder({ color: TAURI_BLUE, ...options });

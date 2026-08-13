@@ -1,6 +1,6 @@
 import { ThreadChannel, ChannelType, ForumChannel } from 'discord.js';
 import { event } from 'jellycommands';
-import { SOLVABLE_FORUMS, UNSOLVED_TAG, SOLVED_TAG } from '../config';
+import { SOLVABLE_FORUMS, UNSOLVED_TAG, SOLVED_TAG } from '../config.ts';
 
 export default event({
     name: 'threadUpdate',

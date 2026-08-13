@@ -1,21 +1,21 @@
 import { command } from 'jellycommands';
-import { HELP_THREAD_CHANNELS, SOLVED_TAG, UNSOLVED_TAG } from '../config';
-import { wrap_in_embed } from '../utils/embed_helpers';
-import { get_member } from '../utils/snowflake';
+import { HELP_THREAD_CHANNELS, SOLVED_TAG, UNSOLVED_TAG } from '../config.ts';
+import { wrap_in_embed } from '../utils/embed_helpers.ts';
+import { get_member } from '../utils/snowflake.ts';
 import {
     check_autothread_permissions,
     rename_thread,
     solve_thread,
     rename_limit,
     reopen_thread,
-} from '../utils/threads.js';
-import { no_op } from '../utils/promise.js';
+} from '../utils/threads.ts';
+import { no_op } from '../utils/promise.ts';
 import {
     GuildMember,
     Message,
     ActionRowBuilder,
     ButtonBuilder,
-    MessageEditOptions,
+    type MessageEditOptions,
     ButtonStyle,
     ForumChannel,
 } from 'discord.js';
