@@ -5,8 +5,7 @@ import { GatewayIntentBits } from 'discord.js';
 import healthcheck from './healthcheck.ts';
 
 const client = new JellyCommands({
-    commands: 'src/commands',
-    events: 'src/events',
+    components: ['src/commands', 'src/events'],
 
     clientOptions: {
         intents: [

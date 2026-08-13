@@ -1,7 +1,7 @@
 export const DEV_MODE = process.env.NODE_ENV !== 'production';
 
 export const GUILD_ID = DEV_MODE
-    ? (process.env.DEV_GUILD_ID ?? '0')
+    ? process.env.DEV_GUILD_ID ?? '0'
     : '616186924390023171';
 
 export const DISCORD_TOKEN = process.env.DISCORD_TOKEN;
@@ -23,61 +23,17 @@ const ADMIN_ROLES = DEV_MODE
 //  list of roles/user IDs other than the creator allowed to modify threads
 export const THREAD_ADMIN_IDS = [...ADMIN_ROLES];
 
-// auto thread channels with the issue handling feature
-export const HELP_THREAD_CHANNELS = DEV_MODE
-    ? [process.env.DEV_HELP_CHANNEL]
-    : [
-          // #help-triage
-          '625037620996734986',
-      ];
-
-// channels that will be automatically threaded when a message is created
-export const AUTO_THREAD_CHANNELS = DEV_MODE
-    ? [process.env.DEV_DID_A_THING_CHANNEL, ...HELP_THREAD_CHANNELS]
-    : [
-          // #did-a-thing
-          '616234029842300930',
-          ...HELP_THREAD_CHANNELS,
-      ];
-
-export const MESSAGE_READ = '✅';
-
-export const REACTION_ROLE: {
-    emojiName: string;
-    emojiId: string;
-    roleId: string;
-    description: string;
-}[] = DEV_MODE
-    ? [
-          {
-              emojiName: 'sausageroll',
-              emojiId: '995712110925451324',
-              roleId: process.env.DEV_REACTION_ROLE,
-              description:
-                  'Join the conversation in the contributors channels (you can still view without this role)',
-          },
-      ]
-    : [
-          {
-              emojiName: 'tauri',
-              emojiId: '876938722266972210',
-              roleId: '986176820187631616',
-              description:
-                  'Join the conversation in the contributors channels (you can still view without this role)',
-          },
-      ];
-
 export const REACTION_ROLE_CHANNEL = DEV_MODE
-    ? process.env.DEV_REACTION_ROLE_CHANNEL
+    ? process.env.DEV_REACTION_ROLE_CHANNEL ?? '0'
     : '616210923354456064';
 
 export const SUPPORT_FORUM = DEV_MODE
-    ? process.env.DEV_SUPPORT_FORUM_CHANNEL
+    ? process.env.DEV_SUPPORT_FORUM_CHANNEL ?? '0'
     : '1047150269156294677';
 export const SOLVABLE_FORUMS = [SUPPORT_FORUM];
 export const UNSOLVED_TAG = 'unsolved';
 export const SOLVED_TAG = 'solved';
 
 export const JOBS_FORUM = DEV_MODE
-    ? process.env.DEV_JOBS_FORUM_CHANNEL
+    ? process.env.DEV_JOBS_FORUM_CHANNEL ?? '0'
     : '1115940750044168192';

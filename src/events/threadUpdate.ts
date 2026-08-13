@@ -7,7 +7,10 @@ export default event({
     run: async ({}, oldChannel, newChannel) => {
         if (newChannel instanceof ThreadChannel) {
             // If newChannel is a solvable channel
-            if (SOLVABLE_FORUMS.includes(newChannel.parentId)) {
+            if (
+                newChannel.parentId &&
+                SOLVABLE_FORUMS.includes(newChannel.parentId)
+            ) {
                 // Parent forum channel
                 const solveChannel = newChannel.guild.channels.cache.get(
                     newChannel.parentId,
@@ -15,11 +18,11 @@ export default event({
                 // Solve tag
                 const solveTag = solveChannel.availableTags.find(
                     (tag) => tag.name === SOLVED_TAG,
-                ).id;
+                )!!.id;
                 // Unsolve tag
                 const unsolveTag = solveChannel.availableTags.find(
                     (tag) => tag.name === UNSOLVED_TAG,
-                ).id;
+                )!!.id;
                 // The new channel will only have one of the tags, no further action required
                 if (
                     newChannel.appliedTags.filter(

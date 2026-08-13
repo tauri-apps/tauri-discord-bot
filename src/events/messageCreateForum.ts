@@ -5,13 +5,10 @@ import {
     type AnyThreadChannel,
 } from 'discord.js';
 import { event } from 'jellycommands';
-import { wrap_in_embed } from '../utils/embed_helpers.ts';
 import {
     SOLVABLE_FORUMS,
     UNSOLVED_TAG,
     SOLVED_TAG,
-    MESSAGE_READ,
-    SUPPORT_FORUM,
     JOBS_FORUM,
 } from '../config.ts';
 
@@ -27,20 +24,21 @@ export default event({
         // If this is posted in a solvable forum channel
         if (
             message.channel instanceof ThreadChannel &&
+            message.channel.parentId &&
             SOLVABLE_FORUMS.includes(message.channel.parentId)
         ) {
             // Parent forum channel
-            const solveChannel = message.guild.channels.cache.get(
+            const solveChannel = message.guild!!.channels.cache.get(
                 message.channel.parentId,
             ) as ForumChannel;
             // Solve tag
             const solveTag = solveChannel.availableTags.find(
                 (tag) => tag.name === SOLVED_TAG,
-            ).id;
+            )!!.id;
             // Unsolve tag
             const unsolveTag = solveChannel.availableTags.find(
                 (tag) => tag.name === UNSOLVED_TAG,
-            ).id;
+            )!!.id;
             // The channel will have one of the tags, no further action required
             if (
                 message.channel.appliedTags.filter(
@@ -71,28 +69,10 @@ export default event({
                 message.channel.appliedTags.sort().toString()
             )
                 message.channel.setAppliedTags(tags);
-            // If this is a new post and not just a regular message
-            // Disabled for now due to the fact that nobody reads the message
-            // if (!message.nonce && message.position === 0) {
-            //     const msg = await message.channel.send(
-            //         wrap_in_embed(
-            //             `Thank you for your message!
-
-            //         1. Search the <#${SUPPORT_FORUM}> forum for existing posts
-            //         2. Search Github issues to see if this is a known issue
-            //         3. Send the output of \`tauri info\`
-            //         4. Provide reproduction steps for your issue
-            //         5. Be polite and remember to follow the [Tauri Code of Conduct](https://github.com/tauri-apps/governance-and-guidance/blob/main/CODE_OF_CONDUCT.md)
-
-            //         Once you've read this and taken the appropriate steps, react to this message`,
-            //         ),
-            //     );
-            //     await msg.react(MESSAGE_READ);
-            // }
         } else if (
             message.channel instanceof ThreadChannel &&
             JOBS_FORUM === message.channel.parentId &&
-            !message.member.roles.cache.some(
+            !message.member?.roles.cache.some(
                 (role) => role.name === 'working-group',
             )
         ) {
@@ -101,7 +81,7 @@ export default event({
                 let allJobPosts = [];
 
                 const threadCacheA =
-                    await message.channel.parent.threads.fetchActive(false);
+                    await message.channel.parent!!.threads.fetchActive(false);
                 allJobPosts = [...threadCacheA.threads.values()];
 
                 let hasMore = true;
@@ -109,7 +89,7 @@ export default event({
 
                 while (hasMore) {
                     const threadCacheB =
-                        await message.channel.parent.threads.fetchArchived(
+                        await message.channel.parent!!.threads.fetchArchived(
                             {
                                 fetchAll: true,
                                 limit: 100,
@@ -139,7 +119,8 @@ export default event({
                 const oldThreads = allJobPosts
                     .filter(
                         (thread) =>
-                            thread.createdTimestamp + 15778800000 < Date.now(),
+                            thread.createdTimestamp!! + 15778800000 <
+                            Date.now(),
                     )
                     .filter((thread) => thread.ownerId !== message.author.id)
                     .filter((thread) => thread.archived);

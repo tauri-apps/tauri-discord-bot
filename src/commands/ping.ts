@@ -18,7 +18,7 @@ export default command({
         const role = interaction.options.getRole('role', true);
 
         // Fetch the member, since the interaction member might not be fully resolved.
-        const member = await interaction.guild.members.fetch(
+        const member = await interaction.guild!!.members.fetch(
             interaction.user.id,
         );
 
