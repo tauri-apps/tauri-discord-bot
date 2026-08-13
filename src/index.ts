@@ -1,4 +1,3 @@
-import 'dotenv/config';
 import { DEV_MODE, GUILD_ID } from './config.ts';
 import { JellyCommands } from 'jellycommands';
 import { GatewayIntentBits } from 'discord.js';
