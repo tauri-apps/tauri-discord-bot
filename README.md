@@ -1,6 +1,6 @@
 # tauri-discord-bot
 
-This bot is based off of the amazing [Svelte Bot](https://github.com/pngwn/svelte-bot/). It's hosted on a DigitalOcean App instance that will automatically detect any updates to the `main` branch and deploy those changes.
+This bot is based off [Svelte Bot](https://github.com/pngwn/svelte-bot/). It's hosted on a DigitalOcean App instance that will automatically detect any updates to the `main` branch and deploy those changes.
 
 ## Configuration
 
@@ -13,22 +13,15 @@ This bot is based off of the amazing [Svelte Bot](https://github.com/pngwn/svelt
     -   `DEV_SUPPORT_FORUM_CHANNEL`: Support forum channel id
 -   `src/config.ts`: The bots main config is located at [src/config.ts](src/config.ts)
     -   `ADMIN_ROLES`: Role or user IDs that the bot will consider administrators
-    -   `AUTO_THREAD_CHANNELS`: Channel(s) that automatically thread any messages sent in them (extends `HELP_CHANNELS` below)
-    -   `HELP_CHANNELS`: Channel(s) that in addition to being auto threaded also come with issue handling capabilities
 
 ## Events
 
--   `on_message_auto_thread`: Monitors the channels set in `AUTO_THREAD_CHANNELS` and automatically turns any messages posted there into their own threads
+-   x
 
 ## Commands
 
--   `thread`: These are commands to manage the autothreads created by the bot. They can be used by the person who initiated the thread or by people/roles defined in the role.
-    -   `/thread rename`: Renames the current thread
-    -   `/thread solve`: Removes ? and adds ✅ at the beginning of the thread name and sets the archive duration to 1hr
-    -   `/thread archive`: Archive an active thread without marking it as solved
-    -   `/thread reopen`: Reopen a thread that's been accidentally marked as solved
--   `threads`: These are commands to manage all threads in the guild
-    -   `/threads list`: Lists currently active threads in the channel the command was ran in
+-   `thread`: These are commands to manage forum threads. They can be used by the person who initiated the thread or by people/roles defined in `THREAD_ADMIN_IDS`.
+    -   `/thread solve`: Replaces the `unsolved` tag with `solved`.
 
 ## Stack
 
@@ -51,13 +44,9 @@ All contributions are welcome, please try and make an issue first since most new
 
 2. Run the bot with `pnpm dev`
 
-### Code Conventions
-
-Since there is no user facing code, prefer `snake_case` for variables and function names wherever possible. Local constants follow the same, whereas global constants should be in `SCREAMING_SNAKE_CASE`.
-
 ## Deploying
 
-The bot uses the [tsm](https://github.com/lukeed/tsm) module loader to transpile its Typescript code on the fly so there's no build step involved.
+The bot uses Node.js' built-in TypeScript support so there's no build step involved.
 
 ```sh
 pnpm start
